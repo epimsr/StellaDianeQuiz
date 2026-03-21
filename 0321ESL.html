@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,29 +8,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root { --primary: #1a73e8; --secondary: #5f6368; --success: #188038; --error: #d93025; --bg: #f8f9fa; }
-        body { font-family: -apple-system, "PingFang TC", "Heiti TC", sans-serif; background: var(--bg); margin: 0; padding: 10px; color: #202124; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, "PingFang TC", sans-serif; background: var(--bg); margin: 0; padding: 10px; color: #202124; -webkit-tap-highlight-color: transparent; }
         .container { max-width: 650px; margin: 0 auto; background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; min-height: 90vh; display: flex; flex-direction: column; }
         .header { text-align: center; border-bottom: 2px solid var(--bg); margin-bottom: 15px; padding-bottom: 10px; position: relative; }
-        .user-selector { margin-top: 12px; display: flex; justify-content: center; gap: 15px; }
-        .user-btn { padding: 8px 20px; border-radius: 25px; border: 1.5px solid #dadce0; background: white; cursor: pointer; font-size: 15px; font-weight: bold; }
-        .user-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 2px 8px rgba(26,115,232,0.3); }
+        .user-selector { margin-top: 10px; display: flex; justify-content: center; gap: 10px; }
+        .user-btn { padding: 8px 20px; border-radius: 20px; border: 1px solid #dadce0; background: white; cursor: pointer; font-size: 14px; font-weight: bold; transition: 0.3s; }
+        .user-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
         .save-tools { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
-        .btn-s { padding: 4px 10px; font-size: 12px; border-radius: 5px; border: 1px solid #dadce0; background: white; cursor: pointer; }
-        .mode-card { width: 100%; padding: 20px; margin: 12px 0; border-radius: 12px; border: none; background: var(--primary); color: white; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .q-box { background: #f1f3f4; padding: 18px; border-radius: 10px; margin-bottom: 15px; }
-        .def-text { color: var(--primary); font-weight: bold; margin-bottom: 12px; font-size: 17px; line-height: 1.4; }
-        .sent-text { font-style: italic; border-left: 5px solid #dadce0; padding: 12px; line-height: 1.6; color: #3c4043; background: #fff; border-radius: 6px; font-size: 16px; }
-        .opt-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .btn-opt { flex: 1; text-align: left; padding: 15px; border: 1px solid #dadce0; border-radius: 10px; background: white; font-size: 16px; cursor: pointer; }
-        .btn-opt:disabled { background: #f8f9fa; color: #9aa0a6; }
-        .btn-audio { padding: 12px; background: #e8f0fe; border: none; border-radius: 10px; cursor: pointer; font-size: 20px; color: var(--primary); display: flex; align-items: center; justify-content: center; }
-        .input-field { width: 100%; padding: 16px; font-size: 20px; border: 2.5px solid #dadce0; border-radius: 10px; box-sizing: border-box; margin-bottom: 12px; outline-color: var(--primary); text-align: center; }
-        .feedback { margin-top: 15px; padding: 18px; border-radius: 12px; display: none; line-height: 1.6; border: 1px solid #ddd; }
+        .btn-s { padding: 4px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #dadce0; background: white; cursor: pointer; }
+        .mode-card { width: 100%; padding: 18px; margin: 8px 0; border-radius: 10px; border: none; background: var(--primary); color: white; font-size: 17px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .q-box { background: #f1f3f4; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .def-text { color: var(--primary); font-weight: bold; margin-bottom: 10px; font-size: 16px; }
+        .sent-text { font-style: italic; border-left: 4px solid #dadce0; padding-left: 10px; line-height: 1.5; color: #3c4043; background: #fff; padding: 10px; border-radius: 4px; }
+        .opt-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .btn-opt { flex: 1; text-align: left; padding: 12px; border: 1px solid #dadce0; border-radius: 8px; background: white; font-size: 15px; cursor: pointer; }
+        .btn-opt:disabled { background: #f1f3f4; color: #9aa0a6; cursor: not-allowed; }
+        .btn-audio { padding: 10px; background: #e8f0fe; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--primary); }
+        .input-field { width: 100%; padding: 14px; font-size: 18px; border: 2px solid #dadce0; border-radius: 8px; box-sizing: border-box; margin-bottom: 10px; text-align: center; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 8px; display: none; line-height: 1.6; border: 1px solid #ddd; }
         .f-correct { background: #e6f4ea; color: var(--success); border-color: #cce8d6; }
         .f-wrong { background: #fce8e6; color: var(--error); border-color: #f8d0cb; }
         .nav { display: flex; justify-content: space-between; margin-top: auto; padding-top: 20px; }
-        .btn-nav { padding: 12px 28px; border-radius: 10px; border: none; background: var(--secondary); color: white; font-weight: bold; font-size: 16px; cursor: pointer; }
-        .progress { text-align: center; font-size: 14px; color: var(--secondary); margin-bottom: 12px; font-weight: 500; }
+        .btn-nav { padding: 10px 20px; border-radius: 6px; border: none; background: var(--secondary); color: white; font-weight: bold; cursor: pointer; }
+        .progress { text-align: center; font-size: 13px; color: var(--secondary); margin-bottom: 10px; }
         .hidden { display: none; }
     </style>
 </head>
@@ -38,13 +38,12 @@
 
 <div class="container" id="app-content">
     <div class="save-tools">
-        <button class="btn-s" onclick="exportImg()">📷 Photo</button>
+        <button class="btn-s" onclick="exportImg()">📷 圖片</button>
         <button class="btn-s" onclick="exportPDF()">📄 PDF</button>
     </div>
 
     <div class="header">
         <h2 id="title-main">English Vocabulary Quiz</h2>
-        <div style="font-size: 14px; color: #5f6368; font-weight: bold;">Patterns of Change Part 2</div>
         <div class="user-selector">
             <button class="user-btn" id="btn-stella" onclick="setUser('Stella')">Stella</button>
             <button class="user-btn" id="btn-diane" onclick="setUser('Diane')">Diane</button>
@@ -57,7 +56,7 @@
     </div>
 
     <div id="quiz" class="hidden">
-        <div class="progress"><span id="user-display" style="text-decoration: underline;">Stella</span>'s Progress: <span id="cur-num">1</span> / 20</div>
+        <div class="progress"><span id="user-display" style="font-weight:bold;">Stella</span>'s Progress: <span id="cur-num">1</span> / 20</div>
         <div class="q-box">
             <div id="q-def" class="def-text"></div>
             <div id="q-sent" class="sent-text"></div>
@@ -65,7 +64,7 @@
         <div id="options"></div>
         <div id="typing" class="hidden">
             <input type="text" id="ans-in" class="input-field" placeholder="Type answer here..." autocomplete="off" autocapitalize="none">
-            <button class="btn-audio" style="width:100%; margin-bottom:12px; font-size:15px; background:#fef7e0; color:#5f6368; border: 1px solid #fbc02d;" onclick="handleSpeak(currentQ.word)">🔊 Natural Voice Hint</button>
+            <button class="btn-audio" style="width:100%; margin-bottom:10px; font-size:14px; background:#fef7e0; color:#5f6368;" onclick="handleSpeak(currentQ.word)">🔊 真人發音提示</button>
         </div>
         <div id="feedback" class="feedback"></div>
         <div class="nav">
@@ -75,13 +74,14 @@
     </div>
 
     <div id="result" class="hidden">
-        <h3 id="report-title">Quiz Report</h3>
+        <h4 id="report-title">Quiz Report</h4>
         <div id="report-body"></div>
-        <button class="mode-card" style="margin-top:20px; background:var(--secondary);" onclick="location.reload()">Restart Quiz</button>
+        <button class="mode-card" style="margin-top:20px;" onclick="location.reload()">Restart Quiz</button>
     </div>
 </div>
 
 <script>
+// 完整單字庫 (整合 Patterns of Change Part 1 & 2)
 const words = [
     { word: "texture", pos: "(n.)", kk: "[ˈtɛkstʃɚ]", def: "How the surface of an object feels when you touch it.", sent: "I love the smooth ________ of silk.", ch: "觸感/質地", trans: "我喜歡絲綢平滑的觸感。" },
     { word: "sedimentary", pos: "(adj.)", kk: "[ˌsɛdəˈmɛntərɪ]", def: "Of, relating to, or containing sediment.", sent: "Sandstone is a type of ________ rock.", ch: "沉積的", trans: "砂岩是一種沉積岩。" },
@@ -104,12 +104,7 @@ const words = [
 ];
 
 let currentUser = 'Stella';
-const subject = 'English';
-const unit = 'PatternsOfChange';
 let quizSet = [], userHistory = [], curIdx = 0, mode = '';
-
-// 建立一個常駐的音訊物件
-const silentAudio = new Audio();
 
 function setUser(name) {
     currentUser = name;
@@ -117,37 +112,25 @@ function setUser(name) {
     document.getElementById(`btn-${name.toLowerCase()}`).classList.add('active');
     document.getElementById('user-display').innerText = name;
 }
-
 setUser('Stella');
 
-// iOS 關鍵：解鎖音軌並開始測驗
+// iOS 語音解鎖關鍵：在第一次點擊時啟動一個空白音頻
 function unlockAndStart(m) {
-    // 播放一個空的短音來解鎖 iOS Safari 的 Audio 通道
-    silentAudio.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==";
-    silentAudio.play().then(() => {
-        start(m);
-    }).catch(e => {
-        console.log("Audio unlock failed, fallback to direct start.");
-        start(m);
-    });
+    window.speechSynthesis.cancel();
+    const silent = new SpeechSynthesisUtterance("");
+    window.speechSynthesis.speak(silent);
+    start(m);
 }
 
-// 修正後的發音邏輯 (對應 iOS 靜音開關與安全限制)
+// 真人語音發音核心
 function handleSpeak(t) {
-    // 停止系統語音排隊
-    window.speechSynthesis.cancel();
-
     const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(t)}&tl=en&client=tw-ob`;
     const audio = new Audio(url);
-    
-    // 1. 嘗試真人語音
     audio.play().catch(e => {
-        console.log("External Audio failed, using System TTS.");
-        // 2. 備案：高品質系統語音 (最穩定)
+        // 備案：高品質系統語音
+        window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(t);
-        u.lang = 'en-US';
-        u.rate = 0.85;
-        // 挑選高品質聲音
+        u.lang = 'en-US'; u.rate = 0.85;
         const voices = window.speechSynthesis.getVoices();
         const premium = voices.find(v => (v.name.includes('Siri') || v.name.includes('Enhanced')) && v.lang.startsWith('en'));
         if (premium) u.voice = premium;
@@ -160,7 +143,7 @@ function getFormattedDate() {
     return (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0');
 }
 
-function generateFileName() { return `${currentUser}_${subject}_${unit}_${getFormattedDate()}`; }
+function generateFileName() { return `${currentUser}_English_Patterns_${getFormattedDate()}`; }
 
 function start(m) {
     mode = m; curIdx = 0; userHistory = [];
@@ -183,11 +166,14 @@ function render() {
     if(mode === 'C') {
         document.getElementById('options').classList.add('hidden');
         document.getElementById('typing').classList.remove('hidden');
+        const input = document.getElementById('ans-in');
+        input.value = userHistory[curIdx]?.val || "";
     } else {
         document.getElementById('options').classList.remove('hidden');
         document.getElementById('typing').classList.add('hidden');
         makeOpts(currentQ);
     }
+    document.getElementById('next').innerText = (curIdx === 19) ? "Submit Quiz" : "Next";
 }
 
 function makeOpts(correct) {
@@ -215,22 +201,18 @@ function checkAns(v) {
 function showFeedback(isR, v) {
     const fb = document.getElementById('feedback'); fb.style.display = 'block';
     fb.className = `feedback ${isR ? 'f-correct' : 'f-wrong'}`;
-    const fullSent = currentQ.sent.replace(new RegExp(currentQ.word, 'gi'), `<u>${currentQ.word}</u>`);
+    const fullSent = currentQ.sent.replace(new RegExp(currentQ.word, 'gi'), `<span style="color:var(--primary); font-weight:bold; text-decoration:underline;">${currentQ.word}</span>`);
+    document.getElementById('q-sent').innerHTML = `Example: ${fullSent}`;
     fb.innerHTML = `
-        <div style="font-weight:bold; border-bottom:1px solid rgba(0,0,0,0.1); padding-bottom:5px; margin-bottom:5px;">${isR ? '✓ Correct!' : '✗ Answer: ' + currentQ.word}</div>
+        <div style="font-weight:bold; border-bottom:1px solid rgba(0,0,0,0.1); padding-bottom:5px; margin-bottom:5px;">${isR ? '✓ Correct!' : '✗ Incorrect. Answer: ' + currentQ.word}</div>
         <div style="font-size:0.95em;">
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                <b style="font-size:1.3em;">${currentQ.word}</b> 
-                <button class="btn-audio" style="padding:4px 12px; font-size:14px; margin:0;" onclick="handleSpeak('${currentQ.word}')">🔊 Pronounce</button>
-            </div>
-            <div style="margin-bottom:8px;">
-                <span style="color:var(--primary); font-weight:bold;">${currentQ.kk}</span> ${currentQ.pos}
-            </div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;"><b style="font-size:1.3em;">${currentQ.word}</b> <button class="btn-audio" style="padding:4px 12px; font-size:14px; margin:0;" onclick="handleSpeak('${currentQ.word}')">🔊 Pronounce</button></div>
+            <div style="margin-bottom:8px;"><span style="color:var(--primary); font-weight:bold;">${currentQ.kk}</span> ${currentQ.pos}</div>
             <div style="margin-top:5px;">
-                <strong>Meaning: </strong>${currentQ.ch}<br>
+                <strong>中文意思：</strong>${currentQ.ch}<br>
                 <div style="margin-top:6px; padding-left:8px; border-left:3px solid #dadce0;">
-                    <strong>English: </strong>${fullSent}<br>
-                    <strong>Chinese: </strong>${currentQ.trans}
+                    <strong>英文例句：</strong>${fullSent}<br>
+                    <strong>例句翻譯：</strong>${currentQ.trans}
                 </div>
             </div>
         </div>`;
@@ -247,24 +229,26 @@ function changeQ(s) {
 function finish() {
     document.getElementById('quiz').classList.add('hidden');
     document.getElementById('result').classList.remove('hidden');
-    document.getElementById('report-title').innerText = `${currentUser}'s Report`;
+    document.getElementById('report-title').innerText = `${currentUser}'s Quiz Report`;
     const body = document.getElementById('report-body'); body.innerHTML = "";
     userHistory.forEach((h, i) => {
         const q = quizSet[i];
-        body.innerHTML += `<div style="padding:10px; margin-bottom:8px; border-radius:8px; background:${h.ok?'#f6ffed':'#fff1f0'}; border:1px solid ${h.ok?'#b7eb8f':'#ffa39e'};">
-            <b>Q${i+1}. ${q.word}</b> - ${h.ok?'✓':'✗ Answered: '+h.val}</div>`;
+        if(!h) h = { val: "N/A", ok: false };
+        body.innerHTML += `<div class="report-item" style="padding:10px; border-radius:8px; background:${h.ok?'#f6ffed':'#fff1f0'}; margin-bottom:5px; border:1px solid ${h.ok?'#b7eb8f':'#ffa39e'};">
+            <span style="color:${h.ok?'#389e0d':'#cf1322'}; font-weight:bold;">Q${i+1}. ${h.ok?'✓':'✗'} ${q.word}</span><br>
+            Your Answer: ${h.val} | Correct: ${q.word}</div>`;
     });
 }
 
 async function exportImg() {
     const canvas = await html2canvas(document.getElementById('app-content'));
-    const link = document.createElement('a');
-    link.download = `${generateFileName()}.png`;
+    const link = document.createElement('a'); link.download = `${generateFileName()}.png`;
     link.href = canvas.toDataURL(); link.click();
 }
 
 async function exportPDF() {
-    const { jsPDF } = window.jspdf; const doc = new jsPDF();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
     const canvas = await html2canvas(document.getElementById('app-content'));
     doc.addImage(canvas.toDataURL('image/png'), 'PNG', 10, 10, 190, 0);
     doc.save(`${generateFileName()}.pdf`);
