@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帥帥家複習系統</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --primary: #4A90E2; --secondary: #F5A623; --danger: #E74C3C; --success: #27AE60; --bg: #F0F2F5; }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; min-height: 95vh; display: flex; flex-direction: column; box-sizing: border-box; }
+        
+        /* Header */
+        .header { text-align: center; border-bottom: 2px solid #EEE; padding-bottom: 10px; margin-bottom: 15px; }
+        .save-btns { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
+        .btn-sm { padding: 4px 8px; font-size: 10px; border: none; border-radius: 4px; cursor: pointer; background: #eee; }
+
+        /* Menu */
+        .menu-btn { width: 100%; padding: 20px; margin: 10px 0; border: 2px solid var(--primary); border-radius: 10px; font-size: 1.1rem; background: white; cursor: pointer; font-weight: bold; color: var(--primary); }
+        .menu-btn:hover { background: var(--primary); color: white; }
+
+        /* Quiz UI */
+        .question-text { font-size: 1.2rem; margin: 20px 0; min-height: 60px; line-height: 1.5; font-weight: bold; }
+        .opt-btn { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #DDD; border-radius: 8px; text-align: left; background: white; cursor: pointer; font-size: 1rem; }
+        .opt-btn.selected { border: 2px solid var(--primary); background: #E1F5FE; }
+        .opt-btn.correct-ui { background: #D4EDDA !important; border-color: var(--success) !important; }
+        .opt-btn.wrong-ui { background: #F8D7DA !important; border-color: var(--danger) !important; }
+        
+        input[type="text"] { width: 100%; padding: 12px; font-size: 1.1rem; border: 2px solid #DDD; border-radius: 8px; box-sizing: border-box; outline: none; }
+        .red-text { color: var(--danger); font-weight: bold; }
+        .green-text { color: var(--success); font-weight: bold; }
+
+        /* Nav & Bottom Area */
+        .nav-bar { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding-top: 15px; }
+        .btn-nav { padding: 12px 5px; border: none; border-radius: 8px; cursor: pointer; background: #666; color: white; font-size: 0.95rem; font-weight: bold; }
+        .btn-submit { background: var(--success); }
+        .bottom-actions { margin-top: 15px; border-top: 1px dashed #DDD; padding-top: 15px; }
+        .btn-help { background: #FFF3E0; border: 1px solid var(--secondary); color: var(--secondary); width: 100%; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        /* Report */
+        .report-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+        .report-table td, .report-table th { border: 1px solid #EEE; padding: 8px; text-align: left; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-app">
+    <div class="save-btns" id="ui-save">
+        <button class="btn-sm" onclick="doCapture('img')">存照片</button>
+        <button class="btn-sm" onclick="doCapture('pdf')">存 PDF</button>
+    </div>
+
+    <div class="header">
+        <h3 id="display-title">帥帥家複習</h3>
+        <div>
+            <select id="sel-student"><option>Stella</option><option>Diane</option></select>
+            <select id="sel-sub" onchange="syncTitle()"><option>社會</option><option>自然</option><option>國文</option></select>
+        </div>
+        <div id="display-date" style="font-size:0.8rem; color: #777; margin-top:5px;"></div>
+    </div>
+
+    <div id="screen-home">
+        <button class="menu-btn" onclick="start('choice')">Part A: 選擇題 (10題)</button>
+        <button class="menu-btn" onclick="start('fill')">Part B: 填空題 (10題)</button>
+    </div>
+
+    <div id="screen-quiz" class="hidden">
+        <div id="progress-bar" style="font-weight:bold; color:var(--primary);">進度：1 / 10</div>
+        <div class="question-text" id="q-txt"></div>
+        <div id="ans-area"></div>
+        
+        <div id="q-feedback" style="margin-top:20px; min-height: 25px; text-align:center; font-size: 1.1rem;"></div>
+        
+        <div class="nav-bar">
+            <button class="btn-nav" onclick="move(-1)">上一題</button>
+            <button class="btn-nav btn-submit" id="btn-check" onclick="checkCurrent()">送出答案</button>
+            <button class="btn-nav" id="btn-next" onclick="move(1)">下一題</button>
+        </div>
+
+        <div class="bottom-actions">
+            <button class="btn-help" id="btn-hint" onclick="giveHint()">🆘 求救 (顯示首字提醒)</button>
+        </div>
+    </div>
+
+    <div id="screen-report" class="hidden">
+        <h4 style="text-align:center;">複習成果報表</h4>
+        <table class="report-table" id="table-report">
+            <thead><tr style="background:#F5F5F5;"><th>題目</th><th>學生回答</th><th>正確答案</th></tr></thead>
+            <tbody></tbody>
+        </table>
+        <button class="menu-btn" style="margin-top:20px;" onclick="location.reload()">重新練習</button>
+    </div>
+</div>
+
+<script>
+    // 題庫資料 (從課本圖片擷取)
+    const dbChoice = [
+        { q: "1895年清帝國割讓臺灣、澎湖給日本，是簽訂哪一個條約？", o: ["北京條約", "馬關條約", "南京條約"], a: "馬關條約" },
+        { q: "臺灣民主國成立時，推舉誰擔任總統？", o: ["劉永福", "唐景崧", "李鴻章"], a: "唐景崧" },
+        { q: "日治初期負責推行衛生、戶口調查與治安的基層人員是？", o: ["軍人", "警察", "教師"], a: "警察" },
+        { q: "發生於1915年臺南西來庵，由余清芳領導的抗日事件是？", o: ["霧社事件", "噍吧哖事件", "苗栗事件"], a: "噍吧哖事件" },
+        { q: "霧社事件是由哪一個原住民族發起的？", o: ["泰雅族", "賽德克族", "阿美族"], a: "賽德克族" },
+        { q: "臺灣民主國的國旗圖案為何？", o: ["藍地黃虎", "青天白日", "五色國旗"], a: "藍地黃虎" },
+        { q: "日治時期總督府在各地設立什麼單位，作為警察辦公處？", o: ["縣政府", "派出所", "衙門"], a: "派出所" },
+        { q: "馬關條約中，清朝的簽約代表是誰？", o: ["曾國藩", "李鴻章", "左宗棠"], a: "李鴻章" },
+        { q: "霧社事件的領導人是誰？", o: ["莫那·魯道", "余清芳", "林獻堂"], a: "莫那·魯道" },
+        { q: "日治時期的警察權力極大，當時民眾稱之為什麼？", o: ["大將軍", "南無警察大菩薩", "救世主"], a: "南無警察大菩薩" }
+    ];
+
+    const dbFill = [
+        { q: "馬關條約簽訂於西元幾年？", a: "1895" },
+        { q: "臺灣民主國第二任大總統是？", a: "劉永福" },
+        { q: "代表日本簽訂馬關條約的人是？", a: "伊藤博文" },
+        { q: "噍吧哖事件又稱為「什麼」事件？", a: "西來庵" },
+        { q: "日治時期維持社會秩序與行政工作最核心的角色是？", a: "警察" },
+        { q: "臺灣民主國的國旗稱為「什麼」旗？", a: "藍地黃虎" },
+        { q: "總督府限制原住民文化與什麼，導致霧社事件爆發？", a: "獵場" },
+        { q: "日治時期的基層治安行政輔助組織是「什麼」制度？", a: "保甲" },
+        { q: "馬關條約簽約的地點是在日本哪裡？", a: "下關" },
+        { q: "臺灣民主國從成立到瓦解，大約歷時多少天？", a: "150" }
+    ];
+
+    let qs = [], userAns = [], checked = [], cur = 0, mode = '';
+
+    // 初始化日期
+    const now = new Date();
+    const dateStr = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
+    document.getElementById('display-date').innerText = dateStr;
+
+    function syncTitle() {
+        const sub = document.getElementById('sel-sub').value;
+        document.getElementById('display-title').innerText = `帥帥家複習 ${sub} [${dateStr}]`;
+    }
+    syncTitle();
+
+    function start(type) {
+        mode = type;
+        const source = (type === 'choice') ? dbChoice : dbFill;
+        qs = [...source].sort(() => Math.random() - 0.5).slice(0, 10);
+        userAns = new Array(10).fill("");
+        checked = new Array(10).fill(false);
+        cur = 0;
+        document.getElementById('screen-home').classList.add('hidden');
+        document.getElementById('screen-quiz').classList.remove('hidden');
+        render();
+    }
+
+    function render() {
+        const q = qs[cur];
+        document.getElementById('progress-bar').innerText = `進度：${cur + 1} / 10`;
+        document.getElementById('q-txt').innerText = q.q;
+        const area = document.getElementById('ans-area');
+        const feedback = document.getElementById('q-feedback');
+        area.innerHTML = "";
+        feedback.innerHTML = "";
+
+        if (mode === 'choice') {
+            q.o.forEach(o => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn' + (userAns[cur] === o ? ' selected' : '');
+                if (checked[cur]) {
+                    if (o === q.a) b.classList.add('correct-ui');
+                    else if (userAns[cur] === o) b.classList.add('wrong-ui');
+                }
+                b.innerText = o;
+                b.onclick = () => { if(!checked[cur]) { userAns[cur] = o; render(); } };
+                area.appendChild(b);
+            });
+        } else {
+            const input = document.createElement('input');
+            input.type = "text";
+            input.value = userAns[cur];
+            input.disabled = checked[cur];
+            input.placeholder = "請輸入答案...";
+            input.onblur = (e) => userAns[cur] = e.target.value;
+            input.onkeydown = (e) => { if(e.key==='Enter') { userAns[cur] = e.target.value; checkCurrent(); } };
+            area.appendChild(input);
+            if (!checked[cur]) input.focus();
+        }
+
+        if (checked[cur]) {
+            const isOk = userAns[cur] === q.a;
+            feedback.innerHTML = isOk ? `<span class="green-text">✔ 正確！太棒了</span>` : `<span class="red-text">✘ 答錯了，正確答案：${q.a}</span>`;
+        }
+        document.getElementById('btn-check').style.display = checked[cur] ? 'none' : 'block';
+        document.getElementById('btn-next').innerText = (cur === 9) ? "送出總結報表" : "下一題";
+    }
+
+    function checkCurrent() {
+        if (!userAns[cur] || userAns[cur].trim() === "") { alert("請先完成作答再送出！"); return; }
+        checked[cur] = true;
+        render();
+    }
+
+    function move(step) {
+        if (step === 1 && cur === 9) { 
+            if(!checked[cur]) { alert("請先送出最後一題的答案！"); return; }
+            showReport(); 
+            return; 
+        }
+        cur = Math.max(0, Math.min(9, cur + step));
+        render();
+    }
+
+    function giveHint() {
+        alert("💡 提示：正確答案的第一個字是「" + qs[cur].a[0] + "」");
+    }
+
+    function showReport() {
+        document.getElementById('screen-quiz').classList.add('hidden');
+        document.getElementById('screen-report').classList.remove('hidden');
+        const body = document.querySelector('#table-report tbody');
+        body.innerHTML = "";
+        qs.forEach((q, i) => {
+            const isWrong = userAns[i] !== q.a;
+            body.innerHTML += `<tr><td>${q.q}</td><td class="${isWrong?'red-text':''}">${userAns[i]||'未答'}</td><td>${q.a}</td></tr>`;
+        });
+    }
+
+    function doCapture(type) {
+        const ui = document.getElementById('ui-save');
+        ui.style.display = 'none';
+        html2canvas(document.body).then(canvas => {
+            if (type === 'img') {
+                const link = document.createElement('a');
+                link.download = `複習結果_${new Date().getTime()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } else {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const w = pdf.internal.pageSize.getWidth();
+                const h = (canvas.height * w) / canvas.width;
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h);
+                pdf.save("複習報表.pdf");
+            }
+            ui.style.display = 'flex';
+        });
+    }
+</script>
+</body>
+</html>
