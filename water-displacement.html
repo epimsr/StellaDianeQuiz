@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>排水法測量體積</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --water-blue: #3ab5d8;
+    --water-light: #7dd4ec;
+    --water-dark: #1a7fa8;
+    --bg: #0d1b2a;
+    --panel: #132233;
+    --accent: #f0c040;
+    --text: #e8f4f8;
+    --dim: #7aa0b8;
+    --object-color: #e05c3a;
+    --object-shadow: #a03020;
+    --success: #50c878;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Serif TC', serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 20%, rgba(58,181,216,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(240,192,64,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  h1 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--dim);
+    text-align: center;
+    margin-bottom: 28px;
+    letter-spacing: 0.1em;
+  }
+
+  .main-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    max-width: 960px;
+  }
+
+  /* ── CONTAINER SVG AREA ── */
+  .scene-wrap {
+    position: relative;
+    flex: 0 0 auto;
+  }
+
+  /* ── SIDE PANEL ── */
+  .side-panel {
+    flex: 1 1 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 240px;
+    max-width: 320px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid rgba(58,181,216,0.18);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+
+  .card-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  /* sliders */
+  .param-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .param-label {
+    font-size: 0.82rem;
+    min-width: 80px;
+    color: var(--text);
+  }
+  input[type=range] {
+    flex: 1;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(58,181,216,0.25);
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    transition: transform .15s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.3); }
+  .param-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    min-width: 38px;
+    text-align: right;
+  }
+
+  /* shape selector */
+  .shape-btns {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .shape-btn {
+    flex: 1;
+    padding: 7px 6px;
+    border-radius: 8px;
+    border: 1px solid rgba(58,181,216,0.25);
+    background: transparent;
+    color: var(--dim);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'Noto Serif TC', serif;
+  }
+  .shape-btn.active {
+    background: rgba(58,181,216,0.18);
+    border-color: var(--water-blue);
+    color: var(--water-light);
+  }
+  .shape-btn:hover:not(.active) {
+    border-color: rgba(58,181,216,0.5);
+    color: var(--text);
+  }
+
+  /* result display */
+  .result-box {
+    background: linear-gradient(135deg, rgba(58,181,216,0.08), rgba(240,192,64,0.06));
+    border: 1px solid rgba(240,192,64,0.3);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .result-label { font-size: 0.75rem; color: var(--dim); margin-bottom: 4px; }
+  .result-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.5rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .result-unit { font-size: 0.7rem; color: var(--dim); margin-top: 2px; }
+
+  .formula-box {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--dim);
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    border-left: 3px solid var(--water-blue);
+  }
+  .formula-box span { color: var(--accent); }
+
+  /* animate button */
+  .btn-animate {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, var(--water-blue), var(--water-dark));
+    color: #fff;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .2s, transform .1s;
+    letter-spacing: 0.05em;
+  }
+  .btn-animate:hover { opacity: 0.88; }
+  .btn-animate:active { transform: scale(0.97); }
+
+  /* step indicator */
+  .steps {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  .step {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(58,181,216,0.2);
+    transition: background .4s;
+  }
+  .step.done { background: var(--water-blue); }
+  .step.active { background: var(--accent); }
+
+  .step-text {
+    font-size: 0.78rem;
+    color: var(--dim);
+    text-align: center;
+    min-height: 1.2em;
+    transition: color .3s;
+  }
+  .step-text.highlight { color: var(--success); }
+
+  /* watermark annotation */
+  .annotation {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    fill: var(--accent);
+    opacity: 0;
+    transition: opacity .5s;
+  }
+  .annotation.show { opacity: 1; }
+
+  /* wave keyframes */
+  @keyframes wave1 {
+    0%,100% { d: path("M0,0 Q20,-4 40,0 Q60,4 80,0 Q100,-4 120,0 Q140,4 160,0 Q180,-4 200,0 L200,10 L0,10 Z"); }
+    50%      { d: path("M0,0 Q20,4 40,0 Q60,-4 80,0 Q100,4 120,0 Q140,-4 160,0 Q180,4 200,0 L200,10 L0,10 Z"); }
+  }
+  @keyframes wave2 {
+    0%,100% { d: path("M0,0 Q25,5 50,0 Q75,-5 100,0 Q125,5 150,0 Q175,-5 200,0 L200,10 L0,10 Z"); }
+    50%      { d: path("M0,0 Q25,-5 50,0 Q75,5 100,0 Q125,-5 150,0 Q175,5 200,0 L200,10 L0,10 Z"); }
+  }
+  @keyframes floatObj {
+    0%,100% { transform: translateY(0px); }
+    50%      { transform: translateY(-3px); }
+  }
+  @keyframes bubble {
+    0%   { transform: translateY(0) scale(1); opacity: 0.7; }
+    100% { transform: translateY(-30px) scale(1.5); opacity: 0; }
+  }
+  @keyframes ripple {
+    0%   { r: 4; opacity: 0.8; stroke-width: 2; }
+    100% { r: 18; opacity: 0; stroke-width: 0.5; }
+  }
+
+  .obj-float { animation: floatObj 2.2s ease-in-out infinite; }
+  .bubble { animation: bubble 1.4s ease-out forwards; }
+</style>
+</head>
+<body>
+
+<h1>排水法測量物體體積</h1>
+<p class="subtitle">WATER DISPLACEMENT · VOLUME MEASUREMENT</p>
+
+<div class="main-layout">
+
+  <!-- SVG SCENE -->
+  <div class="scene-wrap">
+    <svg id="scene" width="280" height="380" viewBox="0 0 280 380" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#7dd4ec" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#1a5f7a" stop-opacity="0.95"/>
+        </linearGradient>
+        <linearGradient id="containerGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#1e4060" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#2a6090" stop-opacity="0.3"/>
+        </linearGradient>
+        <linearGradient id="objGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f07050"/>
+          <stop offset="100%" stop-color="#a03020"/>
+        </linearGradient>
+        <clipPath id="containerClip">
+          <rect x="40" y="80" width="200" height="260" rx="0"/>
+        </clipPath>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="softglow">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- container back wall -->
+      <rect x="40" y="80" width="200" height="260" rx="2" fill="url(#containerGrad)" stroke="#3ab5d8" stroke-width="1.5" stroke-opacity="0.4"/>
+
+      <!-- water body (clipped) -->
+      <g clip-path="url(#containerClip)">
+        <rect id="waterBody" x="40" y="260" width="200" height="80" fill="url(#waterGrad)" opacity="0.88"/>
+        <!-- wave surface -->
+        <g id="waveGroup" transform="translate(40, 250)">
+          <path id="wave1" d="M0,0 Q20,-4 40,0 Q60,4 80,0 Q100,-4 120,0 Q140,4 160,0 Q180,-4 200,0 L200,10 L0,10 Z"
+            fill="#7dd4ec" opacity="0.6"
+            style="animation: wave1 2s ease-in-out infinite"/>
+          <path id="wave2" d="M0,0 Q25,5 50,0 Q75,-5 100,0 Q125,5 150,0 Q175,-5 200,0 L200,10 L0,10 Z"
+            fill="#3ab5d8" opacity="0.5"
+            style="animation: wave2 2.6s ease-in-out infinite"/>
+        </g>
+        <!-- bubbles container -->
+        <g id="bubblesGroup"></g>
+      </g>
+
+      <!-- ruler marks (left side) -->
+      <g id="ruler" font-family="Space Mono" font-size="9" fill="#7aa0b8">
+        <!-- ticks drawn by JS -->
+      </g>
+
+      <!-- water level lines -->
+      <line id="lineV1" x1="38" y1="260" x2="242" y2="260" stroke="#50c878" stroke-width="1" stroke-dasharray="4,3" opacity="0"/>
+      <line id="lineV2" x1="38" y1="260" x2="242" y2="260" stroke="#f0c040" stroke-width="1" stroke-dasharray="4,3" opacity="0"/>
+
+      <!-- level labels -->
+      <text id="labelV1" x="244" y="263" font-family="Space Mono" font-size="9" fill="#50c878" opacity="0">V₁</text>
+      <text id="labelV2" x="244" y="263" font-family="Space Mono" font-size="9" fill="#f0c040" opacity="0">V₂</text>
+
+      <!-- delta arrow -->
+      <g id="deltaArrow" opacity="0">
+        <line id="arrowLine" x1="250" y1="260" x2="250" y2="240" stroke="#f0c040" stroke-width="1.5"/>
+        <polygon id="arrowHead" points="250,232 246,242 254,242" fill="#f0c040"/>
+        <text id="deltaText" x="256" y="248" font-family="Space Mono" font-size="9" fill="#f0c040">ΔV</text>
+      </g>
+
+      <!-- OBJECT (rendered above water clip) -->
+      <g id="objectGroup" transform="translate(140, 40)" opacity="0">
+        <!-- sphere -->
+        <g id="shapeDisplay">
+          <circle id="objSphere" cx="0" cy="0" r="24" fill="url(#objGrad)" filter="url(#softglow)" class="obj-float"/>
+          <ellipse id="objSphereShine" cx="-7" cy="-7" rx="8" ry="5" fill="rgba(255,255,255,0.25)" class="obj-float"/>
+        </g>
+      </g>
+
+      <!-- glass glare -->
+      <rect x="42" y="82" width="6" height="256" fill="white" opacity="0.04" rx="1"/>
+
+      <!-- container outline (front) -->
+      <rect x="40" y="80" width="200" height="260" fill="none" stroke="#3ab5d8" stroke-width="2" stroke-opacity="0.6" rx="2"/>
+      <!-- bottom line -->
+      <line x1="38" y1="340" x2="242" y2="340" stroke="#3ab5d8" stroke-width="2" stroke-opacity="0.4"/>
+
+      <!-- title labels -->
+      <text x="140" y="370" text-anchor="middle" font-family="Noto Serif TC, serif" font-size="11" fill="#7aa0b8">量筒（俯視截面積 A）</text>
+
+      <!-- ripple circles (spawned by JS) -->
+      <g id="rippleGroup"></g>
+    </svg>
+  </div>
+
+  <!-- SIDE PANEL -->
+  <div class="side-panel">
+
+    <!-- shape selection -->
+    <div class="card">
+      <div class="card-title">選擇物體形狀</div>
+      <div class="shape-btns">
+        <button class="shape-btn active" data-shape="sphere">● 球體</button>
+        <button class="shape-btn" data-shape="cube">■ 正方體</button>
+        <button class="shape-btn" data-shape="cylinder">⬬ 圓柱</button>
+      </div>
+    </div>
+
+    <!-- params -->
+    <div class="card">
+      <div class="card-title">物體尺寸</div>
+      <div id="paramControls"></div>
+    </div>
+
+    <!-- steps -->
+    <div class="card">
+      <div class="card-title">步驟進度</div>
+      <div class="steps" id="stepDots">
+        <div class="step" id="s0"></div>
+        <div class="step" id="s1"></div>
+        <div class="step" id="s2"></div>
+        <div class="step" id="s3"></div>
+      </div>
+      <div class="step-text" id="stepText" style="margin-top:8px">按下「開始動畫」</div>
+      <button class="btn-animate" id="btnAnim" style="margin-top:12px">▶ 開始動畫</button>
+    </div>
+
+    <!-- result -->
+    <div class="card">
+      <div class="card-title">計算結果</div>
+      <div class="result-box" id="resultBox">
+        <div class="result-label">物體體積</div>
+        <div class="result-value" id="resultVal">—</div>
+        <div class="result-unit">cm³</div>
+      </div>
+      <div class="formula-box" id="formulaBox" style="margin-top:12px">
+        <span>V = A × ΔH</span><br>
+        A = 量筒底面積<br>
+        ΔH = 水位上升高度
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// CONFIG
+// ─────────────────────────────────────────────
+const SVG_W = 280, CONT_X = 40, CONT_W = 200, CONT_Y = 80, CONT_H = 260;
+const BOTTOM_Y = CONT_Y + CONT_H; // 340
+const TANK_A = 200; // cm² (display area units)
+const SCALE = CONT_H / 100; // px per cm (260px = 100 cm height units)
+
+let currentShape = 'sphere';
+let animating = false;
+let animStep = 0;
+
+const shapes = {
+  sphere: {
+    params: [{ id: 'r', label: '半徑 r', min: 1, max: 8, val: 4, unit: 'cm' }],
+    volume: p => (4/3) * Math.PI * p.r ** 3,
+    formula: p => `V = (4/3)πr³\n= (4/3)π×${p.r}³\n≈ ${((4/3)*Math.PI*p.r**3).toFixed(1)} cm³`,
+    draw: (g, p) => {
+      const sc = p.r * 3;
+      g.innerHTML = `
+        <circle cx="0" cy="0" r="${sc}" fill="url(#objGrad)" filter="url(#softglow)" class="obj-float"/>
+        <ellipse cx="${-sc*0.3}" cy="${-sc*0.3}" rx="${sc*0.32}" ry="${sc*0.2}" fill="rgba(255,255,255,0.25)" class="obj-float"/>`;
+    }
+  },
+  cube: {
+    params: [{ id: 'a', label: '邊長 a', min: 1, max: 10, val: 5, unit: 'cm' }],
+    volume: p => p.a ** 3,
+    formula: p => `V = a³\n= ${p.a}³\n= ${p.a**3} cm³`,
+    draw: (g, p) => {
+      const s = p.a * 3.2, h = s * 0.55;
+      g.innerHTML = `
+        <g class="obj-float">
+          <rect x="${-s/2}" y="${-s/2}" width="${s}" height="${s}" fill="#e05c3a" rx="2" filter="url(#softglow)"/>
+          <polygon points="${-s/2},${-s/2} ${-s/2+h},${-s/2-h} ${s/2+h},${-s/2-h} ${s/2},${-s/2}" fill="#f07555"/>
+          <polygon points="${s/2},${-s/2} ${s/2+h},${-s/2-h} ${s/2+h},${s/2-h} ${s/2},${s/2}" fill="#b03020"/>
+          <ellipse cx="-6" cy="-6" rx="8" ry="4" fill="rgba(255,255,255,0.2)"/>
+        </g>`;
+    }
+  },
+  cylinder: {
+    params: [
+      { id: 'r', label: '半徑 r', min: 1, max: 7, val: 3, unit: 'cm' },
+      { id: 'h', label: '高度 h', min: 1, max: 12, val: 6, unit: 'cm' }
+    ],
+    volume: p => Math.PI * p.r ** 2 * p.h,
+    formula: p => `V = πr²h\n= π×${p.r}²×${p.h}\n≈ ${(Math.PI*p.r**2*p.h).toFixed(1)} cm³`,
+    draw: (g, p) => {
+      const rr = p.r * 3.2, hh = p.h * 3.2;
+      g.innerHTML = `
+        <g class="obj-float">
+          <rect x="${-rr}" y="${-hh/2}" width="${rr*2}" height="${hh}" fill="#e05c3a" filter="url(#softglow)" rx="2"/>
+          <ellipse cx="0" cy="${hh/2}" rx="${rr}" ry="${rr*0.35}" fill="#a03020"/>
+          <ellipse cx="0" cy="${-hh/2}" rx="${rr}" ry="${rr*0.35}" fill="#f07555"/>
+          <ellipse cx="-6" cy="${-hh/2-4}" rx="8" ry="4" fill="rgba(255,255,255,0.2)"/>
+        </g>`;
+    }
+  }
+};
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let params = {};
+
+function getParams() {
+  const res = {};
+  shapes[currentShape].params.forEach(p => { res[p.id] = parseFloat(document.getElementById('sl_'+p.id)?.value || p.val); });
+  return res;
+}
+
+function computeVolume() {
+  return shapes[currentShape].volume(getParams());
+}
+
+function waterRiseHeight() {
+  // deltaH in scene units (same scale as CONT_H)
+  // V_obj in cm³, TANK_A = 200 cm², deltaH in cm
+  const v = computeVolume();
+  return v / TANK_A; // cm
+}
+
+// ─────────────────────────────────────────────
+// RENDER PARAMS
+// ─────────────────────────────────────────────
+function renderParams() {
+  const ctrl = document.getElementById('paramControls');
+  ctrl.innerHTML = '';
+  shapes[currentShape].params.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'param-row';
+    row.innerHTML = `
+      <span class="param-label">${p.label}</span>
+      <input type="range" id="sl_${p.id}" min="${p.min}" max="${p.max}" step="0.5" value="${params[p.id]||p.val}">
+      <span class="param-val" id="pv_${p.id}">${params[p.id]||p.val} ${p.unit}</span>`;
+    ctrl.appendChild(row);
+    row.querySelector('input').addEventListener('input', e => {
+      params[p.id] = parseFloat(e.target.value);
+      document.getElementById('pv_'+p.id).textContent = params[p.id] + ' ' + p.unit;
+      if (!animating) { resetScene(); renderObject(); }
+    });
+  });
+}
+
+// ─────────────────────────────────────────────
+// SCENE HELPERS
+// ─────────────────────────────────────────────
+const waterBody  = document.getElementById('waterBody');
+const waveGroup  = document.getElementById('waveGroup');
+const objGroup   = document.getElementById('objectGroup');
+const shapeDisp  = document.getElementById('shapeDisplay');
+const lineV1     = document.getElementById('lineV1');
+const lineV2     = document.getElementById('lineV2');
+const labelV1    = document.getElementById('labelV1');
+const labelV2    = document.getElementById('labelV2');
+const deltaArrow = document.getElementById('deltaArrow');
+const arrowLine  = document.getElementById('arrowLine');
+const arrowHead  = document.getElementById('arrowHead');
+const deltaText  = document.getElementById('deltaText');
+const resultVal  = document.getElementById('resultVal');
+const formulaBox = document.getElementById('formulaBox');
+const stepText   = document.getElementById('stepText');
+
+const BASE_WATER_Y = 220; // initial water surface Y in SVG coords
+const INIT_WATER_H = BOTTOM_Y - BASE_WATER_Y; // 120
+
+function setStep(i, msg, highlight) {
+  [0,1,2,3].forEach(k => {
+    const el = document.getElementById('s'+k);
+    el.className = 'step' + (k < i ? ' done' : k === i ? ' active' : '');
+  });
+  stepText.textContent = msg;
+  stepText.className = 'step-text' + (highlight ? ' highlight' : '');
+}
+
+function setWaterLevel(surfaceY) {
+  const h = BOTTOM_Y - surfaceY;
+  waterBody.setAttribute('y', surfaceY);
+  waterBody.setAttribute('height', h);
+  waveGroup.setAttribute('transform', `translate(40, ${surfaceY - 10})`);
+  lineV2.setAttribute('y1', surfaceY);
+  lineV2.setAttribute('y2', surfaceY);
+  labelV2.setAttribute('y', surfaceY + 4);
+}
+
+function resetScene() {
+  setWaterLevel(BASE_WATER_Y);
+  lineV1.style.opacity = 0; lineV2.style.opacity = 0;
+  labelV1.style.opacity = 0; labelV2.style.opacity = 0;
+  deltaArrow.style.opacity = 0;
+  objGroup.style.opacity = 0;
+  objGroup.setAttribute('transform', `translate(140, 40)`);
+  setStep(-1, '按下「開始動畫」', false);
+  resultVal.textContent = '—';
+  document.getElementById('bubblesGroup').innerHTML = '';
+  document.getElementById('rippleGroup').innerHTML = '';
+}
+
+function renderObject() {
+  const p = getParams();
+  shapes[currentShape].draw(shapeDisp, p);
+}
+
+// ─────────────────────────────────────────────
+// DRAW RULER
+// ─────────────────────────────────────────────
+function drawRuler() {
+  const rulerG = document.getElementById('ruler');
+  rulerG.innerHTML = '';
+  for (let i = 0; i <= 10; i++) {
+    const y = BOTTOM_Y - i * (CONT_H / 10);
+    const tick = document.createElementNS('http://www.w3.org/2000/svg','line');
+    tick.setAttribute('x1', 36); tick.setAttribute('x2', 42);
+    tick.setAttribute('y1', y);  tick.setAttribute('y2', y);
+    tick.setAttribute('stroke', '#3ab5d8'); tick.setAttribute('stroke-opacity', '0.5'); tick.setAttribute('stroke-width','1');
+    rulerG.appendChild(tick);
+    if (i % 2 === 0) {
+      const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+      txt.setAttribute('x', 34); txt.setAttribute('y', y+3);
+      txt.setAttribute('text-anchor','end');
+      txt.setAttribute('font-size','8'); txt.setAttribute('fill','#7aa0b8');
+      txt.setAttribute('font-family','Space Mono');
+      txt.textContent = (i*10)+'';
+      rulerG.appendChild(txt);
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// BUBBLES
+// ─────────────────────────────────────────────
+function spawnBubbles(surfaceY) {
+  const g = document.getElementById('bubblesGroup');
+  for (let i = 0; i < 6; i++) {
+    setTimeout(() => {
+      const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      const x = 60 + Math.random() * 160;
+      const r = 2 + Math.random() * 3;
+      c.setAttribute('cx', x);
+      c.setAttribute('cy', surfaceY + 10);
+      c.setAttribute('r', r);
+      c.setAttribute('fill', 'rgba(125,212,236,0.5)');
+      c.classList.add('bubble');
+      g.appendChild(c);
+      setTimeout(() => c.remove(), 1500);
+    }, i * 160);
+  }
+}
+
+function spawnRipples(surfaceY) {
+  const g = document.getElementById('rippleGroup');
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => {
+      const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx', 140);
+      c.setAttribute('cy', surfaceY);
+      c.setAttribute('r', 4);
+      c.setAttribute('fill', 'none');
+      c.setAttribute('stroke', '#7dd4ec');
+      c.setAttribute('stroke-width', 2);
+      c.style.animation = 'ripple 1s ease-out forwards';
+      g.appendChild(c);
+      setTimeout(() => c.remove(), 1100);
+    }, i * 220);
+  }
+}
+
+// ─────────────────────────────────────────────
+// ANIMATION SEQUENCE
+// ─────────────────────────────────────────────
+function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+function lerp(a,b,t) { return a + (b-a)*t; }
+
+function animateTo(setter, from, to, dur, cb) {
+  const start = performance.now();
+  function frame(now) {
+    const t = Math.min((now-start)/dur, 1);
+    setter(lerp(from, to, ease(t)));
+    if (t < 1) requestAnimationFrame(frame);
+    else { setter(to); if(cb) cb(); }
+  }
+  requestAnimationFrame(frame);
+}
+
+async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function runAnimation() {
+  if (animating) return;
+  animating = true;
+  document.getElementById('btnAnim').textContent = '⏳ 動畫進行中…';
+  document.getElementById('btnAnim').disabled = true;
+
+  resetScene();
+  await sleep(400);
+
+  const p = getParams();
+  const vol = shapes[currentShape].volume(p);
+  const deltaH = waterRiseHeight(); // cm
+  const deltaY  = deltaH * SCALE;    // px
+
+  // ── STEP 0: show initial water level
+  setStep(0, '步驟 1：記錄初始水位 V₁', false);
+  lineV1.setAttribute('y1', BASE_WATER_Y);
+  lineV1.setAttribute('y2', BASE_WATER_Y);
+  labelV1.setAttribute('y', BASE_WATER_Y + 4);
+  lineV1.style.opacity = 1;
+  labelV1.style.opacity = 1;
+  await sleep(900);
+
+  // ── STEP 1: object descends
+  setStep(1, '步驟 2：將物體放入量筒', false);
+  objGroup.style.opacity = 1;
+  renderObject();
+
+  // float object above water, then drop
+  let startObjY = 40;
+  let endObjY   = BASE_WATER_Y - 30;
+  await new Promise(res => animateTo(y => {
+    objGroup.setAttribute('transform', `translate(140, ${y})`);
+  }, startObjY, endObjY, 900, res));
+
+  spawnRipples(BASE_WATER_Y);
+  spawnBubbles(BASE_WATER_Y);
+  await sleep(400);
+
+  // submerge deeper
+  let submergeY = BASE_WATER_Y + 15;
+  await new Promise(res => animateTo(y => {
+    objGroup.setAttribute('transform', `translate(140, ${y})`);
+  }, endObjY, submergeY, 600, res));
+
+  await sleep(200);
+
+  // ── STEP 2: water rises
+  setStep(2, '步驟 3：觀察水位上升 ΔH', false);
+  lineV2.style.opacity = 1;
+  labelV2.style.opacity = 1;
+
+  const finalSurfaceY = BASE_WATER_Y - deltaY;
+
+  await new Promise(res => animateTo(y => {
+    setWaterLevel(y);
+  }, BASE_WATER_Y, finalSurfaceY, 1000, res));
+
+  // move object to stay just at surface
+  objGroup.setAttribute('transform', `translate(140, ${finalSurfaceY + 10})`);
+
+  spawnBubbles(finalSurfaceY);
+  await sleep(400);
+
+  // ── STEP 3: show delta arrow
+  setStep(3, '步驟 4：計算 V = A × ΔH', true);
+
+  // draw arrow between V1 and V2
+  arrowLine.setAttribute('x1', 250); arrowLine.setAttribute('x2', 250);
+  arrowLine.setAttribute('y1', BASE_WATER_Y); arrowLine.setAttribute('y2', BASE_WATER_Y);
+
+  await new Promise(res => animateTo(y => {
+    arrowLine.setAttribute('y2', y);
+    arrowHead.setAttribute('transform', `translate(0, ${y - finalSurfaceY})`);
+    deltaText.setAttribute('y', (BASE_WATER_Y + y)/2 + 3);
+  }, BASE_WATER_Y, finalSurfaceY, 600, res));
+
+  deltaArrow.style.opacity = 1;
+  arrowHead.setAttribute('transform','');
+  arrowLine.setAttribute('y2', finalSurfaceY);
+  deltaText.setAttribute('y', (BASE_WATER_Y + finalSurfaceY)/2 + 3);
+
+  await sleep(300);
+
+  // show result
+  resultVal.textContent = vol.toFixed(1);
+  const fText = shapes[currentShape].formula(p);
+  formulaBox.innerHTML = fText.split('\n').map((l,i) =>
+    i === 0 ? `<span>${l}</span>` : l
+  ).join('<br>');
+
+  document.getElementById('btnAnim').textContent = '↺ 重新播放';
+  document.getElementById('btnAnim').disabled = false;
+  animating = false;
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+function initShape(shape) {
+  currentShape = shape;
+  // preserve existing param values where keys match
+  const newParams = {};
+  shapes[shape].params.forEach(p => { newParams[p.id] = params[p.id] || p.val; });
+  params = newParams;
+  renderParams();
+  resetScene();
+  renderObject();
+}
+
+document.querySelectorAll('.shape-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    initShape(btn.dataset.shape);
+  });
+});
+
+document.getElementById('btnAnim').addEventListener('click', runAnimation);
+
+drawRuler();
+initShape('sphere');
+</script>
+</body>
+</html>
