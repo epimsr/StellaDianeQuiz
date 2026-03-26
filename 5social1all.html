@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一單元｜日本統治下的臺灣</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1209;
+  --paper: #fdf8ef;
+  --paper2: #f5ede0;
+  --red: #c0392b;
+  --red-light: #f9e8e6;
+  --gold: #b8860b;
+  --gold-light: #fef9e7;
+  --blue: #1a4a6b;
+  --blue-light: #e8f1f8;
+  --green: #1a6b3a;
+  --green-light: #e8f8ed;
+  --border: #c9b99a;
+  --correct: #1a6b3a;
+  --wrong: #c0392b;
+  --shadow: rgba(26,18,9,0.15);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Sans TC', sans-serif;
+  min-height: 100vh;
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(180,160,120,0.12) 31px, rgba(180,160,120,0.12) 32px);
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--blue);
+  padding: 28px 24px 22px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.03) 20px, rgba(255,255,255,0.03) 40px);
+}
+.site-header h1 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.08em;
+  position: relative;
+}
+.site-header .subtitle {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.65);
+  margin-top: 6px;
+  letter-spacing: 0.12em;
+  position: relative;
+}
+
+/* ── NAV TABS ── */
+.nav-tabs {
+  display: flex;
+  background: var(--blue);
+  padding: 0 16px;
+  gap: 4px;
+  overflow-x: auto;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+.nav-tab {
+  padding: 10px 18px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.65);
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.nav-tab:hover { color: #fff; }
+.nav-tab.active { color: #fff; border-bottom-color: var(--gold); }
+
+/* ── MAIN CONTENT ── */
+.container { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+
+/* ── SECTION PANEL ── */
+.panel {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+.panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ── REVIEW CARDS ── */
+.lesson-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--blue);
+  padding: 10px 16px;
+  background: var(--blue-light);
+  border-left: 5px solid var(--blue);
+  margin: 20px 0 12px;
+  border-radius: 0 6px 6px 0;
+}
+.key-point {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.key-point-header {
+  background: linear-gradient(135deg, var(--red) 0%, #922b21 100%);
+  color: #fff;
+  padding: 9px 16px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.key-point-header .star { font-size: 1rem; }
+.key-point-body { padding: 14px 16px; }
+
+.info-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.info-table td { padding: 7px 10px; border: 1px solid #e5ddd0; vertical-align: top; line-height: 1.7; }
+.info-table td:first-child {
+  background: var(--paper2);
+  font-weight: 700;
+  color: var(--blue);
+  white-space: nowrap;
+  width: 80px;
+  text-align: center;
+}
+.info-table td .tag {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 0.78rem;
+  margin: 1px 2px;
+  font-weight: 700;
+}
+.info-table td .tag-blue { background: var(--blue); }
+.info-table td .tag-gold { background: var(--gold); }
+.info-table td .tag-green { background: var(--green); }
+
+.note-box {
+  background: var(--gold-light);
+  border: 1px solid #e8c84a;
+  border-radius: 7px;
+  padding: 10px 14px;
+  font-size: 0.84rem;
+  margin-top: 10px;
+  line-height: 1.8;
+}
+.note-box strong { color: var(--gold); }
+
+/* ── QUIZ AREA ── */
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.quiz-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.score-display {
+  background: var(--blue);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.question-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 10px var(--shadow);
+  transition: box-shadow 0.2s;
+}
+.question-card:hover { box-shadow: 0 4px 18px var(--shadow); }
+
+.q-number {
+  display: inline-block;
+  background: var(--blue);
+  color: #fff;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 26px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+.q-text {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  font-weight: 500;
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+
+/* Multiple choice options */
+.options { display: grid; gap: 8px; }
+.option-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--paper);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  text-align: left;
+  transition: all 0.18s;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--blue);
+  background: var(--blue-light);
+  transform: translateX(3px);
+}
+.option-btn .opt-label {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.option-btn.correct { border-color: var(--correct); background: var(--green-light); }
+.option-btn.wrong { border-color: var(--wrong); background: var(--red-light); }
+.option-btn.correct .opt-label { background: var(--correct); }
+.option-btn.wrong .opt-label { background: var(--wrong); }
+.option-btn:disabled { cursor: default; }
+
+/* Fill in blank */
+.fill-group { display: flex; flex-direction: column; gap: 8px; }
+.fill-input {
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.18s;
+  width: 100%;
+}
+.fill-input:focus { border-color: var(--blue); background: var(--blue-light); }
+.fill-input.correct { border-color: var(--correct); background: var(--green-light); }
+.fill-input.wrong { border-color: var(--wrong); background: var(--red-light); }
+.fill-input:disabled { cursor: default; }
+
+/* Submit button */
+.submit-btn {
+  margin-top: 12px;
+  padding: 9px 22px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+  letter-spacing: 0.06em;
+  transition: all 0.18s;
+}
+.submit-btn:hover { background: #1a3a5c; transform: translateY(-1px); }
+.submit-btn:disabled { background: #aaa; cursor: default; transform: none; }
+
+/* Feedback */
+.feedback {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  display: none;
+  animation: feedbackIn 0.25s ease;
+}
+@keyframes feedbackIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+.feedback.show { display: block; }
+.feedback.correct {
+  background: var(--green-light);
+  border: 1.5px solid var(--correct);
+  color: var(--correct);
+}
+.feedback.wrong {
+  background: var(--red-light);
+  border: 1.5px solid var(--wrong);
+  color: var(--wrong);
+}
+.feedback .fb-icon { font-size: 1.1rem; margin-right: 4px; }
+.feedback .explanation {
+  margin-top: 6px;
+  color: var(--ink);
+  font-size: 0.85rem;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding-top: 6px;
+}
+.feedback .answer-reveal {
+  font-weight: 700;
+  color: var(--blue);
+}
+
+/* Progress bar */
+.progress-bar-wrap {
+  background: #e5ddd0;
+  border-radius: 8px;
+  height: 6px;
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--gold));
+  border-radius: 8px;
+  transition: width 0.4s ease;
+}
+
+/* Section divider */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 28px 0 18px;
+}
+.section-divider span {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--red);
+  white-space: nowrap;
+}
+.section-divider::before, .section-divider::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+
+/* Final result panel */
+.result-panel {
+  display: none;
+  background: #fff;
+  border: 2px solid var(--gold);
+  border-radius: 14px;
+  padding: 30px 24px;
+  text-align: center;
+  margin-top: 28px;
+  box-shadow: 0 4px 24px var(--shadow);
+}
+.result-panel.show { display: block; animation: feedbackIn 0.4s ease; }
+.result-panel .big-score {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--blue);
+  line-height: 1;
+}
+.result-panel .score-label { color: #888; font-size: 0.9rem; margin-top: 4px; }
+.result-panel .result-msg { margin-top: 16px; font-size: 1rem; color: var(--ink); }
+.result-panel .retry-btn {
+  margin-top: 20px;
+  padding: 11px 30px;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: all 0.18s;
+}
+.result-panel .retry-btn:hover { background: #922b21; }
+
+/* Responsive */
+@media (max-width: 500px) {
+  .option-btn { font-size: 0.82rem; }
+  .q-text { font-size: 0.88rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>📖 第一單元｜日本統治下的臺灣</h1>
+  <div class="subtitle">五年級社會科 ‧ 第 1～3 課 ‧ 重點整理 × 互動考題</div>
+</header>
+
+<nav class="nav-tabs">
+  <div class="nav-tab active" onclick="showPanel('review')">📚 重點整理</div>
+  <div class="nav-tab" onclick="showPanel('mc')">🔵 選擇題（25題）</div>
+  <div class="nav-tab" onclick="showPanel('fill')">✏️ 填充題（25題）</div>
+</nav>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════ -->
+<!--  PANEL 1: REVIEW                          -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel active" id="panel-review">
+
+  <div class="lesson-title">📌 第 1 課　日本政府如何在臺灣建立統治？</div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點一　清帝國割讓臺灣、澎湖</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>起因</td><td>清帝國統治臺灣末期，與日本發生<span class="tag">甲午戰爭</span></td></tr>
+        <tr><td>說明</td><td>
+          ① 清帝國戰敗，於西元 <span class="tag tag-gold">1895</span> 年簽訂<span class="tag">馬關條約</span>，將<span class="tag tag-blue">臺灣</span>與<span class="tag tag-blue">澎湖</span>割讓給<span class="tag tag-blue">日本</span>。<br>
+          ② 代表人物：清帝國→<span class="tag">李鴻章</span>；日本→<span class="tag tag-blue">伊藤博文</span>
+        </td></tr>
+        <tr><td>臺灣人<br>反應</td><td>
+          ✦ 部分民眾選擇守護家園與財產，<span class="tag tag-green">接受</span>日本統治。<br>
+          ✦ 部分民眾感到不滿，認為臺灣是自己的家園，<span class="tag">對抗日本</span>。
+        </td></tr>
+        <tr><td>臺灣<br>民主國</td><td>
+          官員與民眾推舉<span class="tag">唐景崧</span>擔任總統，成立<span class="tag">臺灣民主國</span>，希望抵抗日本占領，最終因兵力與裝備皆不及日本軍隊，<span class="tag tag-gold">宣告失敗</span>，歷時 150 天。
+        </td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點二　日本殖民統治的開始</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>象徵</td><td>臺灣正式進入<span class="tag">日治時期</span>，日本人認為臺灣和澎湖資源豐富，要好好利用。</td></tr>
+        <tr><td>設立<br>總督府</td><td>
+          ① 在臺北設立<span class="tag">臺灣總督府</span>（今<span class="tag tag-gold">總統府</span>）。<br>
+          ② 由<span class="tag tag-blue">總督</span>擔任最高行政首長，掌管<span class="tag">行政</span>、<span class="tag">立法</span>、<span class="tag">軍事</span>等重要事務。<br>
+          ③ 制定嚴格法令，要求臺灣人民順從，以實行<span class="tag">殖民統治</span>。
+        </td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點三　警察制度的建立與抗日事件</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>背景</td><td>總督府推行<span class="tag">警察制度</span>，以管理臺灣社會與治安。</td></tr>
+        <tr><td>做法</td><td>
+          ① <span class="tag tag-blue">衛生檢查</span>：協助預防傳染病。<br>
+          ② <span class="tag tag-blue">救災</span>。<br>
+          ③ <span class="tag tag-blue">蕃人授產</span>：教授原住民族農牧生產技術。<br>
+          ④ <span class="tag tag-blue">思想取締</span>：管制臺灣人的抗日思想及言論。<br>
+          ⑤ 在全臺各地設立<span class="tag">派出所</span>，維持社會秩序。
+        </td></tr>
+        <tr><td>結果</td><td>
+          ✦ 臺灣社會運作更有效率。<br>
+          ✦ 人民生活受到嚴格約束，感到不自由；行動會被監視。
+        </td></tr>
+      </table>
+      <div class="note-box">
+        <strong>🔴 漢人抗日—噍吧哖事件（西來庵事件）</strong><br>
+        起因：對總督府統治不滿 ＋ 天災造成糧食短缺。<br>
+        過程：<span class="tag">余清芳</span>以臺南<span class="tag tag-blue">西來庵</span>為基地，藉民間信仰召集漢人起兵。<br>
+        結果：雙方實力懸殊，被逮捕或處死的民眾高達<span class="tag">一千多人</span>。<br><br>
+        <strong>🔴 原住民族抗日—霧社事件</strong><br>
+        起因：總督府不尊重原住民族傳統文化，並限制獵場。<br>
+        過程：<span class="tag">賽德克族</span>的<span class="tag tag-blue">莫那·魯道</span>發起武力抗日，聯合其他部落展開攻擊。<br>
+        結果：總督府派大批軍警武力鎮壓，反抗<span class="tag">最終失敗</span>。
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-title">📌 第 2 課　日治時期的建設帶來哪些改變？</div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點一　專賣制度增加財政收入</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>原因</td><td>治臺<span class="tag">經費不足</span>。</td></tr>
+        <tr><td>做法</td><td>
+          ① 設立<span class="tag">專賣局</span>。<br>
+          ② 將<span class="tag tag-blue">鴉片</span>、<span class="tag tag-blue">鹽</span>、<span class="tag tag-blue">樟腦</span>、<span class="tag tag-blue">菸草</span>、<span class="tag tag-blue">酒</span>等物資列為<span class="tag">專賣品</span>。<br>
+          ③ 只有政府指定的場所可以販售，獲得政府許可的店家會懸掛<span class="tag tag-gold">鐵牌</span>。
+        </td></tr>
+        <tr><td>成果</td><td>總督府藉此獲得了<span class="tag">大量收入</span>。</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點二　交通建設奠定經濟基礎</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>原因</td><td>總督府為了強化統治，展開各項基礎建設。</td></tr>
+        <tr><td>建設</td><td>
+          ① 修築<span class="tag">西部縱貫鐵路</span>→讓西部南北往來更便利，臺中火車站位於中心。<br>
+          ② 擴建<span class="tag">阿里山森林鐵路</span>→阿里山林業豐富，用來<span class="tag tag-blue">運送木材</span>。<br>
+          ③ 建設<span class="tag">基隆港</span>（距日本較近，重要港口）與<span class="tag">高雄港</span>→發展航運。
+        </td></tr>
+        <tr><td>影響</td><td>基礎建設配合殖民政策，<span class="tag">促進臺灣產業發展</span>，成為日後經濟發展的基礎。</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點三　農業政策與水利建設</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>農業</td><td>
+          ① 鼓勵農民種植<span class="tag tag-blue">稻米</span>、<span class="tag tag-blue">甘蔗</span>，引進新式機械，鼓勵日本企業與建<span class="tag">糖廠</span>，使臺灣成為「<span class="tag">糖業王國</span>」。<br>
+          ② 米、糖外銷使部分農民收益增加，但不公平的<span class="tag tag-gold">收購制度</span>影響蔗農權益。
+        </td></tr>
+        <tr><td>水利</td><td>
+          總督府興修<span class="tag">嘉南大圳</span>，提供<span class="tag tag-blue">稻定灌溉</span>，擴大農業耕地面積，提升稻米、甘蔗的產量。
+        </td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="lesson-title">📌 第 3 課　日治時期對臺灣社會有什麼影響？</div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點一　新式教育推廣與公共衛生改善</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>教育<br>目的</td><td>為了順利推動政策與命令，進行<span class="tag">殖民統治</span>。</td></tr>
+        <tr><td>差別<br>待遇</td><td>
+          ✦ <span class="tag">日本兒童</span>→讀<span class="tag tag-blue">小學校</span>（師資設備較好）。<br>
+          ✦ <span class="tag">臺灣兒童</span>→讀<span class="tag">公學校</span>或<span class="tag">蕃童教育所</span>（提供原住民族就讀）。
+        </td></tr>
+        <tr><td>方式</td><td>
+          ① 透過教育傳授<span class="tag">日本文化</span>。<br>
+          ② 學校進行<span class="tag tag-blue">國語（日語）</span>教學，課本以日語介紹臺灣。<br>
+          ③ 開始有<span class="tag tag-blue">圖畫教育</span>。
+        </td></tr>
+        <tr><td>教育<br>影響</td><td>
+          ① 提升民眾的<span class="tag">識字率</span>。<br>
+          ② 許多臺灣學生努力進取，持續升學或到海外留學。
+        </td></tr>
+        <tr><td>衛生<br>改善</td><td>
+          ① 推行原因：日治初期臺灣<span class="tag tag-gold">傳染病</span>頻傳，造成許多人染疫甚至死亡。<br>
+          ② 做法：透過<span class="tag">警察</span>或<span class="tag">校園宣導</span>，要求民眾遵守衛生法令；規劃<span class="tag tag-blue">自來水系統</span>；興建<span class="tag">西式醫院</span>並設立<span class="tag">醫學校</span>培養醫師。<br>
+          ③ 結果：公共衛生改善，<span class="tag">人口死亡率下降</span>。<br>
+          ④ 首位原住民族西醫：<span class="tag">南志信</span>，開設「南醫院」，醫治許多原住民族。
+        </td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點二　社會運動的興起與人民的行動</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>興起<br>原因</td><td>
+          ① 臺灣人在日本與西方文化的影響下，接受現代文明帶來的改變。<br>
+          ② 挑戰總督府不平等的統治。
+        </td></tr>
+        <tr><td>請願<br>運動</td><td>
+          <span class="tag">蔣渭水</span>、<span class="tag tag-blue">林獻堂</span>等人發動「<span class="tag">臺灣議會設置請願運動</span>」，要求設立臺灣議會，爭取<span class="tag tag-gold">自治</span>的權利。→ 日本國會未採納，但已影響臺灣第一次的議員選舉（1935年）。<br>
+          選舉限制：須年滿 <span class="tag">25 歲</span>、且只有<span class="tag tag-blue">男性</span>及繳交足夠稅金的人才能投票。<br>
+          謝文達：臺灣第一位飛行員，曾駕駛飛機在東京上空散發數十萬張請願傳單。
+        </td></tr>
+        <tr><td>文化<br>協會</td><td>
+          <span class="tag">蔣渭水</span>、<span class="tag tag-blue">林獻堂</span>等人成立<span class="tag">臺灣文化協會</span>，批評殖民政策，傳播現代知識，提升人民文化水準。<br>
+          ① 發行《<span class="tag tag-blue">臺灣民報</span>》。<br>
+          ② 舉辦<span class="tag">演講</span>，宣傳自由與公平的社會。<br>
+          ③ 演出<span class="tag">戲劇（文化劇）</span>，凸顯社會迷信問題。<br>
+          結果：雖遭打壓，卻喚起臺灣人的<span class="tag">民族意識</span>。
+        </td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點三　現代文明帶來生活方式的轉變</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>服飾</td><td>
+          受<span class="tag">西化</span>與<span class="tag tag-blue">日本化</span>影響：男性穿<span class="tag tag-blue">西裝</span>、女性換<span class="tag tag-blue">洋裝</span>、部分人穿<span class="tag tag-blue">和服</span>、學生穿<span class="tag">制服</span>。
+        </td></tr>
+        <tr><td>時間</td><td>
+          引進<span class="tag">一天 24 小時制</span>與<span class="tag">一週七天的星期制</span>，在火車站等公共場所設置<span class="tag tag-blue">時鐘</span>，培養守時習慣。
+        </td></tr>
+        <tr><td>休閒</td><td>
+          出現<span class="tag tag-blue">公園</span>、<span class="tag tag-blue">百貨公司</span>、<span class="tag tag-blue">咖啡廳</span>、<span class="tag tag-blue">電影院</span>、<span class="tag tag-blue">圓山動物園</span>等休閒場所；總督府規定<span class="tag tag-blue">星期日</span>為休息日。
+        </td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點四　皇民化運動的推行與日本統治結束</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>背景</td><td>西元 <span class="tag tag-gold">1937</span> 年，<span class="tag">中日戰爭</span>爆發，總督府推動<span class="tag">皇民化運動</span>。</td></tr>
+        <tr><td>目的</td><td>讓臺灣人改變生活習慣與文化，能效忠日本、<span class="tag tag-blue">參與戰爭</span>。</td></tr>
+        <tr><td>內容</td><td>
+          ① 獎勵使用<span class="tag">日語</span>交談（<span class="tag tag-blue">國語家庭</span>）。<br>
+          ② 推動改為<span class="tag">日本姓名</span>（例：鄧雨賢→「東田曉雨」）。<br>
+          ③ 鼓勵穿<span class="tag tag-blue">和服</span>、參拜<span class="tag tag-blue">神社</span>。<br>
+          ④ 動員民眾參與修建<span class="tag">軍事設施</span>、進行<span class="tag">防空演習</span>。<br>
+          ⑤ 許多臺灣青年前往中國大陸、東南亞等地為日本作戰，造成數萬人傷亡。
+        </td></tr>
+        <tr><td>統治<br>結束</td><td>西元 <span class="tag tag-gold">1945</span> 年，第二次世界大戰結束，日本戰敗投降，由<span class="tag">中華民國</span>接收臺灣與澎湖。</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="key-point">
+    <div class="key-point-header"><span class="star">⭐</span> 重點五　蔣渭水醫師（從醫病到醫國）</div>
+    <div class="key-point-body">
+      <table class="info-table">
+        <tr><td>基本<br>介紹</td><td>從總督府醫學校畢業，在臺北<span class="tag">大稻埕</span>開設<span class="tag tag-blue">大安醫院</span>。</td></tr>
+        <tr><td>主因</td><td>
+          ① 見到日本統治下的臺灣有許多不平等的政策與問題。<br>
+          ② 想醫治「生病」的臺灣。
+        </td></tr>
+        <tr><td>做法</td><td>
+          ① 與許多知識分子共同成立<span class="tag">臺灣文化協會</span>，發行《臺灣民報》、成立<span class="tag tag-blue">文化劇團</span>。<br>
+          ② 發表臨床講義，認為臺灣患有嚴重的「知識缺乏症」。<br>
+          ③ 開立「正規學校教育、補習教育、讀報社」等處方。<br>
+          ④ 成立臺灣第一個政黨—<span class="tag">臺灣民眾黨</span>，協助農民、工人爭取權益，提倡男女平等與言論自由。
+        </td></tr>
+        <tr><td>結果</td><td>雖然最終仍遭到總督府的打壓，卻喚醒了臺灣人的<span class="tag">民族意識</span>。</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- end review panel -->
+
+
+<!-- ══════════════════════════════════════════ -->
+<!--  PANEL 2: MULTIPLE CHOICE                 -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel" id="panel-mc">
+  <div class="quiz-header">
+    <div class="quiz-title">🔵 選擇題（25 題，每題答完立即確認）</div>
+    <div class="score-display" id="mc-score">得分：0 / 25</div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="mc-progress" style="width:0%"></div></div>
+  <div id="mc-questions"></div>
+  <div class="result-panel" id="mc-result">
+    <div class="big-score" id="mc-final-score">0</div>
+    <div class="score-label">分（滿分 25 分）</div>
+    <div class="result-msg" id="mc-result-msg"></div>
+    <button class="retry-btn" onclick="resetMC()">🔄 重新作答</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!--  PANEL 3: FILL IN BLANK                   -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel" id="panel-fill">
+  <div class="quiz-header">
+    <div class="quiz-title">✏️ 填充題（25 題，每題答完立即確認）</div>
+    <div class="score-display" id="fill-score">得分：0 / 25</div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="fill-progress" style="width:0%"></div></div>
+  <div id="fill-questions"></div>
+  <div class="result-panel" id="fill-result">
+    <div class="big-score" id="fill-final-score">0</div>
+    <div class="score-label">分（滿分 25 分）</div>
+    <div class="result-msg" id="fill-result-msg"></div>
+    <button class="retry-btn" onclick="resetFill()">🔄 重新作答</button>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<script>
+// ════════════════════════════════════════════
+//  DATA
+// ════════════════════════════════════════════
+
+const mcData = [
+  {
+    q: "西元 1895 年，清帝國與日本簽訂哪一條約，將臺灣與澎湖割讓給日本？",
+    opts: ["南京條約","馬關條約","北京條約","天津條約"],
+    ans: 1,
+    exp: "甲午戰爭後清帝國戰敗，於 1895 年簽訂【馬關條約】，將臺灣與澎湖割讓給日本。"
+  },
+  {
+    q: "甲午戰爭中，代表清帝國與日本談判簽約的代表人物是？",
+    opts: ["唐景崧","伊藤博文","李鴻章","余清芳"],
+    ans: 2,
+    exp: "清帝國代表為【李鴻章】，日本代表為伊藤博文。"
+  },
+  {
+    q: "臺灣民主國成立後，推舉哪位人物擔任總統？",
+    opts: ["唐景崧","蔣渭水","林獻堂","莫那·魯道"],
+    ans: 0,
+    exp: "官員與民眾推舉【唐景崧】擔任臺灣民主國的總統，但最終宣告失敗。"
+  },
+  {
+    q: "日本統治臺灣後，在臺北設立哪一機構作為最高行政機關？",
+    opts: ["臺灣民主國","臺灣議會","臺灣總督府","臺灣文化協會"],
+    ans: 2,
+    exp: "日本在臺北設立【臺灣總督府】（現今的總統府），由總督掌管行政、立法、軍事等事務。"
+  },
+  {
+    q: "日治時期，臺灣總督府由誰擔任最高行政首長，掌管行政、立法和軍事？",
+    opts: ["總理","總統","總督","總管"],
+    ans: 2,
+    exp: "臺灣總督府由【總督】擔任最高行政首長，掌管行政、立法和軍事等重要事務。"
+  },
+  {
+    q: "日治時期警察制度的「蕃人授產」是指什麼？",
+    opts: ["管制抗日思想","協助原住民族農牧生產技術","衛生檢查","維持社會秩序"],
+    ans: 1,
+    exp: "「蕃人授產」是指警察教授原住民族農業、牧業生產技術，以提升原住民族的生產效率。"
+  },
+  {
+    q: "噍吧哖事件（西來庵事件）的領導人是誰？",
+    opts: ["莫那·魯道","余清芳","蔣渭水","林獻堂"],
+    ans: 1,
+    exp: "【余清芳】等人以臺南西來庵為基地，藉由民間信仰召集漢人起兵對抗日本，即噍吧哖事件（西來庵事件）。"
+  },
+  {
+    q: "霧社事件中，領導賽德克族武力抗日的人物是誰？",
+    opts: ["余清芳","唐景崧","莫那·魯道","蔣渭水"],
+    ans: 2,
+    exp: "【賽德克族】的【莫那·魯道】發起武力抗日，聯合其他部落展開攻擊，即「霧社事件」。"
+  },
+  {
+    q: "霧社事件的起因是什麼？",
+    opts: ["日本強迫原住民族改名","日本不讓原住民族使用鐵路","總督府不尊重原住民族文化並限制獵場","日本徵收原住民族的土地"],
+    ans: 2,
+    exp: "霧社事件的起因是總督府不尊重原住民族傳統文化，並限制獵場，使族人長期遭受欺壓。"
+  },
+  {
+    q: "日治時期，總督府設立「專賣局」的主要目的是什麼？",
+    opts: ["推廣日本文化","管理警察制度","增加財政收入","建設交通運輸"],
+    ans: 2,
+    exp: "治臺經費不足，總督府設立【專賣局】，將重要物資列為專賣品，以增加財政收入。"
+  },
+  {
+    q: "下列哪一項不屬於日治時期的專賣品？",
+    opts: ["鴉片","米","樟腦","菸草"],
+    ans: 1,
+    exp: "日治時期的專賣品包括鴉片、鹽、樟腦、菸草、酒等，而【米】不是專賣品。"
+  },
+  {
+    q: "日治時期，西部縱貫鐵路的主要功能是什麼？",
+    opts: ["運送阿里山木材","讓西部南北往來更便利","連接臺灣與日本","運送稻米到高雄港"],
+    ans: 1,
+    exp: "【西部縱貫鐵路】讓臺灣西部南北往來更加便利，臺中火車站位於鐵路的中心。"
+  },
+  {
+    q: "日治時期，阿里山森林鐵路最初興建的主要目的是？",
+    opts: ["讓旅客觀光","運送木材","連結東西部","方便農業耕作"],
+    ans: 1,
+    exp: "阿里山林業豐富，【阿里山森林鐵路】最初興建是為了【運送木材】，後來也可以載人至此登山健行。"
+  },
+  {
+    q: "日治時期興建「嘉南大圳」的主要用途是什麼？",
+    opts: ["運輸木材","發展航運","提供農業穩定灌溉","供應城市飲用水"],
+    ans: 2,
+    exp: "總督府興修【嘉南大圳】，提供稻定灌溉，擴大農業耕地面積，大幅提升稻米、甘蔗的產量。"
+  },
+  {
+    q: "日治時期臺灣被稱為「糖業王國」的原因是什麼？",
+    opts: ["糖的進口量全球第一","日本鼓勵種植甘蔗並引進新式機械大量製糖","蔗糖品質全球最好","臺灣氣候只適合種甘蔗"],
+    ans: 1,
+    exp: "日本政府鼓勵農民種植甘蔗，獎勵日本企業與建糖廠，並引進新式機械，使臺灣成為「糖業王國」。"
+  },
+  {
+    q: "日治時期，臺灣兒童與日本兒童就讀的學校有何不同？",
+    opts: ["臺灣兒童讀小學校，日本兒童讀公學校","臺灣兒童讀公學校，日本兒童讀師資設備較好的小學校","兩者讀相同的學校","日治時期只有原住民族有學校"],
+    ans: 1,
+    exp: "存在【差別待遇】：日本兒童讀師資設備較好的【小學校】，臺灣兒童讀【公學校】，原住民族讀蕃童教育所。"
+  },
+  {
+    q: "日治時期，總督府推廣新式教育的主要目的是？",
+    opts: ["提升臺灣文化水準","方便推動殖民統治政策與命令","讓臺灣人出國留學","推廣漢字教育"],
+    ans: 1,
+    exp: "總督府推廣新式教育的施行原因是「為了順利推動政策與命令」，同時透過教育傳授日本文化，進行殖民統治。"
+  },
+  {
+    q: "日治時期，臺灣公共衛生得以改善，導致的結果是什麼？",
+    opts: ["傳染病種類增加","人口死亡率逐漸下降","醫師人數減少","西式醫院關閉"],
+    ans: 1,
+    exp: "日治時期透過衛生法令、自來水系統、興建西式醫院等措施，使臺灣公共衛生獲得改善，【人口死亡率逐漸下降】。"
+  },
+  {
+    q: "「臺灣議會設置請願運動」的主要目的是？",
+    opts: ["要求日本歸還臺灣","爭取設立臺灣議會，取得自治的權利","推動皇民化運動","要求廢除警察制度"],
+    ans: 1,
+    exp: "蔣渭水、林獻堂等人發動「臺灣議會設置請願運動」，請求運動成員抵達東京，向日本政府提出設置臺灣議會的要求，爭取臺灣自治的權利。"
+  },
+  {
+    q: "臺灣文化協會發行了哪一份報紙，向總督府的不平等政策提出批評？",
+    opts: ["臺灣新生報","中央日報","臺灣民報","聯合報"],
+    ans: 2,
+    exp: "臺灣文化協會發行《【臺灣民報】》，對總督府的不平等政策提出許多批評與建議。"
+  },
+  {
+    q: "日治時期引進的時間制度，讓民眾建立了哪種生活習慣？",
+    opts: ["早睡早起","守時的習慣","吃日本料理","參拜神社"],
+    ans: 1,
+    exp: "總督府引進一天 24 小時制與一週七天的星期制，並在火車站等公共場所設置時鐘，培養民眾【守時的習慣】。"
+  },
+  {
+    q: "西元 1937 年，總督府推動「皇民化運動」的主要原因是什麼？",
+    opts: ["第二次世界大戰結束","中日戰爭爆發，需要臺灣人效忠日本、參與戰爭","臺灣議會正式成立","霧社事件爆發"],
+    ans: 1,
+    exp: "西元 1937 年，中日戰爭爆發，多元文化使臺灣人有更多選擇，總督府為了讓臺灣人改變生活習慣並能效忠日本參與戰爭，推動【皇民化運動】。"
+  },
+  {
+    q: "皇民化運動中，「國語家庭」是指什麼？",
+    opts: ["家庭中使用臺語交談的家庭","家庭中使用日語交談，通過審核後將獲頒證書的家庭","家庭中改為日本姓名的家庭","家庭中鼓勵穿和服的家庭"],
+    ans: 1,
+    exp: "「國語家庭」是指家庭成員在家都講國語（即日語），通過審核後將獲頒證書，戰爭期間也可以分配到較多物資。"
+  },
+  {
+    q: "西元 1945 年，日本統治臺灣結束的主要原因是？",
+    opts: ["臺灣發生大規模抗日起義","第二次世界大戰結束，日本戰敗投降","臺灣民主國再度成立","蔣渭水領導獨立運動成功"],
+    ans: 1,
+    exp: "西元 1945 年，第二次世界大戰結束，日本戰敗投降，由【中華民國】接收臺灣與澎湖，日本統治正式結束。"
+  },
+  {
+    q: "蔣渭水醫師在哪裡開設大安醫院，並開始投入改革運動？",
+    opts: ["臺南","高雄","臺北大稻埕","基隆"],
+    ans: 2,
+    exp: "蔣渭水從總督府醫學校畢業後，在臺北的商業重鎮、許多新知識與文化的交會地—【大稻埕】—開設大安醫院，並在此投入改革運動。"
+  }
+];
+
+const fillData = [
+  {
+    q: "西元 1895 年，清帝國與日本簽訂【　　　　　】條約，正式將臺灣割讓給日本。",
+    ans: ["馬關條約","馬關"],
+    display: "馬關條約",
+    exp: "甲午戰爭清帝國戰敗，於 1895 年簽訂【馬關條約】，將臺灣與澎湖割讓給日本。"
+  },
+  {
+    q: "臺灣民主國成立後，推舉【　　　　】擔任總統，但最終宣告失敗，歷時 150 天。",
+    ans: ["唐景崧"],
+    display: "唐景崧",
+    exp: "官員與民眾推舉【唐景崧】擔任臺灣民主國的總統，抵抗日本占領，最終宣告失敗。"
+  },
+  {
+    q: "日本在臺北設立【　　　　　　　】作為統治臺灣的最高行政機關，也就是今日的總統府。",
+    ans: ["臺灣總督府","台灣總督府"],
+    display: "臺灣總督府",
+    exp: "日本在臺北設立【臺灣總督府】（現今的總統府），由總督掌管行政、立法、軍事等事務。"
+  },
+  {
+    q: "日治時期，總督府推行【　　　　】制度，在各地設置派出所，維持社會秩序，並管制人民的思想與言論。",
+    ans: ["警察"],
+    display: "警察",
+    exp: "總督府推行【警察制度】，除了維持治安，也進行衛生檢查、救災、蕃人授產，以及管制臺灣人的抗日思想。"
+  },
+  {
+    q: "噍吧哖事件的領導人是【　　　　】，他以臺南西來庵為基地，召集漢人起兵對抗日本。",
+    ans: ["余清芳"],
+    display: "余清芳",
+    exp: "【余清芳】等人以臺南西來庵為基地，藉由民間信仰召集漢人起兵，即噍吧哖事件（西來庵事件）。"
+  },
+  {
+    q: "霧社事件由賽德克族的【　　　　　　】領導，聯合其他部落展開攻擊，最終遭總督府武力鎮壓而失敗。",
+    ans: ["莫那·魯道","莫那魯道","Mona Rudao"],
+    display: "莫那·魯道",
+    exp: "【賽德克族】的【莫那·魯道】發起武力抗日，聯合其他部落展開攻擊，是「霧社事件」的領導人。"
+  },
+  {
+    q: "日治時期，總督府設立【　　　　】，將鴉片、鹽、樟腦、菸草、酒等物資列為專賣品，以增加財政收入。",
+    ans: ["專賣局"],
+    display: "專賣局",
+    exp: "總督府因治臺經費不足，設立【專賣局】，將重要物資列為專賣品，只有政府指定的場所可以販售，藉此獲得大量收入。"
+  },
+  {
+    q: "日治時期修築的【　　　　　　　　】，讓臺灣西部南北往來更加便利，臺中火車站位於鐵路的中心。",
+    ans: ["西部縱貫鐵路","縱貫鐵路"],
+    display: "西部縱貫鐵路",
+    exp: "【西部縱貫鐵路】讓西部南北往來更便利，臺中火車站位於鐵路的中心。"
+  },
+  {
+    q: "日治時期，用來【運送木材】的【　　　　　　　　　　】，後來也成為臺灣知名的觀光鐵路。",
+    ans: ["阿里山森林鐵路","阿里山鐵路"],
+    display: "阿里山森林鐵路",
+    exp: "阿里山林業豐富，【阿里山森林鐵路】最初用來運送木材，後來也可以載人至此登山健行，成為著名觀光景點。"
+  },
+  {
+    q: "總督府興修【　　　　　　】，提供農業穩定灌溉，擴大農業耕地面積，大幅提升稻米、甘蔗的產量。",
+    ans: ["嘉南大圳"],
+    display: "嘉南大圳",
+    exp: "【嘉南大圳】提供穩定灌溉，擴大農業耕地面積，提升了稻米、甘蔗的產量，是日治時期重要的水利建設。"
+  },
+  {
+    q: "日治時期，日本政府鼓勵農民種植甘蔗並引進新式機械，使臺灣成為「【　　　　　　】」。",
+    ans: ["糖業王國"],
+    display: "糖業王國",
+    exp: "日本政府鼓勵農民種植甘蔗，獎勵日本企業與建糖廠，引進新式機械，使臺灣成為「【糖業王國】」。"
+  },
+  {
+    q: "日治時期，臺灣兒童就讀【　　　　】，而日本兒童就讀師資設備較好的小學校，存在差別待遇。",
+    ans: ["公學校"],
+    display: "公學校",
+    exp: "存在差別待遇：日本兒童讀師資設備較好的小學校，臺灣兒童讀【公學校】，原住民族兒童讀蕃童教育所。"
+  },
+  {
+    q: "日治時期，總督府在學校推行【　　　　（日語）】教學，例如：課本以日語介紹臺灣。",
+    ans: ["國語","日語"],
+    display: "國語（日語）",
+    exp: "總督府為了推行殖民統治，在學校進行【國語（日語）】教學，透過教育傳授日本文化。"
+  },
+  {
+    q: "日治時期，新式教育的推廣使民眾的【　　　　】大幅提升，許多臺灣學生努力進取，持續升學或到海外留學。",
+    ans: ["識字率"],
+    display: "識字率",
+    exp: "新式教育制度的推廣雖存在差別待遇，但確實提升了民眾的【識字率】，許多臺灣學生努力進取。"
+  },
+  {
+    q: "日治時期，日治初期臺灣的【　　　　病】頻傳，造成許多人染疫甚至死亡，促使總督府推行公共衛生改善。",
+    ans: ["傳染"],
+    display: "傳染（病）",
+    exp: "日治初期，臺灣的衛生環境不佳、【傳染病】頻傳，造成許多人染疫甚至死亡，這是推行公共衛生改善的原因。"
+  },
+  {
+    q: "【　　　　】和林獻堂等人發動「臺灣議會設置請願運動」，要求設立臺灣議會，爭取臺灣自治的權利。",
+    ans: ["蔣渭水"],
+    display: "蔣渭水",
+    exp: "【蔣渭水】和林獻堂等人發動「臺灣議會設置請願運動」，要求設立臺灣議會，爭取臺灣自治的權利。"
+  },
+  {
+    q: "臺灣文化協會由蔣渭水和林獻堂等人成立，發行《【　　　　　　】》作為宣傳工具，批評總督府的不平等政策。",
+    ans: ["臺灣民報","台灣民報"],
+    display: "臺灣民報",
+    exp: "臺灣文化協會發行《【臺灣民報】》，對總督府的不平等政策提出許多批評與建議，喚起臺灣人的民族意識。"
+  },
+  {
+    q: "日治時期，臺灣文化協會舉辦【　　　　】，宣傳自由與公平的社會，雖引起民眾迴響，卻也引發總督府的關注而派警察監視。",
+    ans: ["演講"],
+    display: "演講",
+    exp: "臺灣文化協會舉辦【演講】，宣傳自由與公平的社會，引起民眾迴響，但也引發總督府的關注，派警察到現場監視。"
+  },
+  {
+    q: "日治時期，在各城市出現公園、百貨公司、咖啡廳等休閒場所，以及【　　　　動物園】供民眾觀賞，大幅改變了人民的休閒生活方式。",
+    ans: ["圓山"],
+    display: "圓山",
+    exp: "日治時期出現了公園、百貨公司、咖啡廳、電影院等休閒場所，以及【圓山動物園】供民眾觀賞，大幅改變了人民的休閒生活方式。"
+  },
+  {
+    q: "西元 1937 年，【　　　　　　】爆發，總督府推動「皇民化運動」，為了讓臺灣人效忠日本、參與戰爭。",
+    ans: ["中日戰爭"],
+    display: "中日戰爭",
+    exp: "西元 1937 年，【中日戰爭】爆發，總督府推動「皇民化運動」，要讓臺灣人改變原本的生活習慣與文化，能效忠日本、參與戰爭。"
+  },
+  {
+    q: "皇民化運動中，推動改為【　　　　姓名】，例如：臺灣著名音樂家鄧雨賢，在皇民化時期改名為「東田曉雨」。",
+    ans: ["日本","日式"],
+    display: "日本",
+    exp: "皇民化運動的內容之一是推動改為【日本姓名】，例如：音樂家鄧雨賢改名為「東田曉雨」。"
+  },
+  {
+    q: "西元 1945 年，第二次世界大戰結束，日本戰敗投降，由【　　　　　　】接收臺灣與澎湖，日本統治正式結束。",
+    ans: ["中華民國"],
+    display: "中華民國",
+    exp: "1945 年，第二次世界大戰結束，日本戰敗投降，由【中華民國】接收臺灣與澎湖，結束了日本在臺灣長達 50 年的統治。"
+  },
+  {
+    q: "蔣渭水醫師在臺北的【　　　　】開設大安醫院，這裡是許多新知識與文化的交會地。",
+    ans: ["大稻埕"],
+    display: "大稻埕",
+    exp: "蔣渭水在臺北的商業重鎮、許多新知識與文化的交會地—【大稻埕】—開設大安醫院，並在此投入改革運動。"
+  },
+  {
+    q: "蔣渭水與林獻堂等人成立臺灣文化協會後，又進一步成立臺灣第一個政黨—【　　　　　　　】，透過會員大會討論社會制度改革，協助農民、工人爭取權益。",
+    ans: ["臺灣民眾黨","台灣民眾黨"],
+    display: "臺灣民眾黨",
+    exp: "蔣渭水成立臺灣第一個政黨—【臺灣民眾黨】，透過會員大會討論社會制度改革，協助農民、工人爭取權益，提倡男女平等與言論自由。"
+  },
+  {
+    q: "臺灣文化協會演出【　　　　劇】，凸顯社會迷信問題，反對過度講究排場的宗教活動，喚起臺灣人的民族意識。",
+    ans: ["文化","戲"],
+    display: "文化（劇）",
+    exp: "臺灣文化協會演出【文化劇】（戲劇），自行編導以凸顯社會迷信問題，並反對過度講究排場的宗教活動，雖遭打壓卻喚起臺灣人的民族意識。"
+  }
+];
+
+// ════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════
+let mcAnswered = new Array(mcData.length).fill(false);
+let mcCorrect = 0;
+let mcDone = 0;
+
+let fillAnswered = new Array(fillData.length).fill(false);
+let fillCorrect = 0;
+let fillDone = 0;
+
+// ════════════════════════════════════════════
+//  NAV
+// ════════════════════════════════════════════
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ════════════════════════════════════════════
+//  BUILD MC
+// ════════════════════════════════════════════
+function buildMC() {
+  const container = document.getElementById('mc-questions');
+  container.innerHTML = '';
+  mcData.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = 'mc-card-' + i;
+
+    const labels = ['Ａ','Ｂ','Ｃ','Ｄ'];
+
+    card.innerHTML = `
+      <div class="q-text"><span class="q-number">${i+1}</span><span>${item.q}</span></div>
+      <div class="options" id="mc-opts-${i}">
+        ${item.opts.map((o,j) => `
+          <button class="option-btn" onclick="checkMC(${i},${j})" id="mc-opt-${i}-${j}">
+            <span class="opt-label">${labels[j]}</span>${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="mc-fb-${i}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function checkMC(qi, chosen) {
+  if (mcAnswered[qi]) return;
+  mcAnswered[qi] = true;
+  mcDone++;
+
+  const item = mcData[qi];
+  const fb = document.getElementById('mc-fb-' + qi);
+  const correct = chosen === item.ans;
+
+  // disable all buttons
+  for (let j = 0; j < item.opts.length; j++) {
+    const btn = document.getElementById(`mc-opt-${qi}-${j}`);
+    btn.disabled = true;
+    if (j === item.ans) btn.classList.add('correct');
+    else if (j === chosen && !correct) btn.classList.add('wrong');
+  }
+
+  if (correct) {
+    mcCorrect++;
+    fb.className = 'feedback show correct';
+    fb.innerHTML = `<span class="fb-icon">✅</span> 答對了！<div class="explanation">${item.exp}</div>`;
+  } else {
+    fb.className = 'feedback show wrong';
+    fb.innerHTML = `<span class="fb-icon">❌</span> 答錯了！正確答案是：<span class="answer-reveal">【${item.opts[item.ans]}】</span><div class="explanation">${item.exp}</div>`;
+  }
+
+  updateMCScore();
+
+  if (mcDone === mcData.length) {
+    setTimeout(showMCResult, 600);
+  }
+}
+
+function updateMCScore() {
+  document.getElementById('mc-score').textContent = `得分：${mcCorrect} / ${mcData.length}`;
+  document.getElementById('mc-progress').style.width = (mcDone / mcData.length * 100) + '%';
+}
+
+function showMCResult() {
+  const panel = document.getElementById('mc-result');
+  panel.classList.add('show');
+  document.getElementById('mc-final-score').textContent = mcCorrect;
+  const pct = Math.round(mcCorrect / mcData.length * 100);
+  let msg = '';
+  if (pct === 100) msg = '🏆 滿分！你對日治時期臺灣的歷史掌握得非常好！';
+  else if (pct >= 80) msg = '🌟 表現優秀！再複習一下錯誤的部分，就能更完美了！';
+  else if (pct >= 60) msg = '👍 還不錯！建議再回去看看重點整理喔！';
+  else msg = '📖 需要加油！建議先認真閱讀重點整理，再來挑戰！';
+  document.getElementById('mc-result-msg').textContent = msg;
+  panel.scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetMC() {
+  mcAnswered = new Array(mcData.length).fill(false);
+  mcCorrect = 0;
+  mcDone = 0;
+  document.getElementById('mc-result').classList.remove('show');
+  updateMCScore();
+  buildMC();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ════════════════════════════════════════════
+//  BUILD FILL
+// ════════════════════════════════════════════
+function buildFill() {
+  const container = document.getElementById('fill-questions');
+  container.innerHTML = '';
+  fillData.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = 'fill-card-' + i;
+    card.innerHTML = `
+      <div class="q-text"><span class="q-number">${i+1}</span><span>${item.q}</span></div>
+      <div class="fill-group">
+        <input class="fill-input" id="fill-input-${i}" type="text" placeholder="請輸入答案..." autocomplete="off">
+        <button class="submit-btn" id="fill-btn-${i}" onclick="checkFill(${i})">確認答案</button>
+      </div>
+      <div class="feedback" id="fill-fb-${i}"></div>
+    `;
+    container.appendChild(card);
+
+    // Allow Enter key
+    setTimeout(() => {
+      const input = document.getElementById(`fill-input-${i}`);
+      if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') checkFill(i); });
+    }, 0);
+  });
+}
+
+function normalize(str) {
+  return str.trim()
+    .replace(/[\s　]+/g, '')
+    .replace(/[（(]/g,'')
+    .replace(/[）)]/g,'')
+    .replace(/·/g,'')
+    .replace(/・/g,'')
+    .toLowerCase();
+}
+
+function checkFill(qi) {
+  if (fillAnswered[qi]) return;
+  const input = document.getElementById('fill-input-' + qi);
+  const userVal = input.value;
+  if (!userVal.trim()) { input.focus(); return; }
+
+  fillAnswered[qi] = true;
+  fillDone++;
+
+  const item = fillData[qi];
+  const fb = document.getElementById('fill-fb-' + qi);
+  const normUser = normalize(userVal);
+  const correct = item.ans.some(a => normalize(a) === normUser || normalize(a).includes(normUser) || normUser.includes(normalize(a)));
+
+  input.disabled = true;
+  document.getElementById('fill-btn-' + qi).disabled = true;
+
+  if (correct) {
+    fillCorrect++;
+    input.classList.add('correct');
+    fb.className = 'feedback show correct';
+    fb.innerHTML = `<span class="fb-icon">✅</span> 答對了！<div class="explanation">${item.exp}</div>`;
+  } else {
+    input.classList.add('wrong');
+    fb.className = 'feedback show wrong';
+    fb.innerHTML = `<span class="fb-icon">❌</span> 答錯了！正確答案是：<span class="answer-reveal">【${item.display}】</span><div class="explanation">${item.exp}</div>`;
+  }
+
+  updateFillScore();
+
+  if (fillDone === fillData.length) {
+    setTimeout(showFillResult, 600);
+  }
+}
+
+function updateFillScore() {
+  document.getElementById('fill-score').textContent = `得分：${fillCorrect} / ${fillData.length}`;
+  document.getElementById('fill-progress').style.width = (fillDone / fillData.length * 100) + '%';
+}
+
+function showFillResult() {
+  const panel = document.getElementById('fill-result');
+  panel.classList.add('show');
+  document.getElementById('fill-final-score').textContent = fillCorrect;
+  const pct = Math.round(fillCorrect / fillData.length * 100);
+  let msg = '';
+  if (pct === 100) msg = '🏆 滿分！你對日治時期臺灣歷史的掌握非常扎實！';
+  else if (pct >= 80) msg = '🌟 表現優秀！再複習錯誤的填充題，就能更完美了！';
+  else if (pct >= 60) msg = '👍 還不錯！建議再回去看看重點整理喔！';
+  else msg = '📖 需要加油！建議先認真閱讀重點整理，再來挑戰！';
+  document.getElementById('fill-result-msg').textContent = msg;
+  panel.scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetFill() {
+  fillAnswered = new Array(fillData.length).fill(false);
+  fillCorrect = 0;
+  fillDone = 0;
+  document.getElementById('fill-result').classList.remove('show');
+  updateFillScore();
+  buildFill();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
+buildMC();
+buildFill();
+</script>
+</body>
+</html>
