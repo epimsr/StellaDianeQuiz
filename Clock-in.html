@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>品山建設 出勤打卡系統</title>
+<style>
+:root {
+  --primary: #1a4f8b;
+  --primary-light: #2563ab;
+  --primary-dark: #123a6b;
+  --success: #27ae60;
+  --danger: #e74c3c;
+  --warning: #e67e22;
+  --warning-light: #f39c12;
+  --purple: #8e44ad;
+  --border: #dee2e6;
+  --bg: #f0f4f8;
+  --card: #ffffff;
+  --text: #2c3e50;
+  --muted: #7f8c8d;
+  --radius: 14px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.09);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Microsoft JhengHei', 'PingFang TC', 'Noto Sans TC', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ========== LOGIN ========== */
+#loginPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #1a4f8b 0%, #2980b9 50%, #27ae60 100%);
+}
+.login-card {
+  background: white;
+  border-radius: 22px;
+  padding: 40px 32px 35px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+  text-align: center;
+}
+.login-icon {
+  width: 78px; height: 78px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px;
+  font-size: 36px;
+  box-shadow: 0 6px 20px rgba(26,79,139,0.35);
+}
+.login-company { font-size: 20px; font-weight: 700; color: var(--primary); line-height: 1.3; }
+.login-sys { font-size: 13px; color: var(--muted); margin: 5px 0 28px; }
+.fgroup { margin-bottom: 14px; text-align: left; }
+.fgroup label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; font-weight: 600; letter-spacing: .5px; }
+.fgroup input,
+.fgroup select {
+  width: 100%;
+  padding: 13px 15px;
+  border: 2px solid #e8e8e8;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .25s;
+  color: var(--text);
+  background: white;
+  appearance: auto;
+}
+.fgroup input:focus,
+.fgroup select:focus { border-color: var(--primary); }
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  border: none;
+  border-radius: 11px;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 15px rgba(26,79,139,0.35);
+}
+.btn-login:hover { transform: translateY(-1px); box-shadow: 0 7px 20px rgba(26,79,139,0.4); }
+.btn-login:active { transform: translateY(0); }
+.err-msg { color: var(--danger); font-size: 13px; margin-top: 10px; display: none; }
+
+/* ========== APP ========== */
+#mainApp { display: none; min-height: 100vh; }
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  color: white;
+  padding: 14px 18px 12px;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+}
+.header-row1 { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+.header-co { font-size: 17px; font-weight: 700; letter-spacing: .5px; }
+.header-sys { font-size: 11px; opacity: .8; margin-top: 2px; }
+.header-right { text-align: right; }
+.header-user { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+.btn-logout {
+  background: rgba(255,255,255,.18);
+  color: white;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 7px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-logout:hover { background: rgba(255,255,255,.28); }
+.header-clock { font-size: 13px; opacity: .9; font-variant-numeric: tabular-nums; }
+
+/* Content */
+.content { padding: 14px; max-width: 860px; margin: 0 auto; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* ── Punch Status Grid ── */
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+.status-box {
+  background: #f7f9fc;
+  border-radius: 10px;
+  padding: 11px 12px;
+  border: 1.5px solid #e8edf2;
+}
+.status-box.full { grid-column: span 2; }
+.status-lbl { font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: .5px; margin-bottom: 3px; text-transform: uppercase; }
+.status-val { font-size: 17px; font-weight: 700; color: #aaa; font-variant-numeric: tabular-nums; }
+.status-val.active  { color: var(--success); }
+.status-val.ongoing { color: var(--warning); }
+
+/* ── Punch Buttons ── */
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.btn-punch {
+  padding: 15px 8px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, opacity .2s;
+  letter-spacing: .3px;
+}
+.btn-punch:active:not(:disabled) { transform: scale(.96); }
+.btn-punch:not(:disabled):hover  { box-shadow: 0 4px 14px rgba(0,0,0,.2); }
+.btn-punch:disabled { opacity: .35; cursor: not-allowed; }
+.btn-ci { background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; }
+.btn-co { background: linear-gradient(135deg, #c0392b, #e74c3c); color: white; }
+.btn-os { background: linear-gradient(135deg, #6c3483, #8e44ad); color: white; }
+.btn-oe { background: linear-gradient(135deg, #4a235a, #7d3c98); color: white; }
+
+.link-btn {
+  background: none; border: none;
+  color: var(--muted); font-size: 12px; font-family: inherit;
+  cursor: pointer; text-decoration: underline; margin-top: 12px; display: block; text-align: center;
+}
+
+/* ── Leave Card ── */
+.leave-card {
+  background: linear-gradient(135deg, #fffbf0, #fff3e0);
+  border: 2px solid #f39c12;
+}
+.leave-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #c0560c;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.date-period-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: end;
+  margin-bottom: 10px;
+}
+.date-period-row .fgroup { margin-bottom: 0; }
+.period-sel { min-width: 78px; }
+.period-sel select {
+  padding: 13px 10px;
+  border: 2px solid #f0c070;
+  border-radius: 10px;
+  background: white;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  outline: none;
+  width: 100%;
+  appearance: auto;
+}
+.period-sel select:focus { border-color: var(--warning); }
+.leave-card .fgroup input,
+.leave-card .fgroup select {
+  border-color: #f0c070;
+}
+.leave-card .fgroup input:focus,
+.leave-card .fgroup select:focus { border-color: var(--warning); }
+.btn-submit-leave {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--warning), var(--warning-light));
+  color: white;
+  border: none;
+  border-radius: 11px;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 6px;
+  box-shadow: 0 4px 14px rgba(230,126,34,0.35);
+  transition: transform .15s, box-shadow .15s;
+}
+.btn-submit-leave:hover { transform: translateY(-1px); box-shadow: 0 7px 20px rgba(230,126,34,0.4); }
+.btn-submit-leave:active { transform: translateY(0); }
+
+/* Leave history list inside card */
+.leave-hist { margin-top: 14px; padding-top: 13px; border-top: 1.5px solid #f0c070; }
+.leave-hist-title { font-size: 11px; color: #c0560c; font-weight: 700; margin-bottom: 8px; }
+.leave-item {
+  background: rgba(255,255,255,.7);
+  border-radius: 8px;
+  padding: 9px 11px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #f0c070;
+}
+.leave-item-lt { font-weight: 700; color: #c0560c; }
+.leave-item-date { color: var(--muted); font-size: 11px; }
+
+/* ── Records ── */
+.rec-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.rec-controls {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.rec-controls select {
+  padding: 7px 10px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+  background: white;
+}
+.btn-print {
+  padding: 7px 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-print:hover { background: var(--primary-light); }
+
+/* Table */
+.tbl-wrap {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 540px;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #dde2e8;
+  border-radius: 8px;
+}
+.att-tbl thead { position: sticky; top: 0; z-index: 5; }
+.att-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 660px;
+}
+.att-tbl th {
+  background: var(--primary);
+  color: white;
+  padding: 7px 5px;
+  text-align: center;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid rgba(255,255,255,.25);
+}
+.att-tbl td {
+  padding: 7px 5px;
+  text-align: center;
+  border: 1px solid #dde2e8;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.att-tbl tr.today td { background: #e8f4fd; font-weight: 600; }
+.att-tbl tr.weekend td { color: #b0b8c1; }
+.att-tbl tr.on-leave td { background: #fff8ee; color: #c0560c; }
+.att-tbl td.has-data { color: var(--primary-dark); font-weight: 600; }
+.att-tbl td.leave-data { color: #c0560c; font-weight: 600; }
+.btn-edit-row {
+  background: none; border: none;
+  color: var(--primary-light); cursor: pointer;
+  font-size: 14px; padding: 2px 4px;
+  border-radius: 4px; line-height: 1;
+}
+.btn-edit-row:hover { background: #e8f0fe; }
+
+.tbl-summary {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.tbl-summary span { font-weight: 700; color: var(--primary); }
+
+/* ========== MODALS ========== */
+.overlay {
+  display: none; position: fixed;
+  inset: 0; background: rgba(0,0,0,.5);
+  z-index: 200; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: white;
+  border-radius: 18px;
+  padding: 24px 22px;
+  width: 100%; max-width: 360px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+.modal-title { font-size: 17px; font-weight: 700; color: var(--primary); margin-bottom: 18px; }
+.modal .fgroup { margin-bottom: 11px; }
+.modal .fgroup input,
+.modal .fgroup select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s;
+  background: white;
+}
+.modal .fgroup input:focus,
+.modal .fgroup select:focus { border-color: var(--primary); }
+.modal-err { color: var(--danger); font-size: 12px; margin-top: 8px; min-height: 18px; }
+.modal-actions { display: flex; gap: 9px; margin-top: 18px; }
+.btn-cancel {
+  flex: 1; padding: 12px;
+  background: #ecf0f1; color: #555;
+  border: none; border-radius: 9px;
+  font-size: 14px; font-family: inherit; cursor: pointer;
+}
+.btn-confirm {
+  flex: 1; padding: 12px;
+  background: var(--primary); color: white;
+  border: none; border-radius: 9px;
+  font-size: 14px; font-family: inherit; font-weight: 700; cursor: pointer;
+}
+
+/* Edit form grid */
+.edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.edit-grid .fgroup.full { grid-column: span 2; }
+
+/* Leave Warning Modal */
+.leave-warn-modal {
+  text-align: center;
+  border-top: 6px solid #e67e22;
+}
+.warn-emoji { font-size: 64px; margin-bottom: 10px; }
+.warn-title { font-size: 28px; font-weight: 900; color: #e67e22; margin-bottom: 6px; }
+.warn-sub   { font-size: 22px; font-weight: 700; color: #c0392b; margin-bottom: 24px; }
+.btn-warn-ok {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #e67e22, #f39c12);
+  color: white;
+  border: none;
+  border-radius: 11px;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(230,126,34,.4);
+}
+
+/* ========== TOAST ========== */
+.toast {
+  position: fixed;
+  bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  background: #2c3e50;
+  color: white;
+  padding: 11px 22px;
+  border-radius: 50px;
+  font-size: 14px; font-weight: 600;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s, bottom .3s;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,.25);
+}
+.toast.show { opacity: 1; bottom: 32px; }
+.toast.ok  { background: var(--success); }
+.toast.err { background: var(--danger); }
+
+/* ========== PRINT ========== */
+.print-head { display: none; text-align: center; margin-bottom: 14px; }
+.print-head h2 { font-size: 19px; font-weight: 700; }
+.print-head p  { font-size: 13px; margin-top: 4px; }
+
+/* Signature section (print) */
+.sig-section {
+  margin-top: 40px;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.sig-box {
+  text-align: center;
+  min-width: 110px;
+}
+.sig-line {
+  border-bottom: 1px solid #333;
+  height: 52px;
+  margin-bottom: 7px;
+}
+.sig-label { font-size: 13px; color: #333; font-weight: 600; }
+
+/* Last-month print mode */
+#lmPrintDiv { display: none; }
+@media print {
+  @page { size: A4 portrait; margin: 8mm; }
+
+  /* === Last-month mode === */
+  body.print-lm > *:not(#lmPrintDiv) { display: none !important; }
+  body.print-lm #lmPrintDiv { display: block !important; }
+
+  /* === Normal records print === */
+  body:not(.print-lm) #mainApp { background: white !important; }
+  body:not(.print-lm) .header,
+  body:not(.print-lm) .card.punch-card,
+  body:not(.print-lm) .leave-card,
+  body:not(.print-lm) .rec-controls,
+  body:not(.print-lm) .btn-print,
+  body:not(.print-lm) .btn-edit-row { display: none !important; }
+  body:not(.print-lm) .card { box-shadow: none !important; border-radius: 0 !important; padding: 0 !important; }
+  body:not(.print-lm) .print-head { display: block !important; }
+  body:not(.print-lm) .print-head h2 { font-size: 14px !important; margin-bottom: 2px !important; }
+  body:not(.print-lm) .print-head p  { font-size: 10px !important; margin-bottom: 8px !important; }
+  body:not(.print-lm) .att-tbl { font-size: 8px !important; }
+  body:not(.print-lm) .att-tbl th,
+  body:not(.print-lm) .att-tbl td { padding: 2px 2px !important; }
+  body:not(.print-lm) .att-tbl th { background: #1a4f8b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body:not(.print-lm) .att-tbl tr.today td { background: white !important; font-weight: normal !important; }
+  body:not(.print-lm) .att-tbl tr.on-leave td { background: #fff8ee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body:not(.print-lm) .tbl-summary { margin-top: 4px; font-size: 9px; }
+  body:not(.print-lm) .tbl-wrap { max-height: none !important; overflow: visible !important; border: none !important; }
+  body:not(.print-lm) #normalPrintSig { display: flex !important; }
+}
+
+@media (max-width: 480px) {
+  .header-co { font-size: 15px; }
+  .content  { padding: 10px; }
+  .card     { padding: 14px 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ==================== LOGIN ==================== -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-icon">🏢</div>
+    <div class="login-company">品山建設股份有限公司</div>
+    <div class="login-sys">出勤打卡系統</div>
+
+    <div class="fgroup">
+      <label>帳 號</label>
+      <select id="uname">
+        <option value="">─ 請選擇帳號 ─</option>
+        <option value="林欣怡">林欣怡</option>
+        <option value="李孟軒">李孟軒</option>
+        <option value="黃珮芝">黃珮芝</option>
+        <option value="吳英欣">吳英欣</option>
+        <option value="吳彥帥">吳彥帥</option>
+        <option value="管理者">管理者</option>
+      </select>
+    </div>
+    <div class="fgroup">
+      <label>密 碼</label>
+      <input type="password" id="upass" placeholder="請輸入密碼" autocomplete="current-password">
+    </div>
+    <div class="err-msg" id="loginErr">帳號或密碼錯誤，請重新輸入</div>
+    <button class="btn-login" onclick="doLogin()">登 入</button>
+  </div>
+</div>
+
+<!-- ==================== MAIN APP ==================== -->
+<div id="mainApp">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-row1">
+      <div>
+        <div class="header-co">品山建設股份有限公司</div>
+        <div class="header-sys">出勤打卡系統</div>
+      </div>
+      <div class="header-right">
+        <div class="header-user" id="hUser"></div>
+        <button class="btn-logout" onclick="doLogout()">登出</button>
+      </div>
+    </div>
+    <div class="header-clock" id="hClock"></div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── 今日打卡 ── -->
+    <div class="card punch-card">
+      <div class="card-title">📋 今日打卡　<span id="todayLabel" style="font-weight:400;font-size:13px;color:#555"></span></div>
+
+      <!-- Status -->
+      <div class="status-grid">
+        <div class="status-box">
+          <div class="status-lbl">上班時間</div>
+          <div class="status-val" id="sCI">—</div>
+        </div>
+        <div class="status-box">
+          <div class="status-lbl">下班時間</div>
+          <div class="status-val" id="sCO">—</div>
+        </div>
+        <div class="status-box full">
+          <div class="status-lbl">加班時間</div>
+          <div class="status-val" id="sOT">—</div>
+        </div>
+      </div>
+
+      <!-- Buttons: 上班/下班 + 加班開始/結束 -->
+      <div class="btn-grid">
+        <button class="btn-punch btn-ci" id="bCI" onclick="doPunch('ci')">⬆️ 上班打卡</button>
+        <button class="btn-punch btn-co" id="bCO" onclick="doPunch('co')">⬇️ 下班打卡</button>
+        <button class="btn-punch btn-os" id="bOS" onclick="doPunch('os')">⏰ 加班開始</button>
+        <button class="btn-punch btn-oe" id="bOE" onclick="doPunch('oe')">✅ 加班結束</button>
+      </div>
+
+      <button class="link-btn" onclick="openChangePw()">更改密碼</button>
+    </div>
+
+    <!-- ── 請假申請 ── -->
+    <div class="card leave-card">
+      <div class="leave-card-title">📅 請假申請</div>
+
+      <div class="fgroup">
+        <label>假別</label>
+        <select id="lvType">
+          <option value="">─ 請選擇假別 ─</option>
+          <option value="事假">事假</option>
+          <option value="病假">病假</option>
+          <option value="特休">特休</option>
+          <option value="婚假">婚假</option>
+          <option value="喪假">喪假</option>
+          <option value="公假">公假</option>
+          <option value="產假">產假</option>
+          <option value="陪產假">陪產假</option>
+        </select>
+      </div>
+
+      <div class="date-period-row">
+        <div class="fgroup">
+          <label>開始日期</label>
+          <input type="date" id="lvStart">
+        </div>
+        <div class="period-sel">
+          <label style="display:block;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:5px;">時段</label>
+          <select id="lvStartP">
+            <option value="上午">上午</option>
+            <option value="下午">下午</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="date-period-row">
+        <div class="fgroup">
+          <label>結束日期</label>
+          <input type="date" id="lvEnd">
+        </div>
+        <div class="period-sel">
+          <label style="display:block;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:5px;">時段</label>
+          <select id="lvEndP">
+            <option value="上午">上午</option>
+            <option value="下午" selected>下午</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-submit-leave" onclick="submitLeave()">📝 請假　送出／儲存</button>
+
+      <!-- 近期請假紀錄 -->
+      <div class="leave-hist">
+        <div class="leave-hist-title">近期請假紀錄</div>
+        <div id="leaveHistList"></div>
+      </div>
+    </div>
+
+    <!-- ── 出勤紀錄表 ── -->
+    <div class="card">
+      <div class="rec-header">
+        <div class="card-title" style="margin:0">📊 出勤紀錄表</div>
+        <div class="rec-controls">
+          <select id="selEmp" onchange="loadRecords()" style="display:none"></select>
+          <select id="selYear" onchange="loadRecords()"></select>
+          <select id="selMonth" onchange="loadRecords()"></select>
+          <button class="btn-print" onclick="doPrintNormal()">🖨️ 列印</button>
+        </div>
+      </div>
+
+      <div class="print-head" id="printHead">
+        <h2>品山建設股份有限公司　出勤紀錄</h2>
+        <p id="printSub"></p>
+        <br>
+      </div>
+
+      <div class="tbl-wrap">
+        <table class="att-tbl">
+          <thead>
+            <tr>
+              <th rowspan="2">出勤日期</th>
+              <th colspan="2">出勤時間</th>
+              <th colspan="2">午休時間</th>
+              <th rowspan="2">出勤<br>總時數</th>
+              <th colspan="3">加班</th>
+              <th rowspan="2">請假<br>時數</th>
+              <th rowspan="2">假別</th>
+              <th rowspan="2" class="no-print">操作</th>
+              <th rowspan="2">簽名</th>
+            </tr>
+            <tr>
+              <th>上班</th>
+              <th>下班</th>
+              <th>始點</th>
+              <th>迄點</th>
+              <th>起始時間</th>
+              <th>結束時間</th>
+              <th>總時數</th>
+            </tr>
+          </thead>
+          <tbody id="recBody"></tbody>
+        </table>
+      </div>
+      <div class="tbl-summary" id="recSummary"></div>
+      <div id="normalPrintSig" style="display:none;margin-top:22px;flex-direction:row;gap:30px;justify-content:center;">
+        <div style="text-align:center;flex:1;max-width:130px;">
+          <div style="border-bottom:1px solid #333;height:44px;margin-bottom:5px;"></div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:2px;">總 經 理</div>
+        </div>
+        <div style="text-align:center;flex:1;max-width:130px;">
+          <div style="border-bottom:1px solid #333;height:44px;margin-bottom:5px;"></div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:2px;">人　事</div>
+        </div>
+        <div style="text-align:center;flex:1;max-width:130px;">
+          <div style="border-bottom:1px solid #333;height:44px;margin-bottom:5px;"></div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:2px;">員　工</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /mainApp -->
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- Last Month Print Modal -->
+<div class="overlay" id="lastMonthModal">
+  <div class="modal">
+    <div style="text-align:center;font-size:44px;margin-bottom:10px;">📋</div>
+    <div class="modal-title" style="text-align:center;font-size:18px;">列印上個月出勤紀錄表</div>
+    <div style="background:#f7f9fc;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:14px;line-height:2.2;border:1.5px solid #e8edf2;">
+      <div>👤 員工：<strong id="lmEmpName"></strong></div>
+      <div>📅 月份：<strong id="lmMonthLabel"></strong></div>
+    </div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:20px;text-align:center;line-height:1.7;">
+      列印後請於簽名欄親筆簽名<br>繳回人事部門存查
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('lastMonthModal')">稍後再印</button>
+      <button class="btn-confirm" onclick="printLastMonthReport()" style="background:linear-gradient(135deg,#27ae60,#2ecc71);font-size:15px;">🖨️ 立即列印</button>
+    </div>
+  </div>
+</div>
+
+<!-- Leave Warning -->
+<div class="overlay" id="leaveWarnModal">
+  <div class="modal leave-warn-modal">
+    <div class="warn-emoji">🏖️</div>
+    <div class="warn-title">你今天請假</div>
+    <div class="warn-sub">別再工作了！</div>
+    <button class="btn-warn-ok" onclick="closeModal('leaveWarnModal')">好的，我去休息！</button>
+  </div>
+</div>
+
+<!-- Change Password -->
+<div class="overlay" id="pwModal">
+  <div class="modal">
+    <div class="modal-title">🔐 更改密碼</div>
+    <div class="fgroup"><label>目前密碼</label><input type="password" id="pwOld" placeholder="請輸入目前密碼"></div>
+    <div class="fgroup"><label>新密碼（至少4位）</label><input type="password" id="pwNew" placeholder="請輸入新密碼"></div>
+    <div class="fgroup"><label>確認新密碼</label><input type="password" id="pwCfm" placeholder="請再次輸入新密碼"></div>
+    <div class="modal-err" id="pwErr"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('pwModal')">取消</button>
+      <button class="btn-confirm" onclick="saveChangePw()">確認</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Record -->
+<div class="overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-title">✏️ 編輯出勤紀錄</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:14px;" id="editDateLabel"></div>
+    <div class="edit-grid">
+      <div class="fgroup"><label>上班時間</label><input type="time" id="eCI"></div>
+      <div class="fgroup"><label>下班時間</label><input type="time" id="eCO"></div>
+      <div class="fgroup"><label>休息始點</label><input type="time" id="eBS"></div>
+      <div class="fgroup"><label>休息迄點</label><input type="time" id="eBE"></div>
+      <div class="fgroup"><label>加班起始</label><input type="time" id="eOS"></div>
+      <div class="fgroup"><label>加班結束</label><input type="time" id="eOE"></div>
+      <div class="fgroup"><label>請假時數</label><input type="number" id="eLH" placeholder="0" min="0" max="24" step="0.5"></div>
+      <div class="fgroup">
+        <label>假別</label>
+        <select id="eLT">
+          <option value="">─ 無 ─</option>
+          <option value="事假">事假</option>
+          <option value="病假">病假</option>
+          <option value="特休">特休</option>
+          <option value="婚假">婚假</option>
+          <option value="喪假">喪假</option>
+          <option value="公假">公假</option>
+          <option value="產假">產假</option>
+          <option value="陪產假">陪產假</option>
+        </select>
+      </div>
+      <div class="fgroup full"><label>簽名</label><input type="text" id="eSig" placeholder="輸入姓名簽名"></div>
+    </div>
+    <div class="modal-err" id="editErr"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('editModal')">取消</button>
+      <button class="btn-confirm" onclick="saveEditRecord()">儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden last-month print area -->
+<div id="lmPrintDiv"><div id="lmContent"></div></div>
+
+<script>
+// ============================
+//  CONSTANTS & STATE
+// ============================
+const ADMINS     = ['管理者', '吳彥帥'];   // 可查看全部 + 可編輯
+const HR_VIEWERS = ['李孟軒'];             // 可查看全部，但不可編輯
+const ALL_USERS  = ['林欣怡','李孟軒','黃珮芝','吳英欣','吳彥帥','管理者'];
+const DEFAULT_PW   = '1234';
+const STORE_USERS  = 'ps_users';
+const STORE_REC    = 'ps_rec';
+const STORE_LEAVES = 'ps_leaves';
+const STORE_LAST   = 'ps_lastUser';
+
+let CU = null;
+let clockTmr = null;
+let editTarget = { emp: null, date: null };
+let lastMonthPrintData = { emp: null, yr: null, mo: null };
+
+// ============================
+//  STORAGE HELPERS
+// ============================
+function getUsers() {
+  let u = JSON.parse(localStorage.getItem(STORE_USERS) || '{}');
+  ALL_USERS.forEach(n => { if (!u[n]) u[n] = { pw: DEFAULT_PW }; });
+  return u;
+}
+function saveUsers(u) { localStorage.setItem(STORE_USERS, JSON.stringify(u)); }
+
+function getRecs() { return JSON.parse(localStorage.getItem(STORE_REC) || '{}'); }
+function saveRecs(r) { localStorage.setItem(STORE_REC, JSON.stringify(r)); }
+
+function getLeaves() { return JSON.parse(localStorage.getItem(STORE_LEAVES) || '[]'); }
+function saveLeaves(l) { localStorage.setItem(STORE_LEAVES, JSON.stringify(l)); }
+
+function recKey(emp, date) { return emp + '__' + date; }
+
+function getEmpRec(emp, date) {
+  const r = getRecs();
+  return r[recKey(emp, date)] || {
+    date, emp,
+    ci:'', co:'', bs:'', be:'',
+    os:'', oe:'',
+    lh:'', lt:'', sig:'',
+    wh:'', oh:''
+  };
+}
+function setEmpRec(emp, date, patch) {
+  const r = getRecs();
+  const k = recKey(emp, date);
+  const old = r[k] || { date, emp, ci:'', co:'', bs:'', be:'', os:'', oe:'', lh:'', lt:'', sig:'', wh:'', oh:'' };
+  r[k] = calcHours({ ...old, ...patch });
+  saveRecs(r);
+}
+
+// ============================
+//  HOUR CALCULATION
+// ============================
+function t2m(t) {
+  if (!t) return null;
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+function m2h(m) {
+  if (m === null || m === undefined || isNaN(m) || m < 0) return '';
+  const h = Math.floor(m / 60), mn = m % 60;
+  return mn ? h + ':' + String(mn).padStart(2,'0') : String(h);
+}
+function calcHours(rec) {
+  if (rec.ci && rec.co) {
+    let wm = t2m(rec.co) - t2m(rec.ci);
+    if (rec.bs && rec.be) {
+      const bm = t2m(rec.be) - t2m(rec.bs);
+      if (bm > 0) wm -= bm;
+    }
+    rec.wh = m2h(Math.max(0, wm));
+  } else { rec.wh = ''; }
+  if (rec.os && rec.oe) {
+    const om = t2m(rec.oe) - t2m(rec.os);
+    rec.oh = m2h(Math.max(0, om));
+  } else { rec.oh = ''; }
+  return rec;
+}
+
+// ============================
+//  DATE HELPERS
+// ============================
+function today() {
+  const d = new Date();
+  return d.getFullYear() + '-' +
+    String(d.getMonth()+1).padStart(2,'0') + '-' +
+    String(d.getDate()).padStart(2,'0');
+}
+function nowHM() {
+  const d = new Date();
+  return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+}
+function fmtDate(y, m, d) {
+  return y + '-' + String(m).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+}
+function rocYear(y) { return y - 1911; }
+function addDays(dateStr, n) {
+  const d = new Date(dateStr + 'T00:00:00');
+  d.setDate(d.getDate() + n);
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function datesInRange(start, end) {
+  const dates = [];
+  let cur = start;
+  while (cur <= end) {
+    dates.push(cur);
+    cur = addDays(cur, 1);
+  }
+  return dates;
+}
+function fmtDateDisplay(ds) {
+  const [y, m, d] = ds.split('-');
+  return rocYear(parseInt(y)) + '年' + parseInt(m) + '月' + parseInt(d) + '日';
+}
+
+// ============================
+//  LEAVE HELPERS
+// ============================
+function getEmpLeaves(emp) {
+  return getLeaves().filter(lv => lv.emp === emp);
+}
+function isTodayLeave(emp) {
+  const td = today();
+  return getLeaves().some(lv => {
+    if (lv.emp !== emp) return false;
+    return td >= lv.start && td <= lv.end;
+  });
+}
+
+// ============================
+//  LOGIN / LOGOUT
+// ============================
+function doLogin() {
+  const name = document.getElementById('uname').value;
+  const pass = document.getElementById('upass').value;
+  if (!name) {
+    document.getElementById('loginErr').textContent = '請選擇帳號';
+    document.getElementById('loginErr').style.display = 'block';
+    return;
+  }
+  const users = getUsers();
+  if (users[name] && users[name].pw === pass) {
+    CU = name;
+    localStorage.setItem(STORE_LAST, name);
+    document.getElementById('loginErr').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    initApp();
+  } else {
+    document.getElementById('loginErr').textContent = '帳號或密碼錯誤，請重新輸入';
+    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('upass').value = '';
+  }
+}
+function doLogout() {
+  CU = null;
+  if (clockTmr) clearInterval(clockTmr);
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('upass').value = '';
+}
+
+// ============================
+//  APP INIT
+// ============================
+function initApp() {
+  const isAdmin    = ADMINS.includes(CU);
+  const isHRViewer = HR_VIEWERS.includes(CU);
+  const roleLabel  = isAdmin ? '　（管理者）' : isHRViewer ? '　（人事）' : '';
+  document.getElementById('hUser').textContent = '👤 ' + CU + roleLabel;
+
+  updateClock();
+  clockTmr = setInterval(updateClock, 1000);
+
+  // Today label (no ROC prefix)
+  const now = new Date();
+  const wd  = ['日','一','二','三','四','五','六'];
+  document.getElementById('todayLabel').textContent =
+    rocYear(now.getFullYear()) + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日（週' + wd[now.getDay()] + '）';
+
+  // Set default dates for leave form
+  document.getElementById('lvStart').value = today();
+  document.getElementById('lvEnd').value   = today();
+
+  // 管理者 + 吳彥帥 + 李孟軒（人事）皆可切換查看所有人
+  const selEmp = document.getElementById('selEmp');
+  if (isAdmin || isHRViewer) {
+    selEmp.style.display = 'inline-block';
+    selEmp.innerHTML = ALL_USERS.map(n =>
+      `<option value="${n}"${n===CU?' selected':''}>${n}</option>`
+    ).join('');
+  } else {
+    selEmp.style.display = 'none';
+  }
+
+  // Year / Month selectors
+  const yr = now.getFullYear(), mo = now.getMonth() + 1;
+  const selY = document.getElementById('selYear');
+  selY.innerHTML = '';
+  for (let y = yr-1; y <= yr+1; y++) {
+    const o = document.createElement('option');
+    o.value = y; o.textContent = rocYear(y) + '年（' + y + '）';
+    if (y === yr) o.selected = true;
+    selY.appendChild(o);
+  }
+  const selM = document.getElementById('selMonth');
+  selM.innerHTML = '';
+  for (let m = 1; m <= 12; m++) {
+    const o = document.createElement('option');
+    o.value = m; o.textContent = m + '月';
+    if (m === mo) o.selected = true;
+    selM.appendChild(o);
+  }
+
+  updatePunchUI();
+  renderLeaveHist();
+  loadRecords();
+
+  // Check if today is a leave day → show warning
+  if (isTodayLeave(CU)) {
+    setTimeout(() => openModal('leaveWarnModal'), 400);
+  }
+}
+
+function updateClock() {
+  const now = new Date();
+  const wd = ['日','一','二','三','四','五','六'];
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  // No ROC prefix
+  document.getElementById('hClock').textContent =
+    rocYear(now.getFullYear()) + '年' +
+    (now.getMonth()+1) + '月' + now.getDate() + '日　' +
+    '週' + wd[now.getDay()] + '　' + hh + ':' + mm + ':' + ss;
+}
+
+// ============================
+//  PUNCH
+// ============================
+function doPunch(type) {
+  // If today is a leave day, show warning and stop
+  if (type === 'ci' && isTodayLeave(CU)) {
+    openModal('leaveWarnModal');
+    return;
+  }
+
+  const td = today(), t = nowHM();
+  const patch = {};
+  const labels = { ci:'上班打卡', co:'下班打卡', os:'加班開始', oe:'加班結束' };
+  patch[type] = t;
+
+  // Auto-set break 12:00–13:00 when clocking in
+  if (type === 'ci') {
+    const rec = getEmpRec(CU, td);
+    if (!rec.bs) patch.bs = '12:00';
+    if (!rec.be) patch.be = '13:00';
+  }
+  // Auto-sign on clock-out
+  if (type === 'co') {
+    const rec = getEmpRec(CU, td);
+    if (!rec.sig) patch.sig = CU;
+  }
+
+  setEmpRec(CU, td, patch);
+  toast(labels[type] + ' ✓　' + t, 'ok');
+  updatePunchUI();
+  loadRecords();
+
+  // 每月1日上班打卡後，提示列印上個月出勤表
+  if (type === 'ci') {
+    const now = new Date();
+    if (now.getDate() === 1) {
+      setTimeout(() => showLastMonthModal(), 600);
+    }
+  }
+}
+
+function updatePunchUI() {
+  const rec = getEmpRec(CU, today());
+
+  const set = (id, val, cls) => {
+    const el = document.getElementById(id);
+    el.textContent = val || '—';
+    el.className = 'status-val' + (val ? ' ' + cls : '');
+  };
+  set('sCI', rec.ci, 'active');
+  set('sCO', rec.co, 'active');
+
+  if (rec.os && rec.oe) set('sOT', rec.os + '～' + rec.oe, 'active');
+  else if (rec.os)       set('sOT', rec.os + '～進行中', 'ongoing');
+  else                   set('sOT', '', '');
+
+  document.getElementById('bCI').disabled = !!rec.ci;
+  document.getElementById('bCO').disabled = !rec.ci || !!rec.co;
+  document.getElementById('bOS').disabled = !!rec.os;
+  document.getElementById('bOE').disabled = !rec.os || !!rec.oe;
+}
+
+// ============================
+//  LEAVE SUBMISSION
+// ============================
+function submitLeave() {
+  const lt    = document.getElementById('lvType').value;
+  const start = document.getElementById('lvStart').value;
+  const startP= document.getElementById('lvStartP').value;
+  const end   = document.getElementById('lvEnd').value;
+  const endP  = document.getElementById('lvEndP').value;
+
+  if (!lt)    { toast('請選擇假別', 'err'); return; }
+  if (!start) { toast('請填寫開始日期', 'err'); return; }
+  if (!end)   { toast('請填寫結束日期', 'err'); return; }
+  if (end < start) { toast('結束日期不可早於開始日期', 'err'); return; }
+
+  const lvRecord = {
+    id: Date.now(),
+    emp: CU,
+    lt, start, startP, end, endP,
+    submittedAt: new Date().toISOString()
+  };
+
+  // Build list of dates in range
+  const dates = datesInRange(start, end);
+
+  // For each date, calculate leave hours and update attendance record
+  dates.forEach((ds, idx) => {
+    let lh = 8; // default full day
+    const isFirst = idx === 0;
+    const isLast  = idx === dates.length - 1;
+
+    if (dates.length === 1) {
+      // Same day
+      if (startP === '上午' && endP === '下午') lh = 8;
+      else lh = 4; // half day
+    } else if (isFirst) {
+      lh = startP === '下午' ? 4 : 8;
+    } else if (isLast) {
+      lh = endP === '上午' ? 4 : 8;
+    }
+
+    setEmpRec(CU, ds, { lh: String(lh), lt, sig: CU });
+  });
+
+  // Save leave record
+  const leaves = getLeaves();
+  leaves.push(lvRecord);
+  saveLeaves(leaves);
+
+  // Feedback
+  const dStr = dates.length === 1
+    ? fmtDateDisplay(start) + '（' + (dates.length===1 && startP===endP ? startP+'半天' : '全天') + '）'
+    : fmtDateDisplay(start) + startP + '～' + fmtDateDisplay(end) + endP;
+  toast('✅ 請假已送出！' + lt + '　' + dStr, 'ok');
+
+  // Reset form
+  document.getElementById('lvType').value  = '';
+  document.getElementById('lvStart').value = today();
+  document.getElementById('lvEnd').value   = today();
+  document.getElementById('lvStartP').value= '上午';
+  document.getElementById('lvEndP').value  = '下午';
+
+  renderLeaveHist();
+  loadRecords();
+
+  // If today is in the leave range, show warning
+  if (isTodayLeave(CU)) {
+    setTimeout(() => openModal('leaveWarnModal'), 600);
+  }
+}
+
+function calcLeaveDays(lv) {
+  const dates = datesInRange(lv.start, lv.end);
+  let total = 0;
+  dates.forEach((ds, idx) => {
+    const isFirst = idx === 0;
+    const isLast  = idx === dates.length - 1;
+    if (dates.length === 1) {
+      total += (lv.startP === '上午' && lv.endP === '下午') ? 1 : 0.5;
+    } else if (isFirst) {
+      total += lv.startP === '下午' ? 0.5 : 1;
+    } else if (isLast) {
+      total += lv.endP === '上午' ? 0.5 : 1;
+    } else {
+      total += 1;
+    }
+  });
+  return total;
+}
+
+function renderLeaveHist() {
+  const list = document.getElementById('leaveHistList');
+  const lvs  = getEmpLeaves(CU)
+    .sort((a, b) => b.id - a.id)
+    .slice(0, 5);
+
+  if (!lvs.length) {
+    list.innerHTML = '<div style="font-size:12px;color:#bbb;text-align:center;padding:8px 0;">尚無請假紀錄</div>';
+    return;
+  }
+  list.innerHTML = lvs.map(lv => {
+    const sameDay = lv.start === lv.end;
+    const halfDay = sameDay && lv.startP === lv.endP;
+    const dateStr = sameDay
+      ? fmtDateDisplay(lv.start) + '　' + (halfDay ? lv.startP + '半天' : '全天')
+      : fmtDateDisplay(lv.start) + lv.startP + '～' + fmtDateDisplay(lv.end) + lv.endP;
+    const days = calcLeaveDays(lv);
+    const daysStr = (days % 1 === 0) ? days + '天' : days + '天';
+    return `<div class="leave-item">
+      <div>
+        <span class="leave-item-lt">${lv.lt}</span>
+        <span class="leave-item-date">　${dateStr}</span>
+      </div>
+      <span style="color:#c0560c;font-weight:700;font-size:12px;white-space:nowrap;">共 ${daysStr}</span>
+    </div>`;
+  }).join('');
+}
+
+// ============================
+//  RECORDS TABLE
+// ============================
+function loadRecords() {
+  const isAdmin    = ADMINS.includes(CU);
+  const isHRViewer = HR_VIEWERS.includes(CU);
+  const canSeeAll  = isAdmin || isHRViewer;
+  const emp = canSeeAll ? (document.getElementById('selEmp').value || CU) : CU;
+  const yr  = parseInt(document.getElementById('selYear').value);
+  const mo  = parseInt(document.getElementById('selMonth').value);
+
+  document.getElementById('printHead').querySelector('h2').textContent = '品山建設股份有限公司　出勤紀錄';
+  document.getElementById('printSub').textContent = rocYear(yr) + '年　' + mo + '月份　　員工姓名：' + emp;
+
+  const days = new Date(yr, mo, 0).getDate();
+  const td   = today();
+  const tbody = document.getElementById('recBody');
+  tbody.innerHTML = '';
+
+  let totalW = 0, totalO = 0, workDays = 0, leaveDays = 0;
+
+  for (let d = 1; d <= days; d++) {
+    const ds  = fmtDate(yr, mo, d);
+    const rec = getEmpRec(emp, ds);
+    const dow = new Date(yr, mo-1, d).getDay();
+    const wd  = ['日','一','二','三','四','五','六'][dow];
+    const isToday = ds === td;
+    const isWe    = dow === 0 || dow === 6;
+    const isLeave = !!rec.lt;
+
+    if (rec.wh) {
+      const pm = t2m(rec.wh.includes(':') ? rec.wh : rec.wh + ':00');
+      if (pm) totalW += pm;
+      workDays++;
+    }
+    if (rec.oh) {
+      const pm = t2m(rec.oh.includes(':') ? rec.oh : rec.oh + ':00');
+      if (pm) totalO += pm;
+    }
+    if (isLeave && !rec.ci) leaveDays++;
+
+    // 管理者/吳彥帥可編輯所有人；一般員工可編輯自己；李孟軒（人事）僅限查看不可編輯
+    const canEdit = isAdmin || (emp === CU && !isHRViewer);
+    const editBtn = canEdit
+      ? `<button class="btn-edit-row" onclick="openEdit('${emp}','${ds}')" title="編輯">✏️</button>`
+      : '';
+
+    const dc = (v, isLv) => v ? (isLv ? `class="leave-data"` : `class="has-data"`) : '';
+
+    const tr = document.createElement('tr');
+    if (isToday)  tr.classList.add('today');
+    if (isWe)     tr.classList.add('weekend');
+    if (isLeave && !isWe) tr.classList.add('on-leave');
+
+    tr.innerHTML = `
+      <td>${mo}/${d}（${wd}）</td>
+      <td ${dc(rec.ci,false)}>${rec.ci||''}</td>
+      <td ${dc(rec.co,false)}>${rec.co||''}</td>
+      <td ${dc(rec.bs,false)}>${rec.bs||''}</td>
+      <td ${dc(rec.be,false)}>${rec.be||''}</td>
+      <td ${dc(rec.wh,false)}>${rec.wh||''}</td>
+      <td ${dc(rec.os,false)}>${rec.os||''}</td>
+      <td ${dc(rec.oe,false)}>${rec.oe||''}</td>
+      <td ${dc(rec.oh,false)}>${rec.oh||''}</td>
+      <td ${dc(rec.lh,true)}>${rec.lh||''}</td>
+      <td ${dc(rec.lt,true)}>${rec.lt||''}</td>
+      <td class="no-print">${editBtn}</td>
+      <td ${dc(rec.sig,false)}>${rec.sig||''}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  const wh = Math.floor(totalW/60), wm = totalW%60;
+  const oh = Math.floor(totalO/60), om = totalO%60;
+  document.getElementById('recSummary').innerHTML =
+    `出勤天數：<span>${workDays}天</span>　` +
+    `請假天數：<span>${leaveDays}天</span>　` +
+    `出勤總時數：<span>${wh}小時${wm?wm+'分':''}</span>　` +
+    `加班總時數：<span>${oh}小時${om?om+'分':''}</span>`;
+}
+
+// ============================
+//  EDIT RECORD MODAL
+// ============================
+function openEdit(emp, date) {
+  editTarget = { emp, date };
+  const rec = getEmpRec(emp, date);
+  const [yr, mo, d] = date.split('-');
+  const dow = ['日','一','二','三','四','五','六'][new Date(date + 'T00:00:00').getDay()];
+  document.getElementById('editDateLabel').textContent =
+    '日期：' + rocYear(parseInt(yr)) + '年' + parseInt(mo) + '月' + parseInt(d) + '日（週' + dow + '）　員工：' + emp;
+
+  document.getElementById('eCI').value  = rec.ci  || '';
+  document.getElementById('eCO').value  = rec.co  || '';
+  document.getElementById('eBS').value  = rec.bs  || '';
+  document.getElementById('eBE').value  = rec.be  || '';
+  document.getElementById('eOS').value  = rec.os  || '';
+  document.getElementById('eOE').value  = rec.oe  || '';
+  document.getElementById('eLH').value  = rec.lh  || '';
+  document.getElementById('eLT').value  = rec.lt  || '';
+  document.getElementById('eSig').value = rec.sig || '';
+  document.getElementById('editErr').textContent = '';
+  openModal('editModal');
+}
+
+function saveEditRecord() {
+  const { emp, date } = editTarget;
+  setEmpRec(emp, date, {
+    ci:  document.getElementById('eCI').value,
+    co:  document.getElementById('eCO').value,
+    bs:  document.getElementById('eBS').value,
+    be:  document.getElementById('eBE').value,
+    os:  document.getElementById('eOS').value,
+    oe:  document.getElementById('eOE').value,
+    lh:  document.getElementById('eLH').value,
+    lt:  document.getElementById('eLT').value,
+    sig: document.getElementById('eSig').value,
+  });
+  closeModal('editModal');
+  toast('紀錄已更新', 'ok');
+  updatePunchUI();
+  loadRecords();
+}
+
+// ============================
+//  CHANGE PASSWORD
+// ============================
+function openChangePw() {
+  document.getElementById('pwOld').value = '';
+  document.getElementById('pwNew').value = '';
+  document.getElementById('pwCfm').value = '';
+  document.getElementById('pwErr').textContent = '';
+  openModal('pwModal');
+}
+function saveChangePw() {
+  const old = document.getElementById('pwOld').value;
+  const nw  = document.getElementById('pwNew').value;
+  const cfm = document.getElementById('pwCfm').value;
+  const errEl = document.getElementById('pwErr');
+  const users = getUsers();
+  if (users[CU].pw !== old) { errEl.textContent = '目前密碼不正確'; return; }
+  if (nw.length < 4)         { errEl.textContent = '新密碼至少需4個字元'; return; }
+  if (nw !== cfm)            { errEl.textContent = '兩次密碼不一致'; return; }
+  users[CU].pw = nw;
+  saveUsers(users);
+  closeModal('pwModal');
+  toast('密碼已成功更改！', 'ok');
+}
+
+// ============================
+//  LAST MONTH PRINT
+// ============================
+function showLastMonthModal() {
+  const now = new Date();
+  let yr = now.getFullYear();
+  let mo = now.getMonth(); // 0-based: current month-1 = last month
+  if (mo === 0) { mo = 12; yr--; }
+  lastMonthPrintData = { emp: CU, yr, mo };
+  document.getElementById('lmEmpName').textContent = CU;
+  document.getElementById('lmMonthLabel').textContent = rocYear(yr) + '年　' + mo + '月份';
+  openModal('lastMonthModal');
+}
+
+function doPrintNormal() {
+  const empSel = document.getElementById('selEmp');
+  const yr = document.getElementById('selYear').value;
+  const mo = document.getElementById('selMonth').value;
+  const emp = (empSel && empSel.style.display !== 'none') ? (empSel.value || CU) : CU;
+  const origTitle = document.title;
+  document.title = `品山建設_出勤紀錄_${emp}_${yr}年${mo}月`;
+  window.print();
+  window.addEventListener('afterprint', function cleanup() {
+    document.title = origTitle;
+    window.removeEventListener('afterprint', cleanup);
+  });
+}
+
+function printLastMonthReport() {
+  const { emp, yr, mo } = lastMonthPrintData;
+  document.getElementById('lmContent').innerHTML = buildLastMonthHTML(emp, yr, mo);
+  closeModal('lastMonthModal');
+  const origTitle = document.title;
+  document.title = `品山建設_出勤紀錄_${emp}_${rocYear(yr)}年${mo}月`;
+  document.body.classList.add('print-lm');
+  window.print();
+  window.addEventListener('afterprint', function cleanup() {
+    document.body.classList.remove('print-lm');
+    document.title = origTitle;
+    window.removeEventListener('afterprint', cleanup);
+  });
+}
+
+function buildLastMonthHTML(emp, yr, mo) {
+  const days = new Date(yr, mo, 0).getDate();
+  const thStyle = 'padding:3px 2px;border:1px solid rgba(255,255,255,.3);text-align:center;white-space:nowrap;font-size:8px;';
+  const tdStyle = 'padding:2px 2px;border:1px solid #dde2e8;text-align:center;white-space:nowrap;font-size:8px;';
+  let rows = '';
+  for (let d = 1; d <= days; d++) {
+    const ds  = fmtDate(yr, mo, d);
+    const rec = getEmpRec(emp, ds);
+    const dow = new Date(yr, mo-1, d).getDay();
+    const wd  = ['日','一','二','三','四','五','六'][dow];
+    const isWe = dow === 0 || dow === 6;
+    const bgStyle = isWe ? 'background:#f5f5f5;color:#aaa;' : (rec.lt ? 'background:#fff8ee;color:#c0560c;' : '');
+    rows += `<tr style="${bgStyle}">
+      <td style="${tdStyle}">${mo}/${d}（${wd}）</td>
+      <td style="${tdStyle}">${rec.ci||''}</td>
+      <td style="${tdStyle}">${rec.co||''}</td>
+      <td style="${tdStyle}">${rec.bs||''}</td>
+      <td style="${tdStyle}">${rec.be||''}</td>
+      <td style="${tdStyle}font-weight:${rec.wh?'700':'400'}">${rec.wh||''}</td>
+      <td style="${tdStyle}">${rec.os||''}</td>
+      <td style="${tdStyle}">${rec.oe||''}</td>
+      <td style="${tdStyle}">${rec.oh||''}</td>
+      <td style="${tdStyle}color:${rec.lh?'#c0560c':'inherit'}">${rec.lh||''}</td>
+      <td style="${tdStyle}color:${rec.lt?'#c0560c':'inherit'}">${rec.lt||''}</td>
+      <td style="${tdStyle}">${rec.sig||''}</td>
+    </tr>`;
+  }
+  return `<style>@page{size:A4 portrait;margin:8mm;}</style>
+  <div style="font-family:'Microsoft JhengHei','PingFang TC',Arial,sans-serif;padding:10px 14px;">
+    <h2 style="text-align:center;font-size:15px;font-weight:700;margin:0 0 3px;">品山建設股份有限公司　出勤紀錄</h2>
+    <p style="text-align:center;font-size:10px;margin:0 0 10px;">${rocYear(yr)}年　${mo}月份　　員工姓名：${emp}</p>
+    <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+      <colgroup>
+        <col style="width:13%">
+        <col style="width:8%"><col style="width:8%">
+        <col style="width:7%"><col style="width:7%">
+        <col style="width:7%">
+        <col style="width:7%"><col style="width:7%"><col style="width:6%">
+        <col style="width:6%"><col style="width:7%">
+        <col style="width:17%">
+      </colgroup>
+      <thead>
+        <tr style="background:#1a4f8b;color:white;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
+          <th rowspan="2" style="${thStyle}">出勤日期</th>
+          <th colspan="2" style="${thStyle}">出勤時間</th>
+          <th colspan="2" style="${thStyle}">午休時間</th>
+          <th rowspan="2" style="${thStyle}">出勤<br>總時數</th>
+          <th colspan="3" style="${thStyle}">加班</th>
+          <th rowspan="2" style="${thStyle}">請假<br>時數</th>
+          <th rowspan="2" style="${thStyle}">假別</th>
+          <th rowspan="2" style="${thStyle}">簽名</th>
+        </tr>
+        <tr style="background:#1a4f8b;color:white;">
+          <th style="${thStyle}">上班</th>
+          <th style="${thStyle}">下班</th>
+          <th style="${thStyle}">始點</th>
+          <th style="${thStyle}">迄點</th>
+          <th style="${thStyle}">起始</th>
+          <th style="${thStyle}">結束</th>
+          <th style="${thStyle}">時數</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div style="margin-top:22px;display:flex;gap:30px;justify-content:center;">
+      <div style="text-align:center;flex:1;max-width:130px;">
+        <div style="border-bottom:1px solid #333;height:44px;margin-bottom:5px;"></div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:2px;">總 經 理</div>
+      </div>
+      <div style="text-align:center;flex:1;max-width:130px;">
+        <div style="border-bottom:1px solid #333;height:44px;margin-bottom:5px;"></div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:2px;">人　事</div>
+      </div>
+      <div style="text-align:center;flex:1;max-width:130px;">
+        <div style="border-bottom:1px solid #333;height:44px;margin-bottom:5px;"></div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:2px;">員　工</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ============================
+//  MODAL HELPERS
+// ============================
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.overlay').forEach(el => {
+  el.addEventListener('click', function(e) {
+    // Don't close leave warning by clicking outside
+    if (this.id === 'leaveWarnModal') return;
+    if (e.target === this) closeModal(this.id);
+  });
+});
+
+// ============================
+//  TOAST
+// ============================
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => { el.className = 'toast'; }, 3000);
+}
+
+// ============================
+//  PAGE INIT (remember last user)
+// ============================
+window.addEventListener('DOMContentLoaded', () => {
+  const lastUser = localStorage.getItem(STORE_LAST);
+  if (lastUser) {
+    const sel = document.getElementById('uname');
+    if ([...sel.options].some(o => o.value === lastUser)) {
+      sel.value = lastUser;
+    }
+    document.getElementById('upass').focus();
+  }
+});
+
+// Keyboard
+document.getElementById('upass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('uname').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('upass').focus(); });
+</script>
+</body>
+</html>
