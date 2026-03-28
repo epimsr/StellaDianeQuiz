@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>簡單機械 · 重點整理與練習</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Nunito:wght@700;900&display=swap');
+:root{
+  --gd:#2d7a3a;--gm:#4caf50;--gl:#a8d8a8;--gp:#e8f5e9;
+  --yw:#ffc107;--yp:#fff8e1;--or:#ff8c00;--rd:#e53935;
+  --bl:#1976d2;--bp:#e3f2fd;--tx:#1a2e1a;--tm:#3d5c3d;
+  --shadow:0 4px 20px rgba(45,122,58,.13);--br:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans TC',sans-serif;background:#f0f7f0;color:var(--tx);min-height:100vh;}
+.hero{background:linear-gradient(135deg,#1b5e20,#2d7a3a 45%,#43a047);padding:38px 24px 32px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'⚙️';position:absolute;font-size:130px;opacity:.07;top:-20px;left:-10px;transform:rotate(-15deg);}
+.hero::after{content:'🔩';position:absolute;font-size:110px;opacity:.07;bottom:-15px;right:5px;transform:rotate(12deg);}
+.hero h1{font-family:'Nunito','Noto Sans TC',sans-serif;font-size:clamp(26px,6vw,46px);font-weight:900;color:#fff;letter-spacing:2px;text-shadow:0 2px 12px rgba(0,0,0,.3);}
+.hero .sub{color:#c8e6c9;font-size:15px;margin-top:8px;font-weight:500;}
+.badge{display:inline-block;background:var(--yw);color:#1a2e1a;font-weight:700;font-size:13px;padding:4px 14px;border-radius:20px;margin-bottom:12px;letter-spacing:1px;}
+.tab-nav{display:flex;justify-content:center;gap:8px;padding:18px 16px 0;flex-wrap:wrap;}
+.tab-btn{background:#fff;border:2px solid var(--gl);color:var(--gd);font-family:inherit;font-size:15px;font-weight:700;padding:10px 22px;border-radius:40px;cursor:pointer;transition:all .2s;}
+.tab-btn.active,.tab-btn:hover{background:var(--gd);border-color:var(--gd);color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(45,122,58,.25);}
+.container{max-width:880px;margin:0 auto;padding:22px 14px 60px;}
+.section{display:none;}.section.active{display:block;}
+.act-hd{display:flex;align-items:center;gap:12px;margin:30px 0 14px;}
+.act-num{width:38px;height:38px;background:var(--gd);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;flex-shrink:0;}
+.act-hd h2{font-size:20px;font-weight:700;color:var(--gd);}
+.card{background:#fff;border-radius:var(--br);box-shadow:var(--shadow);padding:20px;margin-bottom:18px;border-left:5px solid var(--gm);}
+.card.yw{border-left-color:var(--yw);}.card.bl{border-left-color:var(--bl);}.card.or{border-left-color:var(--or);}
+.card h3{font-size:16px;font-weight:700;color:var(--gd);margin-bottom:12px;}
+.card p,.card li{font-size:14.5px;line-height:1.75;color:var(--tm);}
+.card ul{padding-left:20px;}.card li{margin-bottom:4px;}
+.def-box{background:var(--gp);border:2px solid var(--gl);border-radius:10px;padding:13px 16px;margin:10px 0;font-size:14.5px;line-height:1.75;}
+.def-box strong{color:var(--gd);}
+.ct{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0;}
+.ct th{background:var(--gd);color:#fff;padding:9px 11px;text-align:center;font-weight:700;}
+.ct td{padding:8px 11px;border-bottom:1px solid #e0f0e0;text-align:center;vertical-align:middle;}
+.ct tr:nth-child(even) td{background:var(--gp);}
+.ct th:first-child,.ct td:first-child{text-align:left;}
+.tag{display:inline-block;background:var(--gp);color:var(--gd);font-size:12px;font-weight:700;padding:2px 10px;border-radius:12px;margin:2px;}
+.tag.rd{background:#ffebee;color:var(--rd);}.tag.bl{background:var(--bp);color:var(--bl);}
+.formula{background:linear-gradient(90deg,#e8f5e9,#fff8e1);border:2px solid var(--yw);border-radius:10px;padding:13px 18px;text-align:center;margin:12px 0;font-size:18px;font-weight:700;color:var(--or);}
+.formula small{display:block;font-size:12px;color:var(--tm);font-weight:400;margin-top:4px;}
+.hl{color:var(--rd);font-weight:700;}.hlg{color:var(--gd);font-weight:700;}.hlo{color:var(--or);font-weight:700;}.hlb{color:var(--bl);font-weight:700;}
+.divider{display:flex;align-items:center;gap:10px;margin:26px 0 16px;}
+.divider .line{flex:1;height:2px;background:var(--gl);}
+.divider .lbl{background:var(--gd);color:#fff;padding:4px 18px;border-radius:20px;font-size:13px;font-weight:700;}
+/* ANIM */
+.anim-wrap{background:#fff;border-radius:var(--br);box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden;}
+.anim-title{background:linear-gradient(90deg,var(--gd),#388e3c);color:#fff;padding:12px 18px;font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.anim-body{padding:16px 14px;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.ctrl-btn{background:#e8f5e9;color:var(--gd);border:2px solid var(--gl);padding:7px 16px;border-radius:20px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;}
+.ctrl-btn:hover,.ctrl-btn.active{background:var(--gd);color:#fff;border-color:var(--gd);}
+.info-badge{background:var(--gp);border:2px solid var(--gl);border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.65;color:var(--tm);text-align:center;width:100%;max-width:580px;}
+.info-badge strong{color:var(--gd);}
+canvas{display:block;border-radius:8px;max-width:100%;background:#f7fbf7;}
+/* QUIZ */
+.qprog{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:var(--shadow);margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+.pbar-wrap{flex:1;background:#e0f0e0;border-radius:20px;height:12px;overflow:hidden;}
+.pbar{height:100%;background:linear-gradient(90deg,var(--gm),var(--gd));border-radius:20px;transition:width .4s;width:0%;}
+.ptext{font-size:13px;font-weight:700;color:var(--gd);white-space:nowrap;}
+.pscore{font-size:20px;font-weight:900;color:var(--gd);}
+.qcard{background:#fff;border-radius:var(--br);box-shadow:var(--shadow);padding:20px;margin-bottom:18px;border-top:4px solid var(--gm);transition:border-color .3s;}
+.qcard.correct{border-top-color:var(--gm);}.qcard.wrong{border-top-color:var(--rd);}.qcard.unanswered{border-top-color:#ccc;}
+.qlbl{font-size:12px;font-weight:700;color:#888;margin-bottom:6px;letter-spacing:1px;}
+.qtxt{font-size:16px;font-weight:700;color:var(--tx);line-height:1.6;margin-bottom:14px;}
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt{background:#f5faf5;border:2px solid #c8e6c9;color:var(--tx);font-family:inherit;font-size:14px;padding:10px 14px;border-radius:10px;cursor:pointer;text-align:left;transition:all .15s;font-weight:500;}
+.opt:hover:not(:disabled){background:var(--gp);border-color:var(--gm);}
+.opt.ca{background:#c8e6c9;border-color:var(--gd);color:var(--gd);}
+.opt.wa{background:#ffcdd2;border-color:var(--rd);color:var(--rd);}
+.fill-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.fi{border:2px solid #c8e6c9;border-radius:8px;padding:8px 12px;font-size:15px;font-family:inherit;width:160px;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--gd);}.fi.cf{border-color:var(--gd);background:#c8e6c9;}.fi.wf{border-color:var(--rd);background:#ffcdd2;}
+.ckbtn{background:var(--gd);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;}
+.ckbtn:disabled{background:#aaa;cursor:default;}
+.fb{margin-top:10px;font-size:14px;font-weight:700;padding:8px 12px;border-radius:8px;display:none;}
+.fb.show{display:block;}.fb.ok{background:#c8e6c9;color:var(--gd);}.fb.err{background:#ffcdd2;color:var(--rd);}
+.qact{text-align:center;margin:26px 0;}
+.subbtn{background:linear-gradient(135deg,var(--gd),#1b5e20);color:#fff;border:none;padding:14px 40px;border-radius:40px;font-family:inherit;font-size:17px;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(45,122,58,.3);}
+.rpanel{background:linear-gradient(135deg,var(--gp),var(--yp));border:3px solid var(--gm);border-radius:16px;padding:30px;text-align:center;margin:20px 0;display:none;}
+.rpanel.show{display:block;}.rbig{font-size:50px;font-weight:900;color:var(--gd);}.rmsg{font-size:17px;color:var(--tm);margin-top:8px;}
+.rtry{display:inline-block;margin-top:16px;background:var(--or);color:#fff;border:none;padding:11px 30px;border-radius:30px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;}
+@media(max-width:520px){.ct{font-size:12px;}.ct th,.ct td{padding:6px 7px;}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="badge">國小 6 年級 · 自然科學</div>
+  <h1>⚙️ 簡單機械</h1>
+  <p class="sub">重點整理 × 動態圖解 × 選擇題 × 填充題</p>
+</div>
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('notes',this)">📖 重點整理</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">✏️ 練習測驗</button>
+</div>
+<div class="container">
+
+<!-- ══════════ NOTES ══════════ -->
+<div id="notes" class="section active">
+
+<div class="act-hd"><div class="act-num">1</div><h2>如何應用槓桿原理</h2></div>
+<div class="def-box">具有<strong>支點、施力點、抗力點、施力臂</strong>與<strong>抗力臂</strong>的裝置，就稱為<strong>槓桿</strong>。施力臂與抗力臂的長短，會影響施力與抗力的大小。</div>
+
+<!-- LEVER ANIM -->
+<div class="anim-wrap">
+  <div class="anim-title">⚖️ 槓桿原理 — 互動動畫（點選模式切換）</div>
+  <div class="anim-body">
+    <div class="ctrl-row">
+      <button class="ctrl-btn active" id="lb0" onclick="setLever(0)">施力臂＞抗力臂（省力）</button>
+      <button class="ctrl-btn" id="lb1" onclick="setLever(1)">施力臂＝抗力臂</button>
+      <button class="ctrl-btn" id="lb2" onclick="setLever(2)">施力臂＜抗力臂（費力）</button>
+    </div>
+    <canvas id="cLever" width="580" height="220"></canvas>
+    <div class="info-badge" id="leverInfo"></div>
+  </div>
+</div>
+
+<div class="card yw">
+  <h3>🔨 生活中三類槓桿工具</h3>
+  <table class="ct">
+    <tr><th>類型</th><th>支點位置</th><th>效果</th><th>例子</th></tr>
+    <tr><td><strong>支點在中間</strong></td><td>中間</td><td><span class="tag bl">不省力也不費力</span></td><td>剪刀、尖嘴鉗、蹺蹺板</td></tr>
+    <tr><td><strong>抗力點在中間</strong></td><td>一端</td><td><span class="tag">省力</span></td><td>開瓶器、榨汁器、拔釘器</td></tr>
+    <tr><td><strong>施力點在中間</strong></td><td>一端</td><td><span class="tag rd">費力但方便</span></td><td>麵包夾、筷子、鑷子</td></tr>
+  </table>
+  <div class="formula">施力 × 施力臂 ＝ 抗力 × 抗力臂<small>槓桿平衡公式</small></div>
+</div>
+
+<div class="act-hd"><div class="act-num">2</div><h2>輪軸與滑輪如何便利生活</h2></div>
+<div class="def-box"><strong>輪軸</strong>：由兩個半徑不同、固定在同一軸心的圓柱組成，是槓桿原理的應用。半徑較大的圓柱稱為「<strong>輪</strong>」，較小的稱為「<strong>軸</strong>」。</div>
+
+<!-- PULLEY ANIM -->
+<div class="anim-wrap">
+  <div class="anim-title">🔁 定滑輪 vs 動滑輪 — 動畫比較</div>
+  <div class="anim-body">
+    <div class="ctrl-row">
+      <button class="ctrl-btn active" id="pb0" onclick="setPulley(0)">定滑輪</button>
+      <button class="ctrl-btn" id="pb1" onclick="setPulley(1)">動滑輪</button>
+      <button class="ctrl-btn" id="pb2" onclick="setPulley(2)">定＋動（組合）</button>
+    </div>
+    <canvas id="cPulley" width="580" height="270"></canvas>
+    <div class="info-badge" id="pulleyInfo"></div>
+  </div>
+</div>
+
+<div class="card bl">
+  <h3>⚖️ 定滑輪 vs 動滑輪</h3>
+  <table class="ct">
+    <tr><th></th><th>定滑輪</th><th>動滑輪</th></tr>
+    <tr><td>省力</td><td><span class="tag rd">不省力也不費力</span></td><td><span class="tag">省力</span></td></tr>
+    <tr><td>施力方向</td><td>與物體移動方向<span class="hl">相反</span></td><td>與物體移動方向<span class="hlg">相同</span></td></tr>
+    <tr><td>生活例子</td><td>升旗裝置</td><td>起重機吊臂</td></tr>
+  </table>
+  <div class="def-box" style="margin-top:10px">將<strong>定滑輪＋動滑輪組合</strong>，可同時兼具<span class="hlg">省力</span>和<span class="hlb">改變施力方向</span>的功能（如：晒衣架、起重機）。</div>
+</div>
+
+<div class="act-hd"><div class="act-num">3</div><h2>還有哪些傳送動力的機械</h2></div>
+<div class="def-box"><strong>齒輪</strong>：一種邊緣有許多相同齒狀凸出物的圓輪，兩個齒輪可以利用邊緣的齒互相咬合，傳送動力、改變轉動方向或速度。</div>
+
+<!-- GEAR ANIM -->
+<div class="anim-wrap">
+  <div class="anim-title">⚙️ 齒輪組 vs 齒輪鏈條組 — 動畫</div>
+  <div class="anim-body">
+    <div class="ctrl-row">
+      <button class="ctrl-btn active" id="gb0" onclick="setGear(0)">齒輪組（直接咬合）</button>
+      <button class="ctrl-btn" id="gb1" onclick="setGear(1)">齒輪鏈條組</button>
+    </div>
+    <canvas id="cGear" width="580" height="240"></canvas>
+    <div class="info-badge" id="gearInfo"></div>
+  </div>
+</div>
+
+<!-- BIKE ANIM -->
+<div class="anim-wrap">
+  <div class="anim-title">🚲 腳踏車傳動系統 — 動畫</div>
+  <div class="anim-body">
+    <div class="ctrl-row">
+      <button class="ctrl-btn active" id="bb0" onclick="setBike(true)">▶ 開始踩踏</button>
+      <button class="ctrl-btn" id="bb1" onclick="setBike(false)">⏹ 停止</button>
+    </div>
+    <canvas id="cBike" width="580" height="260"></canvas>
+    <div class="info-badge">踩踏板（<strong>輪帶軸</strong>）→ 前齒輪旋轉 → <strong>鏈條</strong>傳動 → 後齒輪旋轉 → 後輪旋轉（<strong>軸帶輪</strong>）→ 腳踏車前進！</div>
+  </div>
+</div>
+
+<div class="card or">
+  <h3>⚙️ 齒輪組 vs 齒輪鏈條組比較</h3>
+  <table class="ct">
+    <tr><th></th><th>齒輪組</th><th>齒輪鏈條組</th></tr>
+    <tr><td>轉動方向</td><td><span class="hl">相反</span></td><td><span class="hlg">相同</span></td></tr>
+    <tr><td>大轉1圈→小</td><td><span class="hl">多於1圈</span></td><td><span class="hl">多於1圈</span></td></tr>
+    <tr><td>小轉1圈→大</td><td><span class="hlg">少於1圈</span></td><td><span class="hlg">少於1圈</span></td></tr>
+    <tr><td>例子</td><td>時鐘、修正帶</td><td>腳踏車、電扶梯</td></tr>
+  </table>
+</div>
+<div class="card"><h3>🏗️ 電扶梯的運作流程</h3><p>馬達 → 皮帶 → 驅動輪 → 鏈條 → 踏階（在軌道上循環）；扶手與踏階以相同速度移動。</p></div>
+<div class="card bl"><h3>🏺 阿基米德與槓桿</h3><p>公元前約兩百多年，西西里島的科學家<strong>阿基米德</strong>歸納出<strong>槓桿原理</strong>，並運用此原理製造<strong>投石器</strong>防衛羅馬軍隊。</p><p style="margin-top:6px;font-style:italic;color:#666">「只要給我一個支點，我就能舉起地球。」</p></div>
+</div><!-- /notes -->
+
+<!-- ══════════ QUIZ ══════════ -->
+<div id="quiz" class="section">
+  <div class="qprog">
+    <div><div class="pscore" id="scoreDisplay">0 / 0</div><div style="font-size:11px;color:#888;margin-top:2px">得分</div></div>
+    <div class="pbar-wrap"><div class="pbar" id="progressBar"></div></div>
+    <div class="ptext" id="progressText">0 / 20 題</div>
+  </div>
+  <div class="divider"><div class="line"></div><div class="lbl">選擇題（共 15 題）</div><div class="line"></div></div>
+
+  <div class="qcard" id="qc1"><div class="qlbl">選擇題 · 第 1 題</div><div class="qtxt">下列哪一項是槓桿的五個要素之一？</div><div class="opts"><button class="opt" onclick="choose(1,'A')">A. 摩擦力</button><button class="opt" onclick="choose(1,'B')">B. 施力臂</button><button class="opt" onclick="choose(1,'C')">C. 彈力</button><button class="opt" onclick="choose(1,'D')">D. 重心</button></div><div class="fb" id="fb1"></div></div>
+
+  <div class="qcard" id="qc2"><div class="qlbl">選擇題 · 第 2 題</div><div class="qtxt">使用開瓶器開瓶蓋時，屬於哪種槓桿？</div><div class="opts"><button class="opt" onclick="choose(2,'A')">A. 支點在中間</button><button class="opt" onclick="choose(2,'B')">B. 抗力點在中間（省力）</button><button class="opt" onclick="choose(2,'C')">C. 施力點在中間（費力）</button><button class="opt" onclick="choose(2,'D')">D. 以上皆非</button></div><div class="fb" id="fb2"></div></div>
+
+  <div class="qcard" id="qc3"><div class="qlbl">選擇題 · 第 3 題</div><div class="qtxt">施力臂長度大於抗力臂時，使用此槓桿的效果為何？</div><div class="opts"><button class="opt" onclick="choose(3,'A')">A. 費力但方便</button><button class="opt" onclick="choose(3,'B')">B. 不省力也不費力</button><button class="opt" onclick="choose(3,'C')">C. 省力</button><button class="opt" onclick="choose(3,'D')">D. 無法判斷</button></div><div class="fb" id="fb3"></div></div>
+
+  <div class="qcard" id="qc4"><div class="qlbl">選擇題 · 第 4 題</div><div class="qtxt">輪軸中，把力施在「輪」上（以輪帶軸），結果是？</div><div class="opts"><button class="opt" onclick="choose(4,'A')">A. 費力但方便</button><button class="opt" onclick="choose(4,'B')">B. 省力</button><button class="opt" onclick="choose(4,'C')">C. 不省力也不費力</button><button class="opt" onclick="choose(4,'D')">D. 無法轉動</button></div><div class="fb" id="fb4"></div></div>
+
+  <div class="qcard" id="qc5"><div class="qlbl">選擇題 · 第 5 題</div><div class="qtxt">下列哪個是「施力在軸上（以軸帶輪）」的輪軸工具？</div><div class="opts"><button class="opt" onclick="choose(5,'A')">A. 水龍頭</button><button class="opt" onclick="choose(5,'B')">B. 門把</button><button class="opt" onclick="choose(5,'C')">C. 竹蜻蜓</button><button class="opt" onclick="choose(5,'D')">D. 削鉛筆機</button></div><div class="fb" id="fb5"></div></div>
+
+  <div class="qcard" id="qc6"><div class="qlbl">選擇題 · 第 6 題</div><div class="qtxt">定滑輪的特性是什麼？</div><div class="opts"><button class="opt" onclick="choose(6,'A')">A. 省力，施力方向與物體移動方向相同</button><button class="opt" onclick="choose(6,'B')">B. 不省力也不費力，施力方向與物體移動方向相反</button><button class="opt" onclick="choose(6,'C')">C. 省力，施力方向與物體移動方向相反</button><button class="opt" onclick="choose(6,'D')">D. 費力但方便，施力方向與物體移動方向相同</button></div><div class="fb" id="fb6"></div></div>
+
+  <div class="qcard" id="qc7"><div class="qlbl">選擇題 · 第 7 題</div><div class="qtxt">動滑輪的特性是什麼？</div><div class="opts"><button class="opt" onclick="choose(7,'A')">A. 不省力也不費力，可改變施力方向</button><button class="opt" onclick="choose(7,'B')">B. 省力，施力方向和物體移動方向相同</button><button class="opt" onclick="choose(7,'C')">C. 費力但方便</button><button class="opt" onclick="choose(7,'D')">D. 不改變施力大小也不改變方向</button></div><div class="fb" id="fb7"></div></div>
+
+  <div class="qcard" id="qc8"><div class="qlbl">選擇題 · 第 8 題</div><div class="qtxt">將定滑輪和動滑輪組合使用，可以達到什麼效果？</div><div class="opts"><button class="opt" onclick="choose(8,'A')">A. 只能省力</button><button class="opt" onclick="choose(8,'B')">B. 只能改變施力方向</button><button class="opt" onclick="choose(8,'C')">C. 兼具省力和方便使用的功能</button><button class="opt" onclick="choose(8,'D')">D. 不省力但方向改變更多</button></div><div class="fb" id="fb8"></div></div>
+
+  <div class="qcard" id="qc9"><div class="qlbl">選擇題 · 第 9 題</div><div class="qtxt">兩個齒輪直接互相咬合（齒輪組），轉動方向為何？</div><div class="opts"><button class="opt" onclick="choose(9,'A')">A. 相同方向</button><button class="opt" onclick="choose(9,'B')">B. 相反方向</button><button class="opt" onclick="choose(9,'C')">C. 不一定</button><button class="opt" onclick="choose(9,'D')">D. 同時停止</button></div><div class="fb" id="fb9"></div></div>
+
+  <div class="qcard" id="qc10"><div class="qlbl">選擇題 · 第 10 題</div><div class="qtxt">鏈條連接的齒輪鏈條組，兩個齒輪的轉動方向為何？</div><div class="opts"><button class="opt" onclick="choose(10,'A')">A. 相反方向</button><button class="opt" onclick="choose(10,'B')">B. 相同方向</button><button class="opt" onclick="choose(10,'C')">C. 大順時針、小逆時針</button><button class="opt" onclick="choose(10,'D')">D. 以上皆有可能</button></div><div class="fb" id="fb10"></div></div>
+
+  <div class="qcard" id="qc11"><div class="qlbl">選擇題 · 第 11 題</div><div class="qtxt">大齒輪轉動 1 圈，小齒輪會轉動幾圈？</div><div class="opts"><button class="opt" onclick="choose(11,'A')">A. 剛好 1 圈</button><button class="opt" onclick="choose(11,'B')">B. 少於 1 圈</button><button class="opt" onclick="choose(11,'C')">C. 多於 1 圈</button><button class="opt" onclick="choose(11,'D')">D. 無法轉動</button></div><div class="fb" id="fb11"></div></div>
+
+  <div class="qcard" id="qc12"><div class="qlbl">選擇題 · 第 12 題</div><div class="qtxt">下列關於腳踏車傳遞動力的描述，哪一項正確？</div><div class="opts"><button class="opt" onclick="choose(12,'A')">A. 踏板直接帶動後齒輪</button><button class="opt" onclick="choose(12,'B')">B. 前齒輪透過鏈條帶動後齒輪，轉動方向相同</button><button class="opt" onclick="choose(12,'C')">C. 後齒輪和後輪的關係是以輪帶軸</button><button class="opt" onclick="choose(12,'D')">D. 前齒輪和踏板固定在不同軸心</button></div><div class="fb" id="fb12"></div></div>
+
+  <div class="qcard" id="qc13"><div class="qlbl">選擇題 · 第 13 題</div><div class="qtxt">筷子夾菜時，屬於哪類槓桿？</div><div class="opts"><button class="opt" onclick="choose(13,'A')">A. 施力點在中間，費力但方便使用</button><button class="opt" onclick="choose(13,'B')">B. 支點在中間，不省力也不費力</button><button class="opt" onclick="choose(13,'C')">C. 抗力點在中間，省力</button><button class="opt" onclick="choose(13,'D')">D. 以上皆非</button></div><div class="fb" id="fb13"></div></div>
+
+  <div class="qcard" id="qc14"><div class="qlbl">選擇題 · 第 14 題</div><div class="qtxt">槓桿平衡公式是什麼？</div><div class="opts"><button class="opt" onclick="choose(14,'A')">A. 施力 ÷ 施力臂 ＝ 抗力 ÷ 抗力臂</button><button class="opt" onclick="choose(14,'B')">B. 施力 × 施力臂 ＝ 抗力 × 抗力臂</button><button class="opt" onclick="choose(14,'C')">C. 施力 ＋ 施力臂 ＝ 抗力 ＋ 抗力臂</button><button class="opt" onclick="choose(14,'D')">D. 施力臂 ÷ 抗力臂 ＝ 抗力 ÷ 施力</button></div><div class="fb" id="fb14"></div></div>
+
+  <div class="qcard" id="qc15"><div class="qlbl">選擇題 · 第 15 題</div><div class="qtxt">電扶梯中，帶動踏階在軌道上運轉的裝置流程是？</div><div class="opts"><button class="opt" onclick="choose(15,'A')">A. 馬達直接帶動踏階</button><button class="opt" onclick="choose(15,'B')">B. 馬達→皮帶→驅動輪→鏈條→踏階</button><button class="opt" onclick="choose(15,'C')">C. 扶手帶動踏階</button><button class="opt" onclick="choose(15,'D')">D. 踏階靠重力自動運轉</button></div><div class="fb" id="fb15"></div></div>
+
+  <div class="divider"><div class="line"></div><div class="lbl">填充題（共 5 題）</div><div class="line"></div></div>
+
+  <div class="qcard" id="qcf1"><div class="qlbl">填充題 · 第 1 題</div><div class="qtxt">從抗力點到支點的距離，稱為「___」。</div><div class="fill-wrap"><input type="text" class="fi" id="fi1" placeholder="請填入答案"><button class="ckbtn" onclick="checkF(1)">確認</button></div><div class="fb" id="fbf1"></div></div>
+
+  <div class="qcard" id="qcf2"><div class="qlbl">填充題 · 第 2 題</div><div class="qtxt">輪軸由兩個半徑不同、固定在同一「___」的圓柱組成。</div><div class="fill-wrap"><input type="text" class="fi" id="fi2" placeholder="請填入答案"><button class="ckbtn" onclick="checkF(2)">確認</button></div><div class="fb" id="fbf2"></div></div>
+
+  <div class="qcard" id="qcf3"><div class="qlbl">填充題 · 第 3 題</div><div class="qtxt">滑輪固定不動的稱「___」；會隨物體移動的稱「___」。（用「/」分隔）</div><div class="fill-wrap"><input type="text" class="fi" id="fi3" placeholder="定滑輪/動滑輪" style="width:180px"><button class="ckbtn" onclick="checkF(3)">確認</button></div><div class="fb" id="fbf3"></div></div>
+
+  <div class="qcard" id="qcf4"><div class="qlbl">填充題 · 第 4 題</div><div class="qtxt">腳踏車前後齒輪以鏈條連接，兩者轉動方向___。</div><div class="fill-wrap"><input type="text" class="fi" id="fi4" placeholder="請填入答案"><button class="ckbtn" onclick="checkF(4)">確認</button></div><div class="fb" id="fbf4"></div></div>
+
+  <div class="qcard" id="qcf5"><div class="qlbl">填充題 · 第 5 題</div><div class="qtxt">阿基米德歸納出了「___」原理，並運用此原理發明投石器。</div><div class="fill-wrap"><input type="text" class="fi" id="fi5" placeholder="請填入答案"><button class="ckbtn" onclick="checkF(5)">確認</button></div><div class="fb" id="fbf5"></div></div>
+
+  <div class="qact"><button class="subbtn" onclick="submitQuiz()">📊 計算總分</button></div>
+  <div class="rpanel" id="resultPanel">
+    <div class="rbig" id="resultScore"></div>
+    <div class="rmsg" id="resultMsg"></div>
+    <button class="rtry" onclick="resetQuiz()">🔄 重新作答</button>
+  </div>
+</div>
+</div><!-- /container -->
+
+<script>
+/* ════════════════════════════════
+   TABS
+════════════════════════════════ */
+function showTab(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+/* ════════════════════════════════
+   CANVAS UTILS
+════════════════════════════════ */
+function mkCtx(id){
+  const c=document.getElementById(id);
+  const pr=window.devicePixelRatio||1;
+  const W=c.width, H=c.height;
+  c.width=W*pr; c.height=H*pr;
+  c.style.width=W+'px'; c.style.height=H+'px';
+  const ctx=c.getContext('2d');
+  ctx.scale(pr,pr);
+  return {ctx,W,H};
+}
+function arrow(ctx,x1,y1,x2,y2,col,lw){
+  const ang=Math.atan2(y2-y1,x2-x1), hs=10;
+  ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=lw||2;
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-hs*Math.cos(ang-.4),y2-hs*Math.sin(ang-.4));
+  ctx.lineTo(x2-hs*Math.cos(ang+.4),y2-hs*Math.sin(ang+.4));
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function lbl(ctx,t,x,y,col,sz,al,bold){
+  ctx.save();
+  ctx.fillStyle=col||'#333';
+  ctx.font=(bold?'700 ':'')+((sz||13)+'px')+" 'Noto Sans TC',sans-serif";
+  ctx.textAlign=al||'center';ctx.textBaseline='middle';
+  ctx.fillText(t,x,y);ctx.restore();
+}
+function gear(ctx,cx,cy,R,r,n,ang,fill){
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(ang);
+  ctx.beginPath();
+  for(let i=0;i<n*2;i++){
+    const a=i/(n*2)*Math.PI*2;
+    const rad=i%2===0?R:r;
+    i===0?ctx.moveTo(rad*Math.cos(a),rad*Math.sin(a)):ctx.lineTo(rad*Math.cos(a),rad*Math.sin(a));
+  }
+  ctx.closePath();ctx.fillStyle=fill;ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,.25)';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.beginPath();ctx.arc(0,0,r*.4,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,.7)';ctx.fill();ctx.stroke();
+  ctx.restore();
+}
+function chain(ctx,x1,y1,x2,y2,ph,col){
+  const dx=x2-x1,dy=y2-y1,d=Math.sqrt(dx*dx+dy*dy);
+  ctx.save();ctx.strokeStyle=col||'#795548';ctx.lineWidth=5;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  ctx.lineWidth=2;ctx.strokeStyle='rgba(0,0,0,.3)';
+  const step=16,nn=Math.floor(d/step);
+  for(let i=0;i<nn;i++){
+    const p=((i/nn+ph)%1+1)%1;
+    ctx.beginPath();ctx.arc(x1+dx*p,y1+dy*p,4,0,Math.PI*2);ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/* ════════════════════════════════
+   ① LEVER
+════════════════════════════════ */
+const {ctx:LC,W:LW,H:LH}=mkCtx('cLever');
+let lMode=0,lT=0;
+const lInfos=[
+  '⚖️ <strong>施力臂 ＞ 抗力臂</strong>：施力臂（紅）比抗力臂（藍）<strong>長</strong>，所以只需用<strong style="color:#2d7a3a">較小的力</strong>就能抬起重物 → <strong style="color:#2d7a3a">省力</strong>。例：開瓶器、拔釘器。',
+  '⚖️ <strong>施力臂 ＝ 抗力臂</strong>：兩臂等長，施力等於抗力，<strong style="color:#e53935">不省力也不費力</strong>。支點通常在中間。例：剪刀、蹺蹺板。',
+  '⚖️ <strong>施力臂 ＜ 抗力臂</strong>：施力臂（紅）比抗力臂（藍）<strong>短</strong>，需用<strong style="color:#e53935">較大的力</strong>，但可讓末端在較大範圍移動 → <strong style="color:#e53935">費力但方便</strong>。例：筷子、鑷子。'
+];
+const lModes=[
+  {ea:200,ra:80},{ea:140,ra:140},{ea:80,ra:200}
+];
+function setLever(m){
+  lMode=m;
+  ['lb0','lb1','lb2'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',i===m));
+  document.getElementById('leverInfo').innerHTML=lInfos[m];
+}
+setLever(0);
+
+function drawLever(){
+  LC.clearRect(0,0,LW,LH);
+  const {ea,ra}=lModes[lMode];
+  const fx=LW/2, fy=LH*.60;
+  const sway=Math.sin(lT*.035)*6;
+  const slope=sway/220*.5;
+  const eX=fx-ea, rX=fx+ra;
+  const eY=fy-12-slope*ea, rY=fy-12+slope*ra;
+
+  // bar
+  LC.save();LC.strokeStyle='#4caf50';LC.lineWidth=11;LC.lineCap='round';
+  LC.beginPath();LC.moveTo(24,fy-12-slope*280);LC.lineTo(LW-24,fy-12+slope*280);LC.stroke();
+  LC.restore();
+
+  // fulcrum
+  LC.fillStyle='#2d7a3a';
+  LC.beginPath();LC.moveTo(fx,fy-12);LC.lineTo(fx-22,fy+28);LC.lineTo(fx+22,fy+28);LC.closePath();LC.fill();
+  LC.fillStyle='#1b5e20';LC.fillRect(fx-38,fy+26,76,10);
+
+  // effort arrow
+  arrow(LC,eX,eY-52,eX,eY,'#e53935',3);
+  lbl(LC,'施力',eX,eY-66,'#e53935',13,'center',true);
+  lbl(LC,'施力點',eX,eY-82,'#e53935',11,'center',false);
+
+  // weight
+  LC.fillStyle='#1976d2';
+  LC.fillRect(rX-20,rY,40,44);
+  LC.strokeStyle='rgba(0,0,0,.2)';LC.lineWidth=1;LC.strokeRect(rX-20,rY,40,44);
+  lbl(LC,'重',rX,rY+22,'#fff',13,'center',true);
+  lbl(LC,'抗力點',rX,rY-14,'#1976d2',11,'center',false);
+  lbl(LC,'支點',fx,fy-28,'#2d7a3a',11,'center',false);
+
+  // arm annotations
+  const ay=fy+40;
+  LC.save();LC.strokeStyle='#888';LC.lineWidth=1;LC.setLineDash([3,3]);
+  [eX,fx,rX].forEach(x=>{LC.beginPath();LC.moveTo(x,fy+4);LC.lineTo(x,ay+2);LC.stroke();});
+  LC.setLineDash([]);LC.restore();
+
+  LC.save();LC.strokeStyle='#e53935';LC.lineWidth=1.5;
+  LC.beginPath();LC.moveTo(eX+3,ay);LC.lineTo(fx-3,ay);LC.stroke();
+  lbl(LC,'施力臂 '+ea,eX+(fx-eX)/2,ay+14,'#e53935',11,'center',true);
+
+  LC.strokeStyle='#1976d2';
+  LC.beginPath();LC.moveTo(fx+3,ay);LC.lineTo(rX-3,ay);LC.stroke();
+  lbl(LC,'抗力臂 '+ra,fx+(rX-fx)/2,ay+14,'#1976d2',11,'center',true);
+  LC.restore();
+}
+
+/* ════════════════════════════════
+   ② PULLEY
+════════════════════════════════ */
+const {ctx:PC,W:PW,H:PH}=mkCtx('cPulley');
+let pMode=0,pT=0;
+const pInfos=[
+  '🔴 <strong>定滑輪</strong>：滑輪位置固定。施力方向（↓）與物體移動方向（↑）<strong style="color:#e53935">相反</strong>。<strong style="color:#e53935">不省力也不費力</strong>，但可改變施力方向。例：升旗裝置。',
+  '🟢 <strong>動滑輪</strong>：滑輪隨物體一起移動。施力方向（↑）與物體移動方向（↑）<strong style="color:#2d7a3a">相同</strong>，且<strong style="color:#2d7a3a">可以省力</strong>。例：起重機。',
+  '🔴🟢 <strong>定滑輪＋動滑輪組合</strong>：兼具<strong style="color:#2d7a3a">省力</strong>（動滑輪）和<strong style="color:#1976d2">改變施力方向</strong>（定滑輪）。例：晒衣架、起重機。'
+];
+function setPulley(m){
+  pMode=m;
+  ['pb0','pb1','pb2'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',i===m));
+  document.getElementById('pulleyInfo').innerHTML=pInfos[m];
+}
+setPulley(0);
+
+function drawPulley(){
+  PC.clearRect(0,0,PW,PH);
+  const bob=Math.sin(pT*.045)*16;
+  const R=38;
+
+  // ceiling
+  PC.fillStyle='#a5d6a7';PC.fillRect(0,0,PW,18);
+
+  if(pMode===0){
+    // FIXED PULLEY centered
+    const cx=PW/2, cy=58;
+    PC.fillStyle='#4e342e';PC.fillRect(cx-4,18,8,cy-R-18);
+    // wheel
+    PC.beginPath();PC.arc(cx,cy,R,0,Math.PI*2);PC.fillStyle='#ffd54f';PC.fill();
+    PC.strokeStyle='#f57f17';PC.lineWidth=4;PC.stroke();
+    PC.beginPath();PC.arc(cx,cy,R-10,0,Math.PI*2);PC.strokeStyle='#e65100';PC.lineWidth=3;PC.stroke();
+    // spokes
+    [0,1,2].forEach(i=>{
+      const a=pT*.05+i*Math.PI*2/3;
+      PC.save();PC.strokeStyle='#bf360c';PC.lineWidth=2;
+      PC.beginPath();PC.moveTo(cx,cy);PC.lineTo(cx+(R-11)*Math.cos(a),cy+(R-11)*Math.sin(a));PC.stroke();PC.restore();
+    });
+    // ropes
+    PC.strokeStyle='#6d4c41';PC.lineWidth=3;
+    const lx=cx-12,rx=cx+12;
+    PC.beginPath();PC.moveTo(lx,cy+R);PC.lineTo(lx,148+bob);PC.stroke();
+    PC.beginPath();PC.moveTo(rx,cy+R);PC.lineTo(rx,185+bob*.4);PC.stroke();
+    // weight
+    PC.fillStyle='#1976d2';PC.fillRect(lx-22,148+bob,44,44);PC.strokeStyle='rgba(0,0,0,.15)';PC.lineWidth=1;PC.strokeRect(lx-22,148+bob,44,44);
+    lbl(PC,'重物',lx,170+bob,'#fff',12,'center',true);
+    // effort arrow
+    arrow(PC,rx,200+bob*.4,rx,228+bob*.2,'#e53935',2.5);
+    lbl(PC,'施力↓',rx+24,218+bob*.2,'#e53935',12,'center',true);
+    lbl(PC,'定滑輪',cx+R+10,cy,'#2d7a3a',13,'left',true);
+    lbl(PC,'物體↑移動',lx-26,155+bob,'#1976d2',11,'right',false);
+    lbl(PC,'（施力↓ 與 物體↑ 方向相反）',PW/2,PH-12,'#e53935',12,'center',true);
+
+  } else if(pMode===1){
+    // MOVING PULLEY
+    const ancX=PW*.62, pulCY=105+bob*.25, pulCX=PW*.42;
+    const handX=PW*.18;
+    PC.fillStyle='#4e342e';PC.fillRect(ancX-3,18,6,80);
+    // fixed rope from ceiling-right to pulley top
+    PC.strokeStyle='#6d4c41';PC.lineWidth=3;
+    PC.beginPath();PC.moveTo(ancX,98);PC.lineTo(pulCX+R*.6,pulCY-R*.6);PC.stroke();
+    // effort rope from hand up to pulley
+    PC.beginPath();PC.moveTo(handX,pulCY-R);PC.lineTo(handX,38);PC.stroke();
+    // wheel
+    PC.beginPath();PC.arc(pulCX,pulCY,R,0,Math.PI*2);PC.fillStyle='#ffd54f';PC.fill();
+    PC.strokeStyle='#f57f17';PC.lineWidth=4;PC.stroke();
+    PC.beginPath();PC.arc(pulCX,pulCY,R-10,0,Math.PI*2);PC.strokeStyle='#e65100';PC.lineWidth=3;PC.stroke();
+    [0,1,2].forEach(i=>{
+      const a=pT*.05+i*Math.PI*2/3;
+      PC.save();PC.strokeStyle='#bf360c';PC.lineWidth=2;
+      PC.beginPath();PC.moveTo(pulCX,pulCY);PC.lineTo(pulCX+(R-11)*Math.cos(a),pulCY+(R-11)*Math.sin(a));PC.stroke();PC.restore();
+    });
+    // weight below
+    const wY=pulCY+R;
+    PC.fillStyle='#1976d2';PC.fillRect(pulCX-22,wY,44,44);PC.strokeStyle='rgba(0,0,0,.15)';PC.lineWidth=1;PC.strokeRect(pulCX-22,wY,44,44);
+    lbl(PC,'重物',pulCX,wY+22,'#fff',12,'center',true);
+    arrow(PC,handX,76,handX,40,'#e53935',2.5);
+    lbl(PC,'施力↑',handX-30,56,'#e53935',12,'center',true);
+    lbl(PC,'動滑輪',pulCX+R+10,pulCY,'#2d7a3a',13,'left',true);
+    lbl(PC,'（施力↑ 與 物體↑ 方向相同，省力！）',PW/2,PH-12,'#2d7a3a',12,'center',true);
+
+  } else {
+    // COMBINED: fixed(right) + moving(left)
+    const fcx=PW*.68, fcy=50; // fixed pulley
+    const mcx=PW*.32; const mcy=130+bob*.2; // moving pulley
+    const handX=PW*.1;
+
+    // ceiling anchors
+    PC.fillStyle='#4e342e';PC.fillRect(fcx-3,18,6,fcy-R-18);
+    PC.fillStyle='#4e342e';PC.fillRect(PW*.55,18,6,50);
+
+    // fixed pulley
+    PC.beginPath();PC.arc(fcx,fcy,R*.8,0,Math.PI*2);PC.fillStyle='#ffd54f';PC.fill();
+    PC.strokeStyle='#f57f17';PC.lineWidth=3;PC.stroke();
+    [0,1,2].forEach(i=>{
+      const a=-pT*.05+i*Math.PI*2/3;
+      PC.save();PC.strokeStyle='#bf360c';PC.lineWidth=1.5;
+      PC.beginPath();PC.moveTo(fcx,fcy);PC.lineTo(fcx+(R*.8-8)*Math.cos(a),fcy+(R*.8-8)*Math.sin(a));PC.stroke();PC.restore();
+    });
+
+    // moving pulley
+    PC.beginPath();PC.arc(mcx,mcy,R*.85,0,Math.PI*2);PC.fillStyle='#80cbc4';PC.fill();
+    PC.strokeStyle='#00796b';PC.lineWidth=3;PC.stroke();
+    [0,1,2].forEach(i=>{
+      const a=pT*.05+i*Math.PI*2/3;
+      PC.save();PC.strokeStyle='#004d40';PC.lineWidth=1.5;
+      PC.beginPath();PC.moveTo(mcx,mcy);PC.lineTo(mcx+(R*.85-9)*Math.cos(a),mcy+(R*.85-9)*Math.sin(a));PC.stroke();PC.restore();
+    });
+
+    // ropes
+    PC.strokeStyle='#6d4c41';PC.lineWidth=3;
+    // anchor rope (left of moving pulley → ceiling)
+    PC.beginPath();PC.moveTo(mcx-R*.6,mcy-R*.6);PC.lineTo(PW*.55+3,68);PC.stroke();
+    // rope over fixed pulley from moving pulley right → up
+    PC.beginPath();PC.moveTo(mcx+R*.7,mcy-R*.5);PC.lineTo(fcx-8,fcy+R*.8);PC.stroke();
+    // rope from fixed pulley to hand
+    PC.beginPath();PC.moveTo(fcx-8,fcy+R*.8);PC.lineTo(handX,mcy-20);PC.stroke();
+
+    // weight
+    const wY=mcy+R*.85;
+    PC.fillStyle='#1976d2';PC.fillRect(mcx-22,wY,44,44);PC.strokeStyle='rgba(0,0,0,.15)';PC.lineWidth=1;PC.strokeRect(mcx-22,wY,44,44);
+    lbl(PC,'重物',mcx,wY+22,'#fff',12,'center',true);
+    arrow(PC,handX,mcy-20,handX,mcy-55,'#e53935',2.5);
+    lbl(PC,'施力↑',handX-30,mcy-38,'#e53935',11,'right',true);
+    lbl(PC,'定滑輪',fcx+R*.8+6,fcy,'#ff8c00',12,'left',true);
+    lbl(PC,'動滑輪',mcx+R*.85+6,mcy,'#2d7a3a',12,'left',true);
+    lbl(PC,'組合：省力 ＋ 方便改變施力方向',PW/2,PH-12,'#2d7a3a',12,'center',true);
+  }
+}
+
+/* ════════════════════════════════
+   ③ GEAR
+════════════════════════════════ */
+const {ctx:GC,W:GW,H:GH}=mkCtx('cGear');
+let gMode=0,gT=0;
+const gInfos=[
+  '⚙️ <strong>齒輪組</strong>：兩齒輪直接咬合，轉動方向<strong style="color:#e53935">相反</strong>。大齒輪（20齒）轉1圈→小齒輪（12齒）轉 <strong>20÷12≈1.67圈</strong>，速度加快。',
+  '🔗 <strong>齒輪鏈條組</strong>：用鏈條連接兩個分開的齒輪，轉動方向<strong style="color:#2d7a3a">相同</strong>。大齒輪轉1圈→小齒輪轉多於1圈（速度較快）。腳踏車即是此原理。'
+];
+function setGear(m){
+  gMode=m;
+  ['gb0','gb1'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',i===m));
+  document.getElementById('gearInfo').innerHTML=gInfos[m];
+}
+setGear(0);
+
+function drawGear(){
+  GC.clearRect(0,0,GW,GH);
+  const a1=gT*.022;
+  const t1=20,t2=12,ratio=t1/t2;
+
+  if(gMode===0){
+    const cx1=GW*.33,cy1=GH*.5,R1=72,r1=58;
+    const cx2=GW*.67,cy2=GH*.5,R2=44,r2=33;
+    const a2=-a1*ratio;
+    gear(GC,cx1,cy1,R1,r1,t1,a1,'#ff8c00');
+    gear(GC,cx2,cy2,R2,r2,t2,a2,'#4caf50');
+    // rotation indicators
+    const ar1=R1+20;
+    GC.save();GC.strokeStyle='#e53935';GC.lineWidth=2;
+    GC.beginPath();GC.arc(cx1,cy1,ar1,-Math.PI*.65,Math.PI*.65);GC.stroke();
+    arrow(GC,cx1+ar1*Math.cos(Math.PI*.65-.12),cy1+ar1*Math.sin(Math.PI*.65-.12),cx1+ar1*Math.cos(Math.PI*.65),cy1+ar1*Math.sin(Math.PI*.65),'#e53935',2);
+    const ar2=R2+18;
+    GC.strokeStyle='#1976d2';
+    GC.beginPath();GC.arc(cx2,cy2,ar2,Math.PI*.35,-Math.PI*.35,true);GC.stroke();
+    arrow(GC,cx2+ar2*Math.cos(-Math.PI*.35+.12),cy2+ar2*Math.sin(-Math.PI*.35+.12),cx2+ar2*Math.cos(-Math.PI*.35),cy2+ar2*Math.sin(-Math.PI*.35),'#1976d2',2);
+    GC.restore();
+    lbl(GC,'大齒輪（'+t1+'齒）',cx1,cy1-R1-16,'#ff8c00',13,'center',true);
+    lbl(GC,'小齒輪（'+t2+'齒）',cx2,cy2-R2-16,'#4caf50',13,'center',true);
+    lbl(GC,'順時針',cx1,cy1+R1+34,'#e53935',12,'center',true);
+    lbl(GC,'逆時針（較快）',cx2,cy2+R2+34,'#1976d2',12,'center',true);
+    lbl(GC,'◀▶ 方向相反',GW/2,GH-12,'#e53935',12,'center',true);
+
+  } else {
+    const cx1=GW*.2,cy1=GH*.5,R1=58,r1=46;
+    const cx2=GW*.75,cy2=GH*.5,R2=36,r2=26;
+    const a2=a1*ratio; // same direction
+    gear(GC,cx1,cy1,R1,r1,t1,a1,'#ff8c00');
+    gear(GC,cx2,cy2,R2,r2,t2,a2,'#4caf50');
+    // chain top and bottom
+    const ph=(gT*.022/(Math.PI*2))%1;
+    const tY=cy1-R1+4, bY=cy1+R1-4;
+    chain(GC,cx1+6,tY,cx2-4,tY+(cy2-cy1),ph);
+    chain(GC,cx1+6,bY,cx2-4,bY+(cy2-cy1),-ph);
+    // arrows same direction
+    const ar1=R1+18,ar2=R2+16;
+    GC.save();
+    [
+      [GC,cx1,cy1,ar1,'#e53935',1],
+      [GC,cx2,cy2,ar2,'#1976d2',1]
+    ].forEach(([ctx,cx,cy,ar,col])=>{
+      ctx.strokeStyle=col;ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(cx,cy,ar,-Math.PI*.65,Math.PI*.65);ctx.stroke();
+      arrow(ctx,cx+ar*Math.cos(Math.PI*.65-.12),cy+ar*Math.sin(Math.PI*.65-.12),cx+ar*Math.cos(Math.PI*.65),cy+ar*Math.sin(Math.PI*.65),col,2);
+    });
+    GC.restore();
+    lbl(GC,'前齒輪（大，'+t1+'齒）',cx1,cy1-R1-16,'#ff8c00',13,'center',true);
+    lbl(GC,'後齒輪（小，'+t2+'齒）',cx2,cy2-R2-16,'#4caf50',13,'center',true);
+    lbl(GC,'順時針',cx1,cy1+R1+34,'#e53935',12,'center',true);
+    lbl(GC,'順時針（較快）',cx2,cy2+R2+34,'#1976d2',12,'center',true);
+    lbl(GC,'▲ 鏈條連接，方向相同 ▲',GW/2,GH-12,'#2d7a3a',12,'center',true);
+  }
+}
+
+/* ════════════════════════════════
+   ④ BIKE
+════════════════════════════════ */
+const {ctx:BC,W:BW,H:BH}=mkCtx('cBike');
+let bikeOn=true,bikeT=0;
+function setBike(on){
+  bikeOn=on;
+  ['bb0','bb1'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',i===(on?0:1)));
+}
+
+function drawBike(){
+  BC.clearRect(0,0,BW,BH);
+  // bg
+  BC.fillStyle='#f0f7f0';BC.fillRect(0,0,BW,BH);
+  BC.fillStyle='#c8e6c9';BC.fillRect(0,BH-22,BW,22);
+  BC.strokeStyle='#4caf50';BC.lineWidth=2;BC.beginPath();BC.moveTo(0,BH-22);BC.lineTo(BW,BH-22);BC.stroke();
+
+  const a=bikeOn?bikeT*.042:0;
+  const rX=BW*.28,rY=BH-22-52, fX=BW*.70,fY=BH-22-52;
+  const sprX=BW*.42,sprY=rY+8; // front sprocket center
+  const spR=25,spT=18; // sprocket big
+  const reR=15,reT=11; // rear sprocket small
+  const wR=52; // wheel radius
+  const ratio=spT/reT;
+
+  // ── frame ──
+  BC.save();BC.strokeStyle='#1565c0';BC.lineWidth=5;BC.lineCap='round';BC.lineJoin='round';
+  // seat post
+  BC.beginPath();BC.moveTo(sprX+6,sprY-12);BC.lineTo(sprX+28,rY-54);BC.stroke();
+  // top tube
+  BC.beginPath();BC.moveTo(sprX+28,rY-54);BC.lineTo(fX-8,fY-48);BC.stroke();
+  // down tube
+  BC.beginPath();BC.moveTo(sprX+6,sprY-12);BC.lineTo(fX-8,fY-48);BC.stroke();
+  // chainstay
+  BC.beginPath();BC.moveTo(sprX+6,sprY-12);BC.lineTo(rX,rY);BC.stroke();
+  // seatstay
+  BC.beginPath();BC.moveTo(sprX+28,rY-54);BC.lineTo(rX,rY);BC.stroke();
+  // fork
+  BC.beginPath();BC.moveTo(fX-8,fY-48);BC.lineTo(fX,fY);BC.stroke();
+  BC.restore();
+
+  // ── wheels ──
+  [rX,fX].forEach((cx,i)=>{
+    const cy=i===0?rY:fY;
+    BC.save();BC.translate(cx,cy);BC.rotate(a*ratio);
+    BC.strokeStyle='#212121';BC.lineWidth=5;BC.beginPath();BC.arc(0,0,wR,0,Math.PI*2);BC.stroke();
+    BC.lineWidth=2;BC.strokeStyle='#555';
+    for(let k=0;k<8;k++){const sa=k/8*Math.PI*2;BC.beginPath();BC.moveTo(0,0);BC.lineTo(wR*Math.cos(sa),wR*Math.sin(sa));BC.stroke();}
+    BC.fillStyle='#333';BC.beginPath();BC.arc(0,0,5,0,Math.PI*2);BC.fill();
+    BC.restore();
+  });
+
+  // ── sprockets ──
+  gear(BC,sprX,sprY,spR,spR-7,spT,a,'#ff8c00');
+  gear(BC,rX,rY,reR,reR-5,reT,a*ratio,'#4caf50');
+
+  // ── chain ──
+  const cph=(a/(Math.PI*2))%1;
+  chain(BC,sprX+3,sprY-spR+3,rX-2,rY-reR+2,cph);
+  chain(BC,sprX+3,sprY+spR-3,rX-2,rY+reR-3,-cph);
+
+  // ── pedal ──
+  const pa=a+Math.PI*.3;
+  const pl=18;
+  BC.save();BC.translate(sprX,sprY);
+  BC.strokeStyle='#37474f';BC.lineWidth=4;BC.lineCap='round';
+  BC.beginPath();BC.moveTo(-pl*Math.cos(pa),-pl*Math.sin(pa));BC.lineTo(pl*Math.cos(pa),pl*Math.sin(pa));BC.stroke();
+  [-1,1].forEach(s=>{
+    const px=s*pl*Math.cos(pa),py=s*pl*Math.sin(pa);
+    BC.save();BC.translate(px,py);BC.rotate(pa);
+    BC.fillStyle='#f44336';BC.fillRect(-9,-4,18,8);BC.restore();
+  });
+  BC.restore();
+
+  // ── handlebar ──
+  BC.save();BC.strokeStyle='#1565c0';BC.lineWidth=5;BC.lineCap='round';
+  BC.beginPath();BC.moveTo(fX-8,fY-48);BC.lineTo(fX+16,fY-56);BC.stroke();
+  BC.beginPath();BC.moveTo(fX+16,fY-56);BC.lineTo(fX+20,fY-68);BC.stroke();
+  // seat
+  BC.strokeStyle='#795548';BC.lineWidth=6;
+  BC.beginPath();BC.moveTo(sprX+16,rY-68);BC.lineTo(sprX+38,rY-68);BC.stroke();
+  BC.restore();
+
+  // ── labels ──
+  if(bikeOn){
+    lbl(BC,'踏板',sprX-38,sprY+4,'#e53935',12,'center',true);
+    lbl(BC,'前齒輪（大）',sprX,sprY-spR-14,'#ff8c00',11,'center',true);
+    lbl(BC,'後齒輪（小）',rX,rY-reR-14,'#4caf50',11,'center',true);
+    lbl(BC,'後輪',rX-wR-8,rY,'#333',11,'right',false);
+    lbl(BC,'前輪',fX+wR+8,fY,'#333',11,'left',false);
+    // forward arrow
+    arrow(BC,BW-64,BH-36,BW-18,BH-36,'#2d7a3a',2.5);
+    lbl(BC,'前進！',BW-36,BH-50,'#2d7a3a',12,'center',true);
+  } else {
+    lbl(BC,'停止中',BW/2,BH/2,'#aaa',20,'center',false);
+  }
+}
+
+/* ════════════════════════════════
+   ANIMATION LOOP
+════════════════════════════════ */
+let raf=null;
+function tick(){
+  lT++;pT++;gT++;
+  if(bikeOn)bikeT++;
+  drawLever();drawPulley();drawGear();drawBike();
+  raf=requestAnimationFrame(tick);
+}
+window.addEventListener('load',()=>{
+  if(raf)cancelAnimationFrame(raf);
+  raf=requestAnimationFrame(tick);
+  document.getElementById('leverInfo').innerHTML=lInfos[0];
+  document.getElementById('pulleyInfo').innerHTML=pInfos[0];
+  document.getElementById('gearInfo').innerHTML=gInfos[0];
+});
+
+/* ════════════════════════════════
+   QUIZ
+════════════════════════════════ */
+const MCA={1:'B',2:'B',3:'C',4:'B',5:'C',6:'B',7:'B',8:'C',9:'B',10:'B',11:'C',12:'B',13:'A',14:'B',15:'B'};
+const MCE={
+  1:'槓桿五要素：支點、施力點、抗力點、施力臂、抗力臂。',
+  2:'開瓶器的抗力點（瓶蓋）在中間，屬於省力槓桿。',
+  3:'施力臂 > 抗力臂 → 施力 < 抗力 → 省力。',
+  4:'施力在輪上，輪半徑（施力臂）> 軸半徑（抗力臂），省力。',
+  5:'竹蜻蜓是手搓動軸（細桿）帶動輪（葉片），施力在軸上。',
+  6:'定滑輪不省力也不費力，但可改變施力方向（與物體移動方向相反）。',
+  7:'動滑輪可以省力，施力方向和物體移動方向相同。',
+  8:'定滑輪＋動滑輪組合，兼具省力和改變施力方向。',
+  9:'直接咬合的齒輪組，轉動方向相反。',
+  10:'鏈條連接的齒輪鏈條組，轉動方向相同。',
+  11:'大齒輪轉1圈，小齒輪轉多於1圈。',
+  12:'前齒輪透過鏈條帶動後齒輪，因鏈條連接故方向相同。',
+  13:'筷子夾菜時施力點在中間，費力但方便使用。',
+  14:'槓桿平衡公式：施力 × 施力臂 ＝ 抗力 × 抗力臂。',
+  15:'馬達→皮帶→驅動輪→鏈條→踏階，依序傳遞動力。'
+};
+const FA={1:['抗力臂'],2:['軸心'],3:['定滑輪/動滑輪','定滑輪／動滑輪'],4:['相同'],5:['槓桿']};
+const FE={1:'抗力點到支點的距離稱為「抗力臂」。',2:'輪軸固定在同一「軸心」的圓柱組成。',3:'固定不動→定滑輪；隨物體移動→動滑輪。',4:'鏈條連接的齒輪鏈條組方向相同。',5:'阿基米德歸納出「槓桿」原理。'};
+
+let mcA={},fA={},sc=0,tot=0;
+function upd(){const p=(tot/20*100).toFixed(0);document.getElementById('progressBar').style.width=p+'%';document.getElementById('progressText').textContent=tot+' / 20 題';document.getElementById('scoreDisplay').textContent=sc+' / '+tot;}
+function choose(n,ch){
+  if(mcA[n])return;mcA[n]=ch;tot++;
+  const card=document.getElementById('qc'+n);
+  const btns=card.querySelectorAll('.opt');const L=['A','B','C','D'];const cor=MCA[n];
+  btns.forEach((b,i)=>{b.disabled=true;if(L[i]===cor)b.classList.add('ca');else if(L[i]===ch&&ch!==cor)b.classList.add('wa');});
+  const fb=document.getElementById('fb'+n);
+  if(ch===cor){sc++;fb.className='fb show ok';fb.textContent='✅ 正確！'+MCE[n];card.classList.add('correct');}
+  else{fb.className='fb show err';fb.textContent='❌ 答案是 '+cor+'。'+MCE[n];card.classList.add('wrong');}
+  upd();
+}
+function checkF(n){
+  if(fA[n])return;const inp=document.getElementById('fi'+n);const v=inp.value.trim();if(!v){inp.focus();return;}
+  fA[n]=true;tot++;inp.disabled=true;inp.nextElementSibling.disabled=true;
+  const ok=FA[n].some(c=>v===c||v.replace('／','/')===c.replace('／','/'));
+  const fb=document.getElementById('fbf'+n);const card=document.getElementById('qcf'+n);
+  if(ok){sc++;inp.classList.add('cf');fb.className='fb show ok';fb.textContent='✅ 正確！'+FE[n];card.classList.add('correct');}
+  else{inp.classList.add('wf');fb.className='fb show err';fb.textContent='❌ 正確答案：'+FA[n][0]+'。'+FE[n];card.classList.add('wrong');}
+  upd();
+}
+function submitQuiz(){
+  for(let i=1;i<=15;i++){if(!mcA[i]){mcA[i]='—';tot++;const card=document.getElementById('qc'+i);const L=['A','B','C','D'];card.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(L[j]===MCA[i])b.classList.add('ca');});const fb=document.getElementById('fb'+i);fb.className='fb show err';fb.textContent='⚠️ 未作答。正確答案：'+MCA[i]+'。'+MCE[i];card.classList.add('unanswered');}}
+  for(let i=1;i<=5;i++){if(!fA[i]){fA[i]=true;tot++;const inp=document.getElementById('fi'+i);inp.disabled=true;inp.nextElementSibling.disabled=true;inp.classList.add('wf');const fb=document.getElementById('fbf'+i);fb.className='fb show err';fb.textContent='⚠️ 未作答。正確答案：'+FA[i][0]+'。'+FE[i];document.getElementById('qcf'+i).classList.add('unanswered');}}
+  upd();
+  const p=Math.round(sc/20*100);
+  const msg=p>=90?'🎉 太厲害了！你是簡單機械小達人！':p>=70?'👍 表現不錯！再複習一下重點整理吧！':p>=50?'💪 繼續加油！回去看重點整理再挑戰！':'📚 再好好複習一遍，你一定可以進步！';
+  document.getElementById('resultScore').textContent=sc+' / 20 分（'+p+'%）';
+  document.getElementById('resultMsg').textContent=msg;
+  const rp=document.getElementById('resultPanel');rp.classList.add('show');rp.scrollIntoView({behavior:'smooth'});
+}
+function resetQuiz(){
+  mcA={};fA={};sc=0;tot=0;upd();
+  document.getElementById('resultPanel').classList.remove('show');
+  for(let i=1;i<=15;i++){const c=document.getElementById('qc'+i);c.className='qcard';c.querySelectorAll('.opt').forEach(b=>{b.disabled=false;b.className='opt';});const f=document.getElementById('fb'+i);f.className='fb';f.textContent='';}
+  for(let i=1;i<=5;i++){const c=document.getElementById('qcf'+i);c.className='qcard';const inp=document.getElementById('fi'+i);inp.value='';inp.disabled=false;inp.className='fi';inp.nextElementSibling.disabled=false;const f=document.getElementById('fbf'+i);f.className='fb';f.textContent='';}
+  document.querySelector('.tab-btn').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
