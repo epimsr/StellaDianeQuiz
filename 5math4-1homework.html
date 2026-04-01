@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>回家作業複習</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #f5f0e8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 48px;
+  }
+
+  .sheet {
+    background: #fff;
+    width: 700px;
+    padding: 36px 40px 48px;
+    box-shadow: 0 4px 28px rgba(0,0,0,0.13);
+    border-radius: 4px;
+  }
+
+  .header {
+    border: 2.5px solid #222;
+    padding: 11px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fffdf7;
+  }
+
+  .unit-label {
+    font-size: 15px;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: 0.5px;
+  }
+
+  .hw-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #c0392b;
+    border: 1.5px solid #c0392b;
+    padding: 3px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 2.5px solid #222;
+  }
+
+  .cell {
+    border: 1.5px solid #555;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .question {
+    padding: 12px 16px 10px;
+    font-size: 14.5px;
+    font-weight: 700;
+    line-height: 1.85;
+    color: #111;
+    border-bottom: 1.5px dashed #bbb;
+    min-height: 96px;
+  }
+
+  .q-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #2c3e50;
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 900;
+    width: 23px;
+    height: 23px;
+    border-radius: 3px;
+    margin-right: 6px;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  .workspace {
+    flex: 1;
+    padding: 10px 16px 14px;
+    min-height: 175px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .line {
+    border-bottom: 1px solid #d0d0d0;
+    height: 26px;
+  }
+
+  .footer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .score-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #444;
+  }
+
+  .score-blank {
+    border: 1.5px solid #555;
+    width: 64px;
+    height: 28px;
+    border-radius: 3px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 0; gap: 0; }
+    .sheet {
+      box-shadow: none;
+      page-break-after: always;
+      width: 100%;
+      border-radius: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ 第一份 ══════════════════ -->
+<div class="sheet">
+  <div class="header">
+    <div class="unit-label">單元：四－1　小數乘整數 VS 整數乘小數</div>
+    <div class="hw-label">回家作業複習（一）</div>
+  </div>
+  <div class="grid">
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">1</span>一袋米重 2.375 公斤，超市一次
+        進貨 48 袋，共進了多少公斤的米？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">2</span>小明每天跑步 0.085 公里，
+        整個 4 月（30 天）共跑了多少公里？
+        換算成公尺是多少公尺？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">3</span>甲數是 325，乙數是甲數的 4.16 倍，
+        丙數是乙數的 0.75 倍，
+        丙數是多少？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">4</span>工廠每小時生產 0.648 公噸的零件，
+        一天工作 24 小時，
+        21 天共生產多少公噸？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><div class="score-box">得分：<div class="score-blank"></div></div></div>
+</div>
+
+<!-- ══════════════════ 第二份 ══════════════════ -->
+<div class="sheet">
+  <div class="header">
+    <div class="unit-label">單元：四－1　小數乘整數 VS 整數乘小數</div>
+    <div class="hw-label">回家作業複習（二）</div>
+  </div>
+  <div class="grid">
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">1</span>一個水箱可裝 18.64 公升的水，
+        學校共有 35 個水箱，
+        全部裝滿共有多少公升的水？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">2</span>奶奶每天織 0.072 公尺的圍巾，
+        5 月（31 天）可以織多少公尺？
+        換算成公分是多少公分？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">3</span>颱風每秒鐘移動 18.5 公尺，
+        12 小時可以移動多少公里？
+        （1 公里＝1000 公尺）
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">4</span>甲數是 520，乙數是甲數的 0.85 倍，
+        甲、乙兩數的差是多少？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><div class="score-box">得分：<div class="score-blank"></div></div></div>
+</div>
+
+<!-- ══════════════════ 第三份 ══════════════════ -->
+<div class="sheet">
+  <div class="header">
+    <div class="unit-label">單元：四－1　小數乘整數 VS 整數乘小數</div>
+    <div class="hw-label">回家作業複習（三）</div>
+  </div>
+  <div class="grid">
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">1</span>蛋糕師傅做 1 個蛋糕需要 0.724 公斤
+        的麵粉，每天做 16 個，
+        25 天共需多少公斤的麵粉？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">2</span>子奇的身高是 128 公分，
+        爸爸的身高是子奇的 1.35 倍，
+        爸爸有多高？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">3</span>一條繩子長 2.315 公尺，將 6 段
+        繩子接在一起，
+        共長多少公尺？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">4</span>甲數是 184，乙數是甲數的 3.25 倍，
+        丙數是乙數的 1.4 倍，
+        甲、丙兩數的和是多少？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><div class="score-box">得分：<div class="score-blank"></div></div></div>
+</div>
+
+<!-- ══════════════════ 第四份 ══════════════════ -->
+<div class="sheet">
+  <div class="header">
+    <div class="unit-label">單元：四－1　小數乘整數 VS 整數乘小數</div>
+    <div class="hw-label">回家作業複習（四）</div>
+  </div>
+  <div class="grid">
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">1</span>一公斤大約是 2.205 磅，
+        小華體重 38 公斤，
+        大約是多少磅？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">2</span>姊姊行動電話通話費每分鐘 0.25 元，
+        這個月共通話 138 分鐘，
+        通話費一共是多少元？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">3</span>甲數是 202，乙數是甲數的 3.78 倍，
+        甲、乙兩數的和是多少？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">4</span>小宇打字速度是小文的 1.25 倍，
+        小文打字速度是小華的 1.6 倍，
+        小華 1 分鐘打 40 個字，
+        小宇 1 分鐘可以打多少個字？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><div class="score-box">得分：<div class="score-blank"></div></div></div>
+</div>
+
+</body>
+</html>

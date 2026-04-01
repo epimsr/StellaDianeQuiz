@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>容積－3 不規則體積 回家作業複習</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #f5f0e8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 48px;
+  }
+
+  .sheet {
+    background: #fff;
+    width: 700px;
+    padding: 36px 40px 48px;
+    box-shadow: 0 4px 28px rgba(0,0,0,0.13);
+    border-radius: 4px;
+  }
+
+  .header {
+    border: 2.5px solid #222;
+    padding: 11px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fffdf7;
+  }
+
+  .unit-label {
+    font-size: 15px;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: 0.5px;
+  }
+
+  .hw-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #c0392b;
+    border: 1.5px solid #c0392b;
+    padding: 3px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 2.5px solid #222;
+  }
+
+  .cell {
+    border: 1.5px solid #555;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .question {
+    padding: 12px 16px 10px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.9;
+    color: #111;
+    border-bottom: 1.5px dashed #bbb;
+    min-height: 110px;
+  }
+
+  .q-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #2c3e50;
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 900;
+    width: 23px;
+    height: 23px;
+    border-radius: 3px;
+    margin-right: 6px;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  .workspace {
+    flex: 1;
+    padding: 10px 16px 14px;
+    min-height: 185px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .line {
+    border-bottom: 1px solid #d0d0d0;
+    height: 26px;
+  }
+
+  .footer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .score-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #444;
+  }
+
+  .score-blank {
+    border: 1.5px solid #555;
+    width: 64px;
+    height: 28px;
+    border-radius: 3px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 0; gap: 0; }
+    .sheet {
+      box-shadow: none;
+      page-break-after: always;
+      width: 100%;
+      border-radius: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ 第一份 ══════════════════ -->
+<div class="sheet">
+  <div class="header">
+    <div class="unit-label">單元：一三・容積－3　不規則體積</div>
+    <div class="hw-label">回家作業複習（一）</div>
+  </div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">1</span>有一個厚度是 1 公分的無蓋正方體
+        水箱，外面的邊長是 32 公分，裝滿
+        水後倒出一些水，水深變成 21 公分，
+        倒出來的水有多少毫升？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">2</span>在一個裝水的長方體水缸中，放入一
+        個邊長 8 公分的正方體鐵塊，完全沉
+        入後，溢出的水有幾毫升？水缸內長
+        40 公分、寬 25 公分、水深 15 公分。
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">3</span>一個內部長 50 公分、寬 35 公分、
+        高 30 公分的魚缸，先加水至 20 公分
+        高，若一條金魚的體積大約是 500
+        立方公分，最多可放幾條金魚且水
+        不會漏出來？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">4</span>嚴文家為了節約用水，在馬桶水箱
+        裡放入一個長 20 公分、寬 10 公分、
+        高 6 公分的磚塊（全部沉在水裡），
+        馬桶水箱內部長 40 公分、寬 14 公分、
+        注滿水的高度是 24 公分，沖水一次
+        要用掉多少毫升的水？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer"><div class="score-box">得分：<div class="score-blank"></div></div></div>
+</div>
+
+<!-- ══════════════════ 第二份 ══════════════════ -->
+<div class="sheet">
+  <div class="header">
+    <div class="unit-label">單元：一三・容積－3　不規則體積</div>
+    <div class="hw-label">回家作業複習（二）</div>
+  </div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">1</span>爸爸用厚 1 公分的木板釘成一個無蓋
+        的長方體木盒，外部長 20 公分、寬
+        16 公分、高 14 公分，如果在盒子裡
+        放入每邊長 2 公分的正方體積木，
+        一共可以放滿幾個？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">2</span>有一個內部長 60 公分、寬 40 公分、
+        高 50 公分的長方體容器，倒入 36
+        公升的水，水深是幾公分？再放入
+        一個體積 6000 立方公分的石頭，
+        水面會上升到幾公分？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">3</span>自來水公司以每立方公尺的體積是
+        1 立方公尺、水費 10 元來計費，要
+        裝滿一個內部長 30 公尺、寬 12 公
+        尺、高 3 公尺的游泳池，要花幾元
+        水費？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">4</span>容量 4 公升的量杯裡，裝有 3000
+        毫升的水，放入一塊石頭（完全沉
+        入水中），水溢出 420 毫升，這塊
+        石頭的體積是多少立方公分？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer"><div class="score-box">得分：<div class="score-blank"></div></div></div>
+</div>
+
+<!-- ══════════════════ 第三份 ══════════════════ -->
+<div class="sheet">
+  <div class="header">
+    <div class="unit-label">單元：一三・容積－3　不規則體積</div>
+    <div class="hw-label">回家作業複習（三）</div>
+  </div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">1</span>有一個厚度是 2 公分的無蓋長方體
+        水箱，外部長 46 公分、寬 26 公分、
+        高 22 公分，裝滿水後倒出一些水，
+        水深變成 15 公分，倒出來的水有
+        多少毫升？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">2</span>一個內部長 25 公分、寬 20 公分、
+        高 30 公分的長方體水槽內，放入體
+        積為 2000 立方公分的石頭，水溢出
+        了 800 毫升，水槽內原有水多少
+        公升？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">3</span>有一個厚度是 0.5 公分的長方體玻璃
+        缸，它的外部長 63 公分、寬 33 公分、
+        高 45 公分，裝水至 28 公分高，放入
+        一條體積 3500 立方公分的魚，這個
+        容器的水面高度上升至幾公分？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">4</span>一個邊長 12 公分的正方形紙板，
+        把四個角各剪下邊長 2 公分的正方
+        形後，摺成一個無蓋長方體容器，
+        它的容量是幾毫升？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer"><div class="score-box">得分：<div class="score-blank"></div></div></div>
+</div>
+
+<!-- ══════════════════ 第四份 ══════════════════ -->
+<div class="sheet">
+  <div class="header">
+    <div class="unit-label">單元：一三・容積－3　不規則體積</div>
+    <div class="hw-label">回家作業複習（四）</div>
+  </div>
+  <div class="grid">
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">1</span>有一個厚度是 1 公分的無蓋正方體
+        水箱，外面的邊長是 45 公分，如果
+        將原來裝滿水的水箱倒出一些水，
+        水深變成 21 公分，倒出來的水有
+        多少毫升？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">2</span>有一個厚度是 0.5 公分的長方體容
+        器，它的外部長 61 公分、寬 41 公
+        分、高 63 公分，裝水至 25 公分高，
+        放入一條體積 3000 立方公分的魚，
+        這個容器的水面高度上升至幾公分？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">3</span>在有一個長、寬都是 20 公分、高
+        50 公分的長方體容器，倒入 12 公升
+        的水，水深是幾公分？再放入一個
+        體積 3200 立方公分的鐵球，水面
+        會上升至幾公分？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class="question">
+        <span class="q-num">4</span>鳳凰社區為了節約用水，每間住戶
+        的馬桶水箱裡都放入一個長 20 公分、
+        寬 12 公分、高 5 公分的磚塊（全部
+        沉在水裡），馬桶水箱容量是 1250
+        毫升，沖水一次要用掉多少毫升
+        的水？
+      </div>
+      <div class="workspace">
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div><div class="line"></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer"><div class="score-box">得分：<div class="score-blank"></div></div></div>
+</div>
+
+</body>
+</html>
