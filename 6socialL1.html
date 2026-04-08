@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帥帥家複習系統 - 永續環境與全球關懷</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --primary: #2C3E50; --secondary: #2980B9; --danger: #C0392B; --success: #27AE60; --bg: #ECF0F1; --accent: #F39C12; }
+        body { font-family: "Microsoft JhengHei", sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; min-height: 95vh; display: flex; flex-direction: column; box-sizing: border-box; }
+        .header { text-align: center; border-bottom: 2px solid #BDC3C7; padding-bottom: 10px; margin-bottom: 15px; }
+        .save-btns { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
+        .btn-sm { padding: 4px 8px; font-size: 10px; border: none; border-radius: 4px; cursor: pointer; background: #BDC3C7; color: #2C3E50; }
+        .menu-btn { width: 100%; padding: 20px; margin: 10px 0; border: 2px solid var(--primary); border-radius: 10px; font-size: 1.1rem; background: white; cursor: pointer; font-weight: bold; color: var(--primary); }
+        .menu-btn:hover { background: var(--primary); color: white; }
+        .question-text { font-size: 1.1rem; margin: 15px 0; min-height: 60px; line-height: 1.5; font-weight: bold; }
+        .opt-btn { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #DDD; border-radius: 8px; text-align: left; background: white; cursor: pointer; font-size: 0.95rem; }
+        .opt-btn.selected { border: 2px solid var(--secondary); background: #EBF5FB; }
+        .opt-btn.correct-ui { background: #D5F5E3 !important; border-color: var(--success) !important; }
+        .opt-btn.wrong-ui { background: #FADBD8 !important; border-color: var(--danger) !important; }
+        input[type="text"] { width: 100%; padding: 12px; font-size: 1.1rem; border: 2px solid #DDD; border-radius: 8px; box-sizing: border-box; outline: none; }
+        .nav-bar { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding-top: 15px; }
+        .btn-nav { padding: 12px 5px; border: none; border-radius: 8px; cursor: pointer; background: var(--secondary); color: white; font-weight: bold; }
+        .btn-submit { background: var(--success); }
+        .bottom-actions { margin-top: 15px; border-top: 1px dashed #DDD; padding-top: 15px; }
+        .btn-help { background: #FCF3CF; border: 1px solid var(--accent); color: #B9770E; width: 100%; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .report-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 10px; }
+        .report-table td, .report-table th { border: 1px solid #EEE; padding: 6px; }
+        .hidden { display: none; }
+        .red-text { color: var(--danger); font-weight: bold; }
+        .green-text { color: var(--success); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-app">
+    <div class="save-btns" id="ui-save">
+        <button class="btn-sm" onclick="doCapture('img')">存照片</button>
+        <button class="btn-sm" onclick="doCapture('pdf')">存 PDF</button>
+    </div>
+
+    <div class="header">
+        <h3 id="display-title">永續環境與全球關懷</h3>
+        <div>
+            <select id="sel-student"><option>Stella</option><option>Diane</option></select>
+            <select id="sel-sub" onchange="syncTitle()"><option>社會</option></select>
+        </div>
+        <div id="display-date" style="font-size:0.8rem; color: #777; margin-top:5px;"></div>
+    </div>
+
+    <div id="screen-home">
+        <button class="menu-btn" onclick="start('choice')">Part A: 選擇題 (20題)</button>
+        <button class="menu-btn" onclick="start('fill')">Part B: 填空題 (20題)</button>
+    </div>
+
+    <div id="screen-quiz" class="hidden">
+        <div id="progress-bar" style="font-weight:bold; color:var(--secondary);">進度：1 / 20</div>
+        <div class="question-text" id="q-txt"></div>
+        <div id="ans-area"></div>
+        <div id="q-feedback" style="margin-top:15px; min-height: 25px; text-align:center;"></div>
+        
+        <div class="nav-bar">
+            <button class="btn-nav" onclick="move(-1)">上一題</button>
+            <button class="btn-nav btn-submit" id="btn-check" onclick="checkCurrent()">送出答案</button>
+            <button class="btn-nav" id="btn-next" onclick="move(1)">下一題</button>
+        </div>
+
+        <div class="bottom-actions" id="help-area">
+            <button class="btn-help" id="btn-hint" onclick="giveHint()">🆘 求救 (顯示首字提醒)</button>
+        </div>
+    </div>
+
+    <div id="screen-report" class="hidden">
+        <h4 style="text-align:center;">複習成果報表</h4>
+        <table class="report-table" id="table-report">
+            <thead><tr style="background:#F2F4F4;"><th>題目</th><th>學生回答</th><th>正確答案</th></tr></thead>
+            <tbody></tbody>
+        </table>
+        <button class="menu-btn" style="margin-top:20px;" onclick="location.reload()">重新練習</button>
+    </div>
+</div>
+
+<script>
+    const dbChoice = [
+        { q: "交通與資訊科技的發達讓各國互動頻繁，這種現象被稱為什麼？", o: ["地球村", "太空時代", "封閉社會"], a: "地球村" },
+        { q: "關於「全球暖化」的影響，下列何者「錯誤」？", o: ["冰川融化", "海平面上升", "冬天會變得更冷"], a: "冬天會變得更冷" },
+        { q: "下列何種行為會產生大量的溫室氣體二氧化碳？", o: ["燃燒化石燃料", "種植樹木", "搭乘捷運"], a: "燃燒化石燃料" },
+        { q: "大量棄置的塑膠垃圾進入海洋後，會產生什麼問題？", o: ["增加海水礦物質", "被生物誤食危害生態", "幫助珊瑚生長"], a: "被生物誤食危害生態" },
+        { q: "下列哪一種不屬於「永續性能源」？", o: ["太陽能", "石油", "風能"], a: "石油" },
+        { q: "全世界有許多兒童因貧窮或戰亂而失學，這屬於什麼問題？", o: ["環境問題", "人道問題", "經濟繁榮問題"], a: "人道問題" },
+        { q: "聯合國提出的永續發展目標簡稱為什麼？", o: ["SDGs", "WHO", "UNESCO"], a: "SDGs" },
+        { q: "關於水資源的敘述，下列何者正確？", o: ["地球水很多，可無限揮霍", "淡水資源分佈均勻", "許多國家面臨缺水威脅"], a: "許多國家面臨缺水威脅" },
+        { q: "大量砍伐熱帶雨林會導致什麼後果？", o: ["調節氣候", "破壞生物多樣性", "減少二氧化碳含量"], a: "破壞生物多樣性" },
+        { q: "SDGs 的主要目的是什麼？", o: ["只為了保護環境", "只為了經濟發展", "促進環境、社會與經濟的平衡發展"], a: "促進環境、社會與經濟的平衡發展" },
+        { q: "我們在生活中實踐「綠色消費」，是指選購什麼標章的產品？", o: ["環保標章", "品質標章", "安全標章"], a: "環保標章" },
+        { q: "糧食短缺問題通常發生在哪些國家？", o: ["開發中國家", "已開發國家", "極地國家"], a: "開發中國家" },
+        { q: "聯合國環境規劃署致力於推動什麼環保公約？", o: ["巴黎協定", "維也納協定", "日內瓦協定"], a: "巴黎協定" },
+        { q: "造成海洋塑膠微粒問題的主要來源是？", o: ["火山爆發", "日常生活棄置的塑膠製品", "海底地震"], a: "日常生活棄置的塑膠製品" },
+        { q: "關於「公平貿易」的理念，下列何者正確？", o: ["追求最低價格", "保障生產者的勞動條件與權益", "只賣給富有的人"], a: "保障生產者的勞動條件與權益" },
+        { q: "為了減緩暖化，我們應該盡量落實什麼生活方式？", o: ["低碳生活", "奢華生活", "高耗能生活"], a: "低碳生活" },
+        { q: "下列何者是全球面臨的能源危機主因？", o: ["能源分佈不均且有限", "能源價格太便宜", "再生能源太多"], a: "能源分佈不均且有限" },
+        { q: "面對全球議題，誰有責任採取行動？", o: ["只有政府", "只有聯合國", "地球村的每一位成員"], a: "地球村的每一位成員" },
+        { q: "SDGs 目標共有幾項？", o: ["15項", "17項", "20項"], a: "17項" },
+        { q: "聯合國兒童基金會的主要任務是？", o: ["發展核能", "保護兒童權利與福祉", "推廣觀光"], a: "保護兒童權利與福祉" }
+    ];
+
+    const dbFill = [
+        { q: "「地球村」是因為交通與「什麼」科技發達而形成的？", a: "資訊" },
+        { q: "溫室氣體濃度升高是造成全球「什麼」的主要原因？", a: "暖化" },
+        { q: "聯合國提出「什麼」發展目標（SDGs），希望解決全球問題？", a: "永續" },
+        { q: "目前全球海洋中充斥著難以分解的「什麼」廢棄物？", a: "塑膠" },
+        { q: "燃燒「什麼」燃料會釋放大量二氧化碳？", a: "化石" },
+        { q: "太陽能、風能等不枯竭的能源被稱為「什麼」能源？", a: "永續" },
+        { q: "戰亂產生的「什麼」民，需要國際社會提供醫療與糧食援助？", a: "難" },
+        { q: "聯合國成立的主要目的是維持國際「什麼」與安全？", a: "和平" },
+        { q: "「什麼」資源的短缺與分佈不均，常引發國家間的衝突？", a: "水" },
+        { q: "購買具有「什麼」標章的產品，可以落實綠色消費？", a: "環保" },
+        { q: "全球暖化會導致極區的「什麼」融化，使海平面上升？", a: "冰川" },
+        { q: "「什麼」貿易致力於消除不平等的剝削，幫助開發中國家的農民？", a: "公平" },
+        { q: "推動「什麼」生活，例如隨手關燈、搭大眾運輸，可減少碳排？", a: "低碳" },
+        { q: "「什麼」多樣性的破壞，會使地球生態系統失去平衡？", a: "生物" },
+        { q: "為了保護地球，我們應該建立「什麼」環境、關懷世界的觀念？", a: "永續" },
+        { q: "許多貧窮地區的兒童因為營養不量或「什麼」短缺而面臨生命威脅？", a: "糧食" },
+        { q: "聯合國「什麼」總署（WHO）負責應對全球性的流行傳染病？", a: "衛生" },
+        { q: "我們應該減少使用一次性塑膠製品，以減少海洋中的塑膠「什麼」？", a: "微粒" },
+        { q: "極端「什麼」現象（如乾旱、暴雨）頻傳，是氣候變遷的警訊？", a: "氣候" },
+        { q: "關懷全球議題，是地球村每一位「什麼」的責任？", a: "公民" }
+    ];
+
+    let qs = [], userAns = [], checked = [], cur = 0, mode = '';
+    const now = new Date();
+    const dateShort = `${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}`;
+    document.getElementById('display-date').innerText = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
+
+    function start(type) {
+        mode = type;
+        const source = (type === 'choice') ? dbChoice : dbFill;
+        qs = [...source].sort(() => Math.random() - 0.5);
+        userAns = new Array(qs.length).fill("");
+        checked = new Array(qs.length).fill(false);
+        cur = 0;
+        document.getElementById('screen-home').classList.add('hidden');
+        document.getElementById('screen-quiz').classList.remove('hidden');
+        document.getElementById('help-area').style.display = (mode === 'choice') ? 'none' : 'block';
+        render();
+    }
+
+    function render() {
+        const q = qs[cur];
+        document.getElementById('progress-bar').innerText = `進度：${cur + 1} / ${qs.length}`;
+        document.getElementById('q-txt').innerText = q.q;
+        const area = document.getElementById('ans-area');
+        const feedback = document.getElementById('q-feedback');
+        area.innerHTML = "";
+        feedback.innerHTML = "";
+
+        if (mode === 'choice') {
+            q.o.forEach(o => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn' + (userAns[cur] === o ? ' selected' : '');
+                if (checked[cur]) {
+                    if (o === q.a) b.classList.add('correct-ui');
+                    else if (userAns[cur] === o) b.classList.add('wrong-ui');
+                }
+                b.innerText = o;
+                b.onclick = () => { if(!checked[cur]) { userAns[cur] = o; render(); } };
+                area.appendChild(b);
+            });
+        } else {
+            const input = document.createElement('input');
+            input.type = "text";
+            input.value = userAns[cur];
+            input.disabled = checked[cur];
+            input.onblur = (e) => userAns[cur] = e.target.value;
+            input.onkeydown = (e) => { if(e.key==='Enter') { userAns[cur] = e.target.value; checkCurrent(); } };
+            area.appendChild(input);
+            if (!checked[cur]) input.focus();
+        }
+
+        if (checked[cur]) {
+            const isOk = userAns[cur].trim() === q.a;
+            feedback.innerHTML = isOk ? `<span class="green-text">✔ 正確！太棒了</span>` : `<span class="red-text">✘ 錯誤，正確答案：${q.a}</span>`;
+        }
+        document.getElementById('btn-check').style.display = checked[cur] ? 'none' : 'block';
+        document.getElementById('btn-next').innerText = (cur === qs.length - 1) ? "查看成果" : "下一題";
+    }
+
+    function checkCurrent() {
+        if (!userAns[cur] || userAns[cur].trim() === "") { alert("請先回答！"); return; }
+        checked[cur] = true;
+        render();
+    }
+
+    function move(step) {
+        if (step === 1 && cur === qs.length - 1) { 
+            if(!checked[cur]) { alert("請先送出答案！"); return; }
+            showReport(); 
+            return; 
+        }
+        cur = Math.max(0, Math.min(qs.length - 1, cur + step));
+        render();
+    }
+
+    function giveHint() {
+        alert("💡 提示：第一個字是「" + qs[cur].a[0] + "」");
+    }
+
+    function showReport() {
+        document.getElementById('screen-quiz').classList.add('hidden');
+        document.getElementById('screen-report').classList.remove('hidden');
+        const body = document.querySelector('#table-report tbody');
+        body.innerHTML = "";
+        qs.forEach((q, i) => {
+            const isWrong = userAns[i] !== q.a;
+            body.innerHTML += `<tr><td>${q.q}</td><td class="${isWrong?'red-text':''}">${userAns[i]||'未答'}</td><td>${q.a}</td></tr>`;
+        });
+    }
+
+    function doCapture(type) {
+        const student = document.getElementById('sel-student').value;
+        const subject = document.getElementById('sel-sub').value;
+        const unit = "永續環境與全球關懷";
+        const fileName = `${student}_${subject}_${unit}_${dateShort}`;
+        const ui = document.getElementById('ui-save');
+        ui.style.display = 'none';
+        html2canvas(document.body).then(canvas => {
+            if (type === 'img') {
+                const link = document.createElement('a');
+                link.download = `${fileName}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } else {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const w = pdf.internal.pageSize.getWidth();
+                const h = (canvas.height * w) / canvas.width;
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h);
+                pdf.save(`${fileName}.pdf`);
+            }
+            ui.style.display = 'flex';
+        });
+    }
+</script>
+</body>
+</html>

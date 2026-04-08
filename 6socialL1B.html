@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>六下社會第一課測驗｜康軒版</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: '微軟正黑體', 'Microsoft JhengHei', 'Noto Sans TC', sans-serif;
+    background: #f0f4f8;
+    color: #1a202c;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 32px 24px 24px;
+    text-align: center;
+  }
+  header h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; }
+  header p  { margin-top: 6px; font-size: 0.95rem; opacity: 0.85; }
+
+  /* ── Scoreboard ── */
+  #scoreboard {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    background: white; padding: 16px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .score-card {
+    display: flex; flex-direction: column; align-items: center;
+    min-width: 90px;
+  }
+  .score-card .num {
+    font-size: 1.6rem; font-weight: 800; line-height: 1;
+  }
+  .score-card .lbl { font-size: 0.72rem; color: #64748b; margin-top: 2px; }
+  .score-total .num { color: #1e3a8a; }
+  .score-mc    .num { color: #0891b2; }
+  .score-fi    .num { color: #7c3aed; }
+
+  /* ── Layout ── */
+  main {
+    max-width: 860px;
+    margin: 28px auto;
+    padding: 0 16px 60px;
+    display: flex; flex-direction: column; gap: 36px;
+  }
+
+  /* ── Section header ── */
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    background: #1e3a8a; color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 14px 20px;
+  }
+  .section-header .badge {
+    background: rgba(255,255,255,.25);
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .section-header h2 { font-size: 1.1rem; font-weight: 700; }
+  .section-desc {
+    background: #eff6ff; border-left: 4px solid #3b82f6;
+    padding: 10px 16px; font-size: 0.88rem; color: #1e40af;
+  }
+
+  /* ── Question card ── */
+  .q-card {
+    background: white;
+    border-radius: 0;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 18px 20px 14px;
+    transition: background .15s;
+  }
+  .q-card:last-child { border-radius: 0 0 12px 12px; border-bottom: none; }
+  .q-card.correct { background: #f0fdf4; }
+  .q-card.wrong   { background: #fff5f5; }
+
+  .q-num {
+    display: inline-block;
+    background: #e2e8f0; color: #475569;
+    border-radius: 50%; width: 26px; height: 26px;
+    line-height: 26px; text-align: center;
+    font-size: 0.78rem; font-weight: 700;
+    margin-right: 8px; flex-shrink: 0;
+  }
+  .q-card.correct .q-num { background: #bbf7d0; color: #15803d; }
+  .q-card.wrong   .q-num { background: #fecaca; color: #dc2626; }
+
+  .q-text { font-size: 0.97rem; font-weight: 600; display: flex; align-items: flex-start; gap: 4px; margin-bottom: 12px; }
+
+  /* ── MC options ── */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .opt-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.92rem;
+    text-align: left;
+    transition: border-color .15s, background .15s;
+    width: 100%;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: #3b82f6; background: #eff6ff; }
+  .opt-btn .opt-label {
+    font-weight: 700; color: #3b82f6;
+    min-width: 22px;
+  }
+  .opt-btn.selected  { border-color: #6366f1; background: #eef2ff; }
+  .opt-btn.correct-opt  { border-color: #22c55e; background: #f0fdf4; }
+  .opt-btn.correct-opt .opt-label { color: #16a34a; }
+  .opt-btn.wrong-opt    { border-color: #ef4444; background: #fff1f2; }
+  .opt-btn.wrong-opt .opt-label { color: #dc2626; }
+  .opt-btn:disabled { cursor: default; }
+
+  /* ── Fill-in ── */
+  .fi-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .fi-input {
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    width: 130px;
+    transition: border-color .15s;
+    outline: none;
+  }
+  .fi-input:focus { border-color: #7c3aed; }
+  .fi-input.correct-fi { border-color: #22c55e; background: #f0fdf4; color: #15803d; }
+  .fi-input.wrong-fi   { border-color: #ef4444; background: #fff1f2; color: #dc2626; }
+  .fi-check-btn {
+    padding: 7px 16px; border-radius: 8px;
+    border: none; background: #7c3aed; color: white;
+    font-family: inherit; font-size: 0.85rem; font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .fi-check-btn:hover { background: #6d28d9; }
+  .fi-check-btn:disabled { background: #cbd5e1; cursor: default; }
+
+  .feedback {
+    margin-top: 8px; font-size: 0.85rem; font-weight: 600;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok  { color: #15803d; }
+  .feedback.err { color: #dc2626; }
+
+  /* ── Buttons ── */
+  .action-bar {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .btn-primary {
+    padding: 12px 32px; border-radius: 10px; border: none;
+    background: #1e3a8a; color: white;
+    font-family: inherit; font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: background .15s;
+  }
+  .btn-primary:hover { background: #1e40af; }
+  .btn-secondary {
+    padding: 12px 28px; border-radius: 10px;
+    border: 2px solid #1e3a8a; background: white; color: #1e3a8a;
+    font-family: inherit; font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: all .15s;
+  }
+  .btn-secondary:hover { background: #eff6ff; }
+
+  /* ── Result overlay ── */
+  #result-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  #result-overlay.show { display: flex; }
+  .result-box {
+    background: white; border-radius: 20px;
+    padding: 40px 48px; text-align: center;
+    max-width: 400px; width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  }
+  .result-box .emoji { font-size: 3.5rem; }
+  .result-box h2 { font-size: 1.5rem; margin: 12px 0 6px; color: #1e3a8a; }
+  .result-box .big-score { font-size: 3rem; font-weight: 800; color: #1e3a8a; }
+  .result-box .sub { font-size: 0.9rem; color: #64748b; margin: 8px 0 24px; }
+  .result-box .detail {
+    display: flex; gap: 24px; justify-content: center; margin-bottom: 24px;
+  }
+  .result-box .detail div { display: flex; flex-direction: column; align-items: center; }
+  .result-box .detail span:first-child { font-size: 1.4rem; font-weight: 800; }
+  .result-box .detail span:last-child { font-size: 0.75rem; color: #64748b; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 六下社會 第一課 測驗</h1>
+  <p>多元文化的台灣｜康軒版 108課綱</p>
+</header>
+
+<!-- Sticky scoreboard -->
+<div id="scoreboard">
+  <div class="score-card score-total">
+    <div class="num" id="sc-total">0</div>
+    <div class="lbl">目前得分</div>
+  </div>
+  <div class="score-card score-mc">
+    <div class="num" id="sc-mc">0/20</div>
+    <div class="lbl">選擇題答對</div>
+  </div>
+  <div class="score-card score-fi">
+    <div class="num" id="sc-fi">0/20</div>
+    <div class="lbl">填充題答對</div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ══ 選擇題 ══ -->
+  <section>
+    <div class="section-header">
+      <span class="badge">一</span>
+      <h2>選擇題（每題 4 分，共 80 分）</h2>
+    </div>
+    <div class="section-desc">每題只有一個正確答案，請點選最適合的選項。</div>
+    <div id="mc-container"></div>
+  </section>
+
+  <!-- ══ 填充題 ══ -->
+  <section>
+    <div class="section-header">
+      <span class="badge">二</span>
+      <h2>填充題（每題 5 分，共 100 分）</h2>
+    </div>
+    <div class="section-desc">請在空格中輸入正確答案，再按「確認」。</div>
+    <div id="fi-container"></div>
+  </section>
+
+  <!-- Action buttons -->
+  <div class="action-bar">
+    <button class="btn-primary" onclick="submitAll()">🎯 繳交計算成績</button>
+    <button class="btn-secondary" onclick="resetAll()">🔄 重新作答</button>
+  </div>
+
+</main>
+
+<!-- Result overlay -->
+<div id="result-overlay">
+  <div class="result-box">
+    <div class="emoji" id="res-emoji">🎉</div>
+    <h2>測驗完成！</h2>
+    <div class="big-score" id="res-score"></div>
+    <div class="sub">總分（選擇 80 分 + 填充 100 分）</div>
+    <div class="detail">
+      <div><span id="res-mc"></span><span>選擇題答對</span></div>
+      <div><span id="res-fi"></span><span>填充題答對</span></div>
+    </div>
+    <button class="btn-primary" onclick="document.getElementById('result-overlay').classList.remove('show')">關閉</button>
+  </div>
+</div>
+
+<script>
+// ── Data ────────────────────────────────────────────────────────
+const MC = [
+  { q:'1. 「全球化」是指什麼現象？',
+    opts:['世界各國彼此孤立，互不往來','世界各地因交通、通訊發展，聯繫更加密切','只有先進國家才能參與的國際組織','台灣加入聯合國的過程'],
+    ans:1 },
+  { q:'2. 台灣社會的主要族群文化包括哪些？',
+    opts:['閩南、客家、外省、原住民族、新住民','閩南、廣東、北京、上海','日本、美國、英國、德國','閩南、荷蘭、西班牙、日本'],
+    ans:0 },
+  { q:'3. 台灣的「新住民」主要來自哪些地方？',
+    opts:['歐洲和美洲','東南亞各國和中國大陸','日本和韓國','非洲和南美洲'],
+    ans:1 },
+  { q:'4. 下列哪一項是客家文化的特色？',
+    opts:['豐年祭和小米酒','硬頸精神和客家話','廟會和歌仔戲','眷村菜和北方麵食'],
+    ans:1 },
+  { q:'5. 原住民族的「豐年祭」屬於哪一類文化活動？',
+    opts:['閩南文化','客家文化','原住民族文化','外省文化'],
+    ans:2 },
+  { q:'6. 台灣飲食文化中，下列哪一項是受外來文化影響的例子？',
+    opts:['刈包（虎咬豬）','客家粄條','日式拉麵','閩南米糕'],
+    ans:2 },
+  { q:'7. 「文化交流」的正確描述是什麼？',
+    opts:['只有台灣文化向外輸出，不接受外來文化','不同國家和地區的文化互相影響和學習','消滅弱小民族的傳統文化','強迫所有人使用同一種語言'],
+    ans:1 },
+  { q:'8. 台灣官方認定的原住民族共有幾族？',
+    opts:['10 族','14 族','16 族','20 族'],
+    ans:2 },
+  { q:'9. 下列哪一項「不是」台灣多元文化的特色？',
+    opts:['各族群共同生活在台灣','全台灣只有一種族群文化','不同節慶和習俗並存','各族群飲食文化相互融合'],
+    ans:1 },
+  { q:'10. 全球化的好處包括哪些？',
+    opts:['各國彼此孤立，文化純粹不受影響','商品、資訊和文化可以在全球快速流通','只有富裕國家才能受益','使所有國家的文化變得完全相同'],
+    ans:1 },
+  { q:'11. 台灣的廟會文化主要屬於哪個族群的傳統？',
+    opts:['原住民族','閩南人','新住民','外省人'],
+    ans:1 },
+  { q:'12. 「外省人」指的是哪一群人？',
+    opts:['來自外國的移民','台灣原住民族的一支','隨 1949 年國民政府來台的軍民及其後代','來自東南亞的新住民'],
+    ans:2 },
+  { q:'13. 面對不同族群的文化，我們應有的正確態度是？',
+    opts:['認為自己的文化最好，拒絕其他文化','尊重並欣賞不同文化的特色','完全放棄本身的傳統文化','模仿外來文化，忘記本土文化'],
+    ans:1 },
+  { q:'14. 下列哪一項是促進全球文化交流的重要因素？',
+    opts:['語言障礙的增加','交通和網路的快速發展','各國增加關稅和限制貿易','戰爭和武裝衝突'],
+    ans:1 },
+  { q:'15. 台灣的「眷村文化」主要是哪個族群帶來的？',
+    opts:['閩南人','客家人','外省人','原住民族'],
+    ans:2 },
+  { q:'16. 新住民對台灣的貢獻主要有哪些？',
+    opts:['帶來了豐富的東南亞飲食和多元文化','只從事農業工作，沒有帶來文化影響','對台灣社會和文化沒有任何影響','帶來了歐洲古典音樂和藝術'],
+    ans:0 },
+  { q:'17. 台灣民眾慶祝的「端午節」和「中秋節」主要源自哪種文化傳統？',
+    opts:['日本文化','漢族（閩南、客家、外省）文化','原住民族文化','歐美文化'],
+    ans:1 },
+  { q:'18. 全球化可能帶來的負面影響是什麼？',
+    opts:['各地方言和傳統文化有逐漸消失的危機','世界各地商品更豐富多樣','各地資訊傳遞更快速便利','各國文化交流更加頻繁活絡'],
+    ans:0 },
+  { q:'19. 「多元文化」的意義是指？',
+    opts:['只有一種文化值得保存和發揚','各種不同的文化都有其價值，應予以尊重和保存','文化種類越多，社會越混亂','強勢文化應取代弱勢文化'],
+    ans:1 },
+  { q:'20. 台灣的「歌仔戲」是哪個族群的傳統表演藝術？',
+    opts:['客家人','原住民族','閩南人','外省人'],
+    ans:2 },
+];
+
+const LABELS = ['A','B','C','D'];
+
+const FI = [
+  { q:'1. 台灣社會的主要族群包括：原住民族、（　　）、客家人、外省人和新住民。', ans:['閩南人','閩南'] },
+  { q:'2. 因為全球交通和通訊快速發展，使世界各地聯繫更加密切，這個現象稱為「（　　）」。', ans:['全球化'] },
+  { q:'3. 客家人傳承下來的「（　　）」精神，代表著不畏困難、堅忍不拔的意志。', ans:['硬頸'] },
+  { q:'4. 台灣官方認定的原住民族共有（　　）族。', ans:['十六','16','16族','十六族'] },
+  { q:'5. 來自東南亞或中國大陸，嫁入或移居台灣的外籍配偶及其家庭成員，稱為「（　　）」。', ans:['新住民'] },
+  { q:'6. 原住民族的「（　　）」是感謝神靈賜予豐收的重要傳統祭典。', ans:['豐年祭'] },
+  { q:'7. 閩南人使用的語言俗稱「（　　）」（閩南語）。', ans:['台語','閩南語','臺語'] },
+  { q:'8. 隨著 1949 年國民政府撤退來台的軍民及其後代，稱為「（　　）」。', ans:['外省人','外省'] },
+  { q:'9. 不同族群的文化互相影響、學習和融合的過程，稱為「（　　）」。', ans:['文化交流'] },
+  { q:'10. 台灣的「（　　）」文化，是閩南人傳承下來的重要民俗活動之一。', ans:['廟會'] },
+  { q:'11. 面對不同族群的文化，我們應以（　　）和包容的態度看待。', ans:['尊重'] },
+  { q:'12. 全球化使世界各地的商品、（　　）和文化可以快速流通交換。', ans:['資訊'] },
+  { q:'13. 客家人傳承的「（　　）」是台灣重要的語言文化資產之一。', ans:['客家話','客語','客家語'] },
+  { q:'14. 原住民族的傳統文化包括歌舞、（　　）、狩獵等各種技藝與知識。', ans:['織布','編織'] },
+  { q:'15. 外省人帶來的飲食文化中，「（　　）菜」已融入台灣飲食，成為特色料理。', ans:['眷村'] },
+  { q:'16. 新住民帶來的東南亞飲食，豐富了台灣的（　　）文化。', ans:['飲食','多元','多元文化'] },
+  { q:'17. 全球化的負面影響之一，是許多地區的傳統語言和（　　）有逐漸消失的危機。', ans:['文化','習俗','文化習俗'] },
+  { q:'18. 台灣的「（　　）」是閩南人傳統的表演藝術，也是台灣特有的戲曲形式。', ans:['歌仔戲'] },
+  { q:'19. 尊重並欣賞不同族群的文化特色，有助於建立（　　）的社會。', ans:['和諧','多元','包容'] },
+  { q:'20. 台灣因地理位置和歷史發展，形成了豐富的「（　　）文化」社會。', ans:['多元'] },
+];
+
+// ── State ───────────────────────────────────────────────────────
+const mcState = new Array(MC.length).fill(null);    // selected index or null
+const fiState = new Array(FI.length).fill(null);    // true/false/null
+
+// ── Render MC ───────────────────────────────────────────────────
+function renderMC() {
+  const container = document.getElementById('mc-container');
+  container.innerHTML = '';
+  MC.forEach((item, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `mc-card-${qi}`;
+
+    const qText = document.createElement('div');
+    qText.className = 'q-text';
+    qText.innerHTML = `<span class="q-num">${qi+1}</span><span>${item.q}</span>`;
+    card.appendChild(qText);
+
+    const optDiv = document.createElement('div');
+    optDiv.className = 'options';
+    item.opts.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.id = `mc-${qi}-${oi}`;
+      btn.innerHTML = `<span class="opt-label">${LABELS[oi]}</span><span>${opt}</span>`;
+      btn.onclick = () => selectMC(qi, oi);
+      optDiv.appendChild(btn);
+    });
+    card.appendChild(optDiv);
+    container.appendChild(card);
+  });
+}
+
+function selectMC(qi, oi) {
+  if (mcState[qi] !== null && document.getElementById(`mc-${qi}-${mcState[qi]}`).disabled) return;
+  mcState[qi] = oi;
+  // highlight selected
+  MC[qi].opts.forEach((_, i) => {
+    const btn = document.getElementById(`mc-${qi}-${i}`);
+    btn.className = 'opt-btn' + (i === oi ? ' selected' : '');
+  });
+}
+
+// ── Render FI ───────────────────────────────────────────────────
+function renderFI() {
+  const container = document.getElementById('fi-container');
+  container.innerHTML = '';
+  FI.forEach((item, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `fi-card-${qi}`;
+
+    const qText = document.createElement('div');
+    qText.className = 'q-text';
+    qText.innerHTML = `<span class="q-num">${qi+1}</span><span>${item.q}</span>`;
+    card.appendChild(qText);
+
+    const row = document.createElement('div');
+    row.className = 'fi-row';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'fi-input';
+    input.placeholder = '輸入答案';
+    input.id = `fi-input-${qi}`;
+    input.addEventListener('keydown', e => { if(e.key==='Enter') checkFI(qi); });
+
+    const btn = document.createElement('button');
+    btn.className = 'fi-check-btn';
+    btn.textContent = '確認';
+    btn.id = `fi-btn-${qi}`;
+    btn.onclick = () => checkFI(qi);
+
+    const fb = document.createElement('div');
+    fb.className = 'feedback';
+    fb.id = `fi-fb-${qi}`;
+
+    row.appendChild(input);
+    row.appendChild(btn);
+    card.appendChild(row);
+    card.appendChild(fb);
+    container.appendChild(card);
+  });
+}
+
+function checkFI(qi) {
+  const input = document.getElementById(`fi-input-${qi}`);
+  const btn   = document.getElementById(`fi-btn-${qi}`);
+  const fb    = document.getElementById(`fi-fb-${qi}`);
+  const card  = document.getElementById(`fi-card-${qi}`);
+
+  const val = input.value.trim();
+  if (!val) return;
+
+  const correct = FI[qi].ans.some(a => a === val || a.replace(/[（）\s]/g,'') === val.replace(/[（）\s]/g,''));
+
+  input.disabled = true;
+  btn.disabled = true;
+  input.className = 'fi-input ' + (correct ? 'correct-fi' : 'wrong-fi');
+  card.className = 'q-card ' + (correct ? 'correct' : 'wrong');
+  card.querySelector('.q-num').className = 'q-num';
+
+  fiState[qi] = correct;
+
+  fb.className = 'feedback show ' + (correct ? 'ok' : 'err');
+  fb.textContent = correct
+    ? '✅ 答對了！'
+    : `❌ 答錯了。正確答案：${FI[qi].ans[0]}`;
+
+  updateScore();
+}
+
+// ── Score ────────────────────────────────────────────────────────
+function updateScore() {
+  const mcRight = mcState.filter((v,i) => v === MC[i].ans).length;
+  const fiRight = fiState.filter(v => v === true).length;
+  const total = mcRight * 4 + fiRight * 5;
+  document.getElementById('sc-total').textContent = total;
+  document.getElementById('sc-mc').textContent = `${mcRight}/20`;
+  document.getElementById('sc-fi').textContent = `${fiRight}/20`;
+}
+
+// ── Submit All ───────────────────────────────────────────────────
+function submitAll() {
+  // Grade MC
+  MC.forEach((item, qi) => {
+    const sel = mcState[qi];
+    item.opts.forEach((_, oi) => {
+      const btn = document.getElementById(`mc-${qi}-${oi}`);
+      btn.disabled = true;
+      if (oi === item.ans) btn.className = 'opt-btn correct-opt';
+      else if (oi === sel)  btn.className = 'opt-btn wrong-opt';
+      else                  btn.className = 'opt-btn';
+    });
+    const card = document.getElementById(`mc-card-${qi}`);
+    if (sel === null) {
+      card.className = 'q-card wrong';
+    } else if (sel === item.ans) {
+      card.className = 'q-card correct';
+    } else {
+      card.className = 'q-card wrong';
+    }
+  });
+
+  // Grade remaining FI
+  FI.forEach((_, qi) => {
+    if (fiState[qi] === null) {
+      const input = document.getElementById(`fi-input-${qi}`);
+      const btn   = document.getElementById(`fi-btn-${qi}`);
+      const fb    = document.getElementById(`fi-fb-${qi}`);
+      const card  = document.getElementById(`fi-card-${qi}`);
+      const val   = input.value.trim();
+      const correct = val.length > 0 && FI[qi].ans.some(a => a === val);
+      input.disabled = true;
+      btn.disabled = true;
+      fiState[qi] = correct;
+      input.className = 'fi-input ' + (correct ? 'correct-fi' : 'wrong-fi');
+      card.className = 'q-card ' + (correct ? 'correct' : 'wrong');
+      fb.className = 'feedback show ' + (correct ? 'ok' : 'err');
+      fb.textContent = correct ? '✅ 答對了！' : `❌ 正確答案：${FI[qi].ans[0]}`;
+    }
+  });
+
+  updateScore();
+
+  // Show result
+  const mcRight = mcState.filter((v,i) => v === MC[i].ans).length;
+  const fiRight = fiState.filter(v => v === true).length;
+  const total   = mcRight * 4 + fiRight * 5;
+  const pct     = Math.round(total / 180 * 100);
+
+  document.getElementById('res-score').textContent = `${total} / 180`;
+  document.getElementById('res-mc').textContent = `${mcRight}/20`;
+  document.getElementById('res-fi').textContent = `${fiRight}/20`;
+  document.getElementById('res-emoji').textContent =
+    pct >= 90 ? '🏆' : pct >= 70 ? '🎉' : pct >= 50 ? '📖' : '💪';
+  document.getElementById('result-overlay').classList.add('show');
+}
+
+// ── Reset ────────────────────────────────────────────────────────
+function resetAll() {
+  mcState.fill(null);
+  fiState.fill(null);
+  renderMC();
+  renderFI();
+  updateScore();
+}
+
+// ── Init ─────────────────────────────────────────────────────────
+renderMC();
+renderFI();
+updateScore();
+</script>
+</body>
+</html>
