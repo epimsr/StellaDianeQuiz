@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>六下社會期中考-單元一複習</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: '微軟正黑體', 'Microsoft JhengHei', '標楷體', sans-serif;
+    background: linear-gradient(135deg, #e8f4f8 0%, #fef9e7 100%);
+    color: #2c3e50;
+    line-height: 1.8;
+    padding: 20px;
+  }
+  .main-title {
+    text-align: center;
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    color: white;
+    padding: 28px 20px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    box-shadow: 0 6px 20px rgba(26,115,232,0.3);
+  }
+  .main-title h1 {
+    font-size: 2em;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .main-title p {
+    font-size: 1em;
+    opacity: 0.9;
+  }
+  .toc {
+    background: white;
+    border-radius: 12px;
+    padding: 20px 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    border-left: 5px solid #1a73e8;
+  }
+  .toc h2 { color: #1a73e8; margin-bottom: 12px; font-size: 1.15em; }
+  .toc ol { padding-left: 22px; }
+  .toc li { margin: 6px 0; }
+  .toc a { color: #1a73e8; text-decoration: none; font-weight: bold; }
+  .toc a:hover { text-decoration: underline; }
+  .section {
+    background: white;
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid;
+  }
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4em;
+    flex-shrink: 0;
+  }
+  .section h2 { font-size: 1.35em; }
+
+  /* Colors per section */
+  .sec1 .section-header { border-color: #4285f4; }
+  .sec1 .section-icon { background: #e8f0fe; }
+  .sec1 h2 { color: #4285f4; }
+
+  .sec2 .section-header { border-color: #34a853; }
+  .sec2 .section-icon { background: #e6f4ea; }
+  .sec2 h2 { color: #34a853; }
+
+  .sec3 .section-header { border-color: #ea4335; }
+  .sec3 .section-icon { background: #fce8e6; }
+  .sec3 h2 { color: #ea4335; }
+
+  .sec4 .section-header { border-color: #fbbc04; }
+  .sec4 .section-icon { background: #fef7e0; }
+  .sec4 h2 { color: #e37400; }
+
+  .sec5 .section-header { border-color: #9c27b0; }
+  .sec5 .section-icon { background: #f3e5f5; }
+  .sec5 h2 { color: #9c27b0; }
+
+  .sec6 .section-header { border-color: #00bcd4; }
+  .sec6 .section-icon { background: #e0f7fa; }
+  .sec6 h2 { color: #00838f; }
+
+  .sec7 .section-header { border-color: #ff5722; }
+  .sec7 .section-icon { background: #fbe9e7; }
+  .sec7 h2 { color: #e64a19; }
+
+  .key-box {
+    background: #f8f9ff;
+    border: 2px solid #c5cae9;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+  .key-box h3 {
+    color: #3949ab;
+    font-size: 1.05em;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .highlight {
+    background: #fff3e0;
+    border-left: 4px solid #ff8f00;
+    padding: 10px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 10px 0;
+    font-weight: bold;
+    color: #e65100;
+  }
+  .term {
+    display: inline-block;
+    background: #e3f2fd;
+    color: #0d47a1;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    margin: 3px 2px;
+    font-size: 0.95em;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 0.95em;
+  }
+  th {
+    background: #1a73e8;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  tr:nth-child(even) { background: #f8f9fa; }
+  tr:hover { background: #e8f0fe; }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  .card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid #e0e0e0;
+  }
+  .card h4 { color: #1a73e8; margin-bottom: 8px; font-size: 1em; }
+  .card ul { padding-left: 18px; }
+  .card li { margin: 4px 0; font-size: 0.95em; }
+  .warning-box {
+    background: #fff8e1;
+    border: 2px solid #ffd54f;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .warning-box h4 { color: #f57f17; margin-bottom: 8px; }
+  .star { color: #f4b400; }
+  .checkmark { color: #34a853; }
+  .cross { color: #ea4335; }
+  ul.styled { padding-left: 0; list-style: none; }
+  ul.styled li { padding: 5px 0 5px 22px; position: relative; }
+  ul.styled li::before { content: "▶"; color: #1a73e8; position: absolute; left: 0; font-size: 0.7em; top: 8px; }
+  .summary-bar {
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    color: white;
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin: 18px 0 8px;
+    font-weight: bold;
+    font-size: 1em;
+    letter-spacing: 1px;
+  }
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .vocab-card {
+    background: white;
+    border: 2px solid #e3f2fd;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .vocab-card .word { font-size: 1.1em; font-weight: bold; color: #1a73e8; margin-bottom: 4px; }
+  .vocab-card .def { font-size: 0.88em; color: #555; }
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .main-title h1 { font-size: 1.4em; }
+    .vocab-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="main-title">
+  <h1>📚 六下社會期中考 ─ 單元一複習</h1>
+  <p>全部重點整理 ✦ 認真複習，考試加油！</p>
+</div>
+
+<!-- 目錄 -->
+<div class="toc">
+  <h2>📋 目錄</h2>
+  <ol>
+    <li><a href="#sec1">科技與人工智慧（AI）</a></li>
+    <li><a href="#sec2">台灣多元族群文化</a></li>
+    <li><a href="#sec3">民主政治與選舉制度</a></li>
+    <li><a href="#sec4">全球化的影響</a></li>
+    <li><a href="#sec5">台灣社會變遷（少子化＆高齡化）</a></li>
+    <li><a href="#sec6">能源問題與分類</a></li>
+    <li><a href="#sec7">媒體識讀與資訊素養</a></li>
+  </ol>
+</div>
+
+<!-- 第一節：科技與AI -->
+<div class="section sec1" id="sec1">
+  <div class="section-header">
+    <div class="section-icon">🤖</div>
+    <h2>第一節：科技與人工智慧（AI）</h2>
+  </div>
+
+  <div class="key-box">
+    <h3>🔑 核心定義</h3>
+    <p><span class="term">人工智慧（AI）</span>：讓電腦具有像人類一樣<strong>思考、學習、判斷</strong>的能力，透過大量資料訓練模型，讓機器能夠自動完成複雜任務。</p>
+  </div>
+
+  <div class="highlight">⭐ 考試重點：AI ≠ 普通電腦程式，AI能「自我學習」並根據資料改善能力！</div>
+
+  <div class="summary-bar">📌 AI的主要應用領域</div>
+  <div class="two-col">
+    <div class="card">
+      <h4>🏥 醫療領域</h4>
+      <ul>
+        <li>輔助診斷疾病（如癌症偵測）</li>
+        <li>分析醫學影像（X光、CT掃描）</li>
+        <li>智慧醫療機器人</li>
+        <li>藥物研發加速</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🌾 農業領域</h4>
+      <ul>
+        <li>智慧農場（自動澆水、施肥）</li>
+        <li>病蟲害辨識與防治</li>
+        <li>農作物產量預測</li>
+        <li>無人機噴藥管理</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>📖 教育領域</h4>
+      <ul>
+        <li>個人化學習系統</li>
+        <li>智慧批改作業</li>
+        <li>語言翻譯與學習</li>
+        <li>線上學習平台</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🚗 交通領域</h4>
+      <ul>
+        <li>自動駕駛汽車</li>
+        <li>交通流量預測</li>
+        <li>智慧停車系統</li>
+        <li>語音導航</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🏭 工業領域</h4>
+      <ul>
+        <li>工廠自動化生產</li>
+        <li>機器人焊接、組裝</li>
+        <li>品質檢測</li>
+        <li>智慧供應鏈管理</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🎨 創意領域</h4>
+      <ul>
+        <li>AI繪圖（圖像生成）</li>
+        <li>音樂創作</li>
+        <li>文章寫作輔助</li>
+        <li>遊戲角色AI</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="summary-bar">📌 AI的優點與挑戰</div>
+  <table>
+    <tr><th>優點</th><th>挑戰與隱憂</th></tr>
+    <tr><td>✅ 提升工作效率</td><td>⚠️ 部分工作被機器取代，失業問題</td></tr>
+    <tr><td>✅ 減少人為錯誤</td><td>⚠️ 數位落差（不同族群使用機會不均等）</td></tr>
+    <tr><td>✅ 全天候不間斷運作</td><td>⚠️ 資料隱私與安全問題</td></tr>
+    <tr><td>✅ 協助高風險工作</td><td>⚠️ AI決策的透明性與公平性問題</td></tr>
+    <tr><td>✅ 加速科學研究</td><td>⚠️ 過度依賴科技的風險</td></tr>
+  </table>
+
+  <div class="warning-box">
+    <h4>⚠️ 特別注意：數位落差</h4>
+    <p>不同族群、地區、年齡層在使用科技資源上存在差異，稱為<span class="term">數位落差</span>。台灣政府積極推動數位教育，縮小城鄉差距，讓每個人都能享受科技帶來的好處。</p>
+  </div>
+
+  <div class="key-box">
+    <h3>🔑 台灣AI發展</h3>
+    <ul class="styled">
+      <li>台灣擁有強大的<strong>半導體產業</strong>（如台積電），為AI晶片提供基礎</li>
+      <li>台灣政府推動「AI Taiwan」計畫，培育AI人才</li>
+      <li>AI已運用在台灣的製造業、醫療、農業等領域</li>
+      <li>台灣在2024年積極發展AI相關政策與產業</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 第二節：台灣多元族群 -->
+<div class="section sec2" id="sec2">
+  <div class="section-header">
+    <div class="section-icon">🌈</div>
+    <h2>第二節：台灣多元族群文化</h2>
+  </div>
+
+  <div class="highlight">⭐ 台灣是多元族群的社會，各族群有自己的語言、文化與習俗，相互尊重是重要價值！</div>
+
+  <div class="summary-bar">📌 台灣四大族群</div>
+  <table>
+    <tr><th>族群</th><th>人口比例</th><th>主要語言</th><th>來台背景</th></tr>
+    <tr><td>🔴 <strong>閩南族群</strong>（福佬）</td><td>約70%</td><td>台語（閩南語）</td><td>明清時期從福建移入</td></tr>
+    <tr><td>🟢 <strong>客家族群</strong></td><td>約15%</td><td>客語</td><td>明清時期從廣東移入</td></tr>
+    <tr><td>🔵 <strong>外省族群</strong></td><td>約13%</td><td>各省方言、普通話</td><td>1945~1949年國共內戰後隨政府遷台</td></tr>
+    <tr><td>🟡 <strong>原住民族</strong></td><td>約2%</td><td>各族原住民語（南島語系）</td><td>台灣最早的住民</td></tr>
+  </table>
+
+  <div class="key-box">
+    <h3>🔑 原住民族特色</h3>
+    <ul class="styled">
+      <li>台灣官方認定有 <strong>16個</strong> 原住民族（如阿美族、泰雅族、排灣族等）</li>
+      <li>語言屬於 <strong>南島語系</strong>，與東南亞、太平洋島嶼語言有親緣關係</li>
+      <li>各族有獨特的祭典、服飾、音樂與工藝</li>
+      <li>政府以《<strong>原住民族基本法</strong>》保障其文化與語言權利</li>
+    </ul>
+  </div>
+
+  <div class="key-box">
+    <h3>🔑 客家族群特色</h3>
+    <ul class="styled">
+      <li>客家精神：<strong>硬頸（勤勞堅韌）</strong>精神著稱</li>
+      <li>客家文化：擂茶、客家花布、義民節等</li>
+      <li>主要分佈：桃竹苗（桃園、新竹、苗栗）地區</li>
+      <li>政府以《<strong>客家基本法</strong>》保障客語文化傳承</li>
+    </ul>
+  </div>
+
+  <div class="summary-bar">📌 新住民——第五大族群</div>
+  <div class="card">
+    <h4>🌏 新住民的特色</h4>
+    <ul>
+      <li>指來自<strong>東南亞</strong>（越南、印尼、泰國等）及其他國家的外籍配偶與移工</li>
+      <li>使台灣文化更加多元，帶入不同的語言、飲食、習俗</li>
+      <li>新住民子女被稱為「<strong>新台灣之子</strong>」，是台灣社會的新力量</li>
+      <li>政府提供新住民語言學習、生活適應等輔助措施</li>
+    </ul>
+  </div>
+
+  <div class="summary-bar">📌 多元文化的具體表現</div>
+  <div class="two-col">
+    <div class="card">
+      <h4>🍜 飲食文化</h4>
+      <ul>
+        <li>閩南：滷肉飯、蚵仔煎</li>
+        <li>客家：薑絲炒大腸、梅干扣肉</li>
+        <li>原住民：小米糕、飛魚乾</li>
+        <li>外省：眷村菜、牛肉麵</li>
+        <li>新住民：越式河粉、印尼炒飯</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🎊 節慶習俗</h4>
+      <ul>
+        <li>閩南：媽祖繞境、元宵燈節</li>
+        <li>客家：義民節、天穿日</li>
+        <li>原住民：豐年祭、獵祭</li>
+        <li>外省：眷村文化節</li>
+        <li>新住民：東南亞文化節</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="warning-box">
+    <h4>⭐ 重要觀念：多元文化的意義</h4>
+    <p>台灣多元族群文化是珍貴資產，各族群<strong>相互尊重、共同生活</strong>，豐富了台灣的文化內涵。我們應該欣賞各族群的差異，不歧視任何文化。</p>
+  </div>
+</div>
+
+<!-- 第三節：民主政治 -->
+<div class="section sec3" id="sec3">
+  <div class="section-header">
+    <div class="section-icon">🗳️</div>
+    <h2>第三節：民主政治與選舉制度</h2>
+  </div>
+
+  <div class="key-box">
+    <h3>🔑 台灣民主政治基礎</h3>
+    <p>台灣實施<span class="term">民主政治</span>，人民是國家的主人，透過<strong>直接選舉</strong>選出代表參與國家事務的決策。</p>
+  </div>
+
+  <div class="highlight">⭐ 台灣在1996年首次舉行總統直選，是台灣民主化的重要里程碑！</div>
+
+  <div class="summary-bar">📌 公民的四大政治權利</div>
+  <table>
+    <tr><th>權利</th><th>說明</th><th>例子</th></tr>
+    <tr><td>🗳️ <strong>選舉</strong></td><td>投票選出代表</td><td>選總統、立委、縣市長</td></tr>
+    <tr><td>❌ <strong>罷免</strong></td><td>投票解除民選官員職務</td><td>不適任的議員被罷免</td></tr>
+    <tr><td>📝 <strong>創制</strong></td><td>人民提出法律草案</td><td>連署提出新法律</td></tr>
+    <tr><td>✋ <strong>複決</strong></td><td>人民對法律投票表決</td><td>公民投票（公投）</td></tr>
+  </table>
+
+  <div class="summary-bar">📌 台灣重要的選舉類型</div>
+  <table>
+    <tr><th>選舉種類</th><th>選舉內容</th><th>選舉週期</th></tr>
+    <tr><td><strong>總統選舉</strong></td><td>選出總統與副總統</td><td>每4年一次</td></tr>
+    <tr><td><strong>立委選舉</strong></td><td>選出立法院委員</td><td>每4年一次</td></tr>
+    <tr><td><strong>縣市長選舉</strong></td><td>選出各縣市首長</td><td>每4年一次</td></tr>
+    <tr><td><strong>縣市議員選舉</strong></td><td>選出各縣市議會議員</td><td>每4年一次</td></tr>
+    <tr><td><strong>里長選舉</strong></td><td>選出社區里長</td><td>每4年一次</td></tr>
+  </table>
+
+  <div class="key-box">
+    <h3>🔑 地方自治</h3>
+    <ul class="styled">
+      <li>台灣實施<strong>地方自治</strong>，中央與地方政府各有職責</li>
+      <li>地方居民自己選出地方首長（縣市長、鄉鎮長）管理地方事務</li>
+      <li>地方政府負責：學校教育、道路建設、垃圾清理、社會福利等</li>
+      <li>中央政府負責：國防、外交、全國性法規制定等</li>
+    </ul>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>✅ 公民的義務</h4>
+      <ul>
+        <li>積極投票參與選舉</li>
+        <li>依法納稅</li>
+        <li>遵守法律</li>
+        <li>服兵役（男性）</li>
+        <li>接受教育</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>⭐ 好的公民行動</h4>
+      <ul>
+        <li>認識候選人政見再投票</li>
+        <li>參與社區公共事務</li>
+        <li>監督政府施政</li>
+        <li>理性表達意見</li>
+        <li>尊重選舉結果</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="warning-box">
+    <h4>⭐ 選舉小知識</h4>
+    <p>台灣的選舉採用<strong>祕密投票</strong>方式，每位選民在投票所領取選票後，在隔板後面獨立圈選，再投入票箱，以保護選民不受壓力。年滿<strong>20歲</strong>（現已降為18歲）的中華民國國民享有投票權。</p>
+  </div>
+</div>
+
+<!-- 第四節：全球化 -->
+<div class="section sec4" id="sec4">
+  <div class="section-header">
+    <div class="section-icon">🌏</div>
+    <h2>第四節：全球化的影響</h2>
+  </div>
+
+  <div class="key-box">
+    <h3>🔑 什麼是全球化？</h3>
+    <p><span class="term">全球化</span>是指<strong>人、物品、資金、資訊、文化</strong>跨越國界，在全球範圍內自由流通的現象。交通與通訊科技的進步，使全球化速度大幅加快。</p>
+  </div>
+
+  <div class="highlight">⭐ 全球化讓世界各地的人們聯繫更緊密，但也帶來挑戰！</div>
+
+  <div class="summary-bar">📌 全球化的正面影響</div>
+  <div class="two-col">
+    <div class="card">
+      <h4>💰 經濟方面</h4>
+      <ul>
+        <li>國際貿易更活絡</li>
+        <li>跨國企業提供更多就業機會</li>
+        <li>商品價格因競爭而降低</li>
+        <li>技術與資金跨國流動</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🎭 文化方面</h4>
+      <ul>
+        <li>文化交流更頻繁</li>
+        <li>飲食、音樂、電影國際化</li>
+        <li>學習不同文化與語言的機會增加</li>
+        <li>文化多樣性豐富</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🔬 科技方面</h4>
+      <ul>
+        <li>新技術快速傳播全球</li>
+        <li>國際科學研究合作</li>
+        <li>網路讓資訊即時分享</li>
+        <li>醫療技術惠及更多人</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🤝 人道方面</h4>
+      <ul>
+        <li>國際救援更有效率</li>
+        <li>全球環保合作</li>
+        <li>人權意識跨國傳播</li>
+        <li>國際交流學生增加</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="summary-bar">📌 全球化的負面影響</div>
+  <table>
+    <tr><th>影響面向</th><th>問題說明</th></tr>
+    <tr><td>⚠️ 文化同質化</td><td>強勢文化可能壓縮弱勢文化的生存空間</td></tr>
+    <tr><td>⚠️ 貧富差距擴大</td><td>發達國家與發展中國家差距增加</td></tr>
+    <tr><td>⚠️ 疾病傳播</td><td>傳染病可能更快速地跨國蔓延（如COVID-19）</td></tr>
+    <tr><td>⚠️ 環境汙染</td><td>工業廢棄物跨國轉移問題</td></tr>
+    <tr><td>⚠️ 在地產業受衝擊</td><td>進口廉價商品使本地小工廠難以競爭</td></tr>
+  </table>
+
+  <div class="key-box">
+    <h3>🔑 跨國企業</h3>
+    <ul class="styled">
+      <li>在<strong>多個國家</strong>設立分公司或工廠的大型企業</li>
+      <li>例子：麥當勞、蘋果（Apple）、三星、豐田汽車</li>
+      <li>跨國企業帶來就業機會，也可能對在地產業造成競爭壓力</li>
+      <li>台灣的台積電、鴻海也是重要的跨國企業</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <h4>⭐ 文化在地化 vs. 全球化</h4>
+    <p>全球化並非要讓各地文化完全相同，<strong>在地化</strong>是指全球品牌根據當地文化調整產品或服務。例如：麥當勞在台灣推出米漢堡，就是在地化的好例子。</p>
+  </div>
+</div>
+
+<!-- 第五節：社會變遷 -->
+<div class="section sec5" id="sec5">
+  <div class="section-header">
+    <div class="section-icon">👨‍👩‍👧</div>
+    <h2>第五節：台灣社會變遷</h2>
+  </div>
+
+  <div class="summary-bar">📌 少子化問題</div>
+  <div class="key-box">
+    <h3>🔑 少子化定義</h3>
+    <p><span class="term">少子化</span>是指<strong>生育率持續下降</strong>，導致兒童人口減少的現象。台灣的生育率長期偏低，是全球生育率最低的國家之一。</p>
+  </div>
+
+  <table>
+    <tr><th>少子化的原因</th><th>少子化的影響</th></tr>
+    <tr><td>育兒費用高昂</td><td>勞動力減少，經濟成長受影響</td></tr>
+    <tr><td>女性投入職場比例提高</td><td>學校招生不足，學校關閉或合併</td></tr>
+    <tr><td>房價高、生活壓力大</td><td>社會安全網（退休金）壓力增加</td></tr>
+    <tr><td>婚育觀念改變</td><td>軍隊兵源減少，國防隱憂</td></tr>
+  </table>
+
+  <div class="summary-bar">📌 高齡化社會</div>
+  <div class="key-box">
+    <h3>🔑 高齡化社會定義</h3>
+    <p><span class="term">高齡化社會</span>是指<strong>65歲以上老年人口比例不斷增加</strong>的現象。台灣在2025年預計進入「超高齡社會」（老年人口超過20%）。</p>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>🔢 社會老齡化分類</h4>
+      <ul>
+        <li>老齡化社會：老年人口 ≥7%</li>
+        <li>高齡社會：老年人口 ≥14%</li>
+        <li>超高齡社會：老年人口 ≥20%</li>
+        <li>台灣目前已達「高齡社會」</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🏥 高齡化帶來的問題</h4>
+      <ul>
+        <li>醫療和長照需求大增</li>
+        <li>退休金制度壓力沉重</li>
+        <li>青壯年負擔加重（扶老比升高）</li>
+        <li>老年失智、獨居老人問題</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="summary-bar">📌 政府的因應對策</div>
+  <table>
+    <tr><th>問題</th><th>政府對策</th></tr>
+    <tr><td>少子化</td><td>生育補貼、育嬰假、平價托育服務</td></tr>
+    <tr><td>勞動力不足</td><td>引進外籍移工（菲律賓、越南、印尼等）</td></tr>
+    <tr><td>高齡化</td><td>長期照顧（長照）政策、社區照護</td></tr>
+    <tr><td>退休金壓力</td><td>年金改革、延後退休年齡</td></tr>
+  </table>
+
+  <div class="warning-box">
+    <h4>⭐ 少子化＋高齡化的雙重衝擊</h4>
+    <p>台灣同時面臨少子化與高齡化，形成「<strong>倒三角形</strong>人口結構」：老年人多、青壯年少、兒童更少。這使得社會扶養比大幅上升，每個青壯年要負擔更多老年人的生活費用。</p>
+  </div>
+</div>
+
+<!-- 第六節：能源 -->
+<div class="section sec6" id="sec6">
+  <div class="section-header">
+    <div class="section-icon">⚡</div>
+    <h2>第六節：能源問題與分類</h2>
+  </div>
+
+  <div class="highlight">⭐ 最重要：會不會「用完」是區別再生/非再生能源的關鍵！</div>
+
+  <div class="summary-bar">📌 能源的分類比較</div>
+  <table>
+    <tr><th></th><th>🌿 再生能源</th><th>💀 非再生能源</th></tr>
+    <tr><td><strong>定義</strong></td><td>自然界中可<strong>不斷補充</strong>、取之不盡的能源</td><td>使用後會<strong>逐漸耗盡</strong>、無法短期補充的能源</td></tr>
+    <tr><td><strong>例子</strong></td><td>太陽能、風力、水力、地熱、海洋能、生質能</td><td>石油、煤炭、天然氣（化石燃料）、核能</td></tr>
+    <tr><td><strong>優點</strong></td><td>永續供應、低汙染、減少溫室氣體</td><td>能量密度高、供電穩定、技術成熟</td></tr>
+    <tr><td><strong>缺點</strong></td><td>受天氣影響、儲存困難、初期建設成本高</td><td>燃燒產生CO₂（溫室氣體）、資源有限、汙染環境</td></tr>
+  </table>
+
+  <div class="two-col">
+    <div class="card">
+      <h4>🌞 各種再生能源特色</h4>
+      <ul>
+        <li><strong>太陽能</strong>：利用太陽光發電，適合陽光充足地區</li>
+        <li><strong>風力</strong>：利用風吹動扇葉發電，台灣沿海風力豐富</li>
+        <li><strong>水力</strong>：利用水流落差發電，需建水壩</li>
+        <li><strong>地熱</strong>：利用地球內部熱能，台灣有豐富地熱資源</li>
+        <li><strong>海洋能</strong>：利用潮汐或海流發電</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🏭 化石燃料的問題</h4>
+      <ul>
+        <li>燃燒產生二氧化碳（CO₂）</li>
+        <li>加劇<strong>溫室效應</strong>，導致全球暖化</li>
+        <li>空氣汙染，影響人體健康</li>
+        <li>儲量有限，終將耗盡</li>
+        <li>油價波動影響全球經濟</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="key-box">
+    <h3>🔑 台灣的能源政策</h3>
+    <ul class="styled">
+      <li>推動「<strong>非核家園</strong>」：逐步停用核能電廠</li>
+      <li>積極發展<strong>太陽能</strong>和<strong>離岸風力</strong>發電</li>
+      <li>台灣98%以上的能源依賴進口，能源安全是重要課題</li>
+      <li>鼓勵節能減碳，推廣<strong>電動車</strong>和<strong>節能家電</strong></li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <h4>⭐ 考試易混淆：核能是再生能源嗎？</h4>
+    <p>❌ <strong>核能不是再生能源！</strong>核能使用鈾等放射性元素，這些資源會被消耗，屬於<strong>非再生能源</strong>。但核能燃燒時不產生CO₂，比化石燃料更環保（但有核廢料問題）。</p>
+  </div>
+</div>
+
+<!-- 第七節：媒體識讀 -->
+<div class="section sec7" id="sec7">
+  <div class="section-header">
+    <div class="section-icon">📱</div>
+    <h2>第七節：媒體識讀與資訊素養</h2>
+  </div>
+
+  <div class="key-box">
+    <h3>🔑 媒體識讀的定義</h3>
+    <p><span class="term">媒體識讀</span>（資訊素養）是指能夠<strong>正確閱讀、分析、評估和創作</strong>媒體內容的能力，特別是能辨別訊息的真偽與可信度。</p>
+  </div>
+
+  <div class="highlight">⭐ 數位時代，每個人都必須具備媒體識讀能力，不輕信、不亂傳！</div>
+
+  <div class="summary-bar">📌 常見的假訊息類型</div>
+  <table>
+    <tr><th>類型</th><th>說明</th><th>例子</th></tr>
+    <tr><td>📰 假新聞</td><td>捏造或扭曲事實的新聞報導</td><td>錯誤的選舉結果報導</td></tr>
+    <tr><td>🖼️ 假圖片</td><td>使用AI或軟體合成的虛假照片</td><td>未發生的天災照片</td></tr>
+    <tr><td>📹 深度偽造</td><td>用AI技術合成名人言行的假影片</td><td>名人假冒說話的影片</td></tr>
+    <tr><td>🔄 斷章取義</td><td>將真實訊息斷章取義，製造誤導</td><td>剪輯政治人物演講</td></tr>
+    <tr><td>💊 謠言</td><td>未經查證、錯誤的傳言</td><td>食品安全謠言</td></tr>
+  </table>
+
+  <div class="summary-bar">📌 辨別假訊息的方法</div>
+  <div class="two-col">
+    <div class="card">
+      <h4>🔍 查核步驟</h4>
+      <ul>
+        <li>查看<strong>訊息來源</strong>是否可靠</li>
+        <li>搜尋<strong>多個來源</strong>交叉比對</li>
+        <li>確認<strong>發佈時間</strong>是否正確</li>
+        <li>使用<strong>事實查核網站</strong>驗證</li>
+        <li>注意是否有<strong>引用來源</strong></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🛡️ 台灣事實查核機構</h4>
+      <ul>
+        <li>台灣事實查核中心（TFC）</li>
+        <li>MyGoPen 謠言查核</li>
+        <li>蘭姆酒吐司（Rum & Toast）</li>
+        <li>Lin's Factcheck 假訊息查核</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="key-box">
+    <h3>🔑 社群媒體的影響</h3>
+    <ul class="styled">
+      <li>優點：訊息傳播快速、促進公民交流、人人可發聲</li>
+      <li>缺點：假訊息擴散、同溫層效應、個資外洩風險</li>
+      <li><span class="term">同溫層效應</span>：演算法只推播你喜歡的內容，讓你只接觸到相同立場的訊息</li>
+      <li>解決方法：主動接觸多元觀點，不只待在同溫層中</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <h4>⭐ 負責任的網路行為</h4>
+    <p>在網路上發言要<strong>負責任</strong>：不散播未查證的訊息、不惡意攻擊他人、尊重著作權、保護個人隱私。散播假訊息可能觸犯法律！</p>
+  </div>
+</div>
+
+<!-- 重要名詞整理 -->
+<div class="section" style="border-top: 4px solid #1a73e8;">
+  <div class="section-header" style="border-color: #1a73e8;">
+    <div class="section-icon" style="background:#e8f0fe;">📖</div>
+    <h2 style="color:#1a73e8;">★ 重要名詞速查表</h2>
+  </div>
+  <div class="vocab-grid">
+    <div class="vocab-card">
+      <div class="word">人工智慧（AI）</div>
+      <div class="def">讓電腦具有像人類思考、學習能力的技術</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">數位落差</div>
+      <div class="def">不同族群在使用科技資源上的不平等</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">南島語系</div>
+      <div class="def">台灣原住民族語言所屬的語系</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">全球化</div>
+      <div class="def">人、物、資訊跨越國界自由流通的現象</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">少子化</div>
+      <div class="def">生育率持續下降，兒童人口減少的現象</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">高齡化社會</div>
+      <div class="def">65歲以上老年人口比例不斷增加</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">再生能源</div>
+      <div class="def">可不斷補充、取之不盡的能源（太陽能等）</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">非再生能源</div>
+      <div class="def">使用後會耗盡的能源（石油、煤等）</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">媒體識讀</div>
+      <div class="def">分析、評估媒體內容真偽的能力</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">直接選舉</div>
+      <div class="def">人民直接投票選出代表的制度</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">地方自治</div>
+      <div class="def">地方居民自行管理地方事務的制度</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">新住民</div>
+      <div class="def">來自外國、與台灣人婚配或工作的外籍人士</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">跨國企業</div>
+      <div class="def">在多國設有分公司的大型企業</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">同溫層效應</div>
+      <div class="def">社群媒體只推播相同立場訊息的現象</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">化石燃料</div>
+      <div class="def">由古代生物遺骸形成的能源（石油、煤、天然氣）</div>
+    </div>
+    <div class="vocab-card">
+      <div class="word">非核家園</div>
+      <div class="def">台灣逐步停用核電、轉向再生能源的政策</div>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center; padding: 20px; color: #888; font-size:0.9em;">
+  📚 六下社會期中考 — 單元一複習整理 ｜ 認真讀書，一定考好！💪
+</div>
+
+</body>
+</html>

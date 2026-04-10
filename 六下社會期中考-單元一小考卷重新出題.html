@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>六下社會期中考-單元一小考卷重新出題</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: '微軟正黑體', 'Microsoft JhengHei', sans-serif;
+    background: #f0f4ff;
+    color: #2c3e50;
+    line-height: 1.9;
+    padding: 20px;
+  }
+  .exam-title {
+    text-align: center;
+    background: linear-gradient(135deg, #c0392b, #8e0000);
+    color: white;
+    padding: 26px 20px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 20px rgba(192,57,43,0.3);
+  }
+  .exam-title h1 { font-size: 1.8em; letter-spacing: 2px; margin-bottom: 6px; }
+  .exam-title p { font-size: 0.95em; opacity: 0.9; }
+  .info-bar {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    background: white; border-radius: 10px;
+    padding: 14px 20px; margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    font-size: 0.95em;
+  }
+  .info-bar span { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 140px; }
+  .info-bar input {
+    border: none; border-bottom: 2px solid #c0392b;
+    outline: none; font-size: 0.95em; width: 100px;
+    font-family: inherit;
+  }
+  .section-block {
+    background: white;
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+  }
+  .section-title {
+    font-size: 1.15em;
+    font-weight: bold;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sec-tf .section-title { background: #e8f5e9; color: #2e7d32; border-left: 5px solid #43a047; }
+  .sec-mc .section-title { background: #e3f2fd; color: #1565c0; border-left: 5px solid #1e88e5; }
+  .sec-match .section-title { background: #fff3e0; color: #e65100; border-left: 5px solid #fb8c00; }
+
+  /* 是非題 */
+  .tf-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: background 0.2s;
+  }
+  .tf-item:hover { background: #f8f9fa; }
+  .tf-num {
+    font-weight: bold; color: #888;
+    min-width: 28px; margin-top: 3px;
+    font-size: 0.95em;
+  }
+  .tf-text { flex: 1; font-size: 1em; }
+  .tf-btns { display: flex; gap: 8px; margin-top: 4px; flex-shrink: 0; }
+  .tf-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%; border: 2px solid #ccc;
+    font-size: 1.1em; font-weight: bold;
+    cursor: pointer; background: white;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .tf-btn.o { color: #e74c3c; }
+  .tf-btn.x { color: #2980b9; }
+  .tf-btn.selected-o { background: #e74c3c; color: white; border-color: #e74c3c; }
+  .tf-btn.selected-x { background: #2980b9; color: white; border-color: #2980b9; }
+
+  /* 選擇題 */
+  .mc-item {
+    padding: 14px 10px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    transition: background 0.2s;
+  }
+  .mc-item:hover { background: #f8f9fa; }
+  .mc-q {
+    display: flex; gap: 10px; align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .mc-num { font-weight: bold; color: #1565c0; min-width: 30px; font-size: 0.95em; }
+  .mc-text { flex: 1; font-size: 1em; }
+  .mc-opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding-left: 40px;
+  }
+  .mc-opt {
+    padding: 8px 14px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: all 0.2s;
+    background: white;
+    font-family: inherit;
+    text-align: left;
+  }
+  .mc-opt:hover { border-color: #1e88e5; background: #e3f2fd; }
+  .mc-opt.selected { border-color: #1e88e5; background: #1e88e5; color: white; }
+
+  /* 配合題 */
+  .match-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 10px;
+  }
+  .match-col h4 {
+    font-size: 0.95em;
+    color: #888;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 6px;
+  }
+  .match-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 2px solid #ffe0b2;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: #fffde7;
+    font-size: 0.95em;
+  }
+  .match-item select {
+    border: 2px solid #fb8c00;
+    border-radius: 6px;
+    padding: 4px 6px;
+    font-size: 0.9em;
+    font-family: inherit;
+    background: white;
+    color: #333;
+    cursor: pointer;
+  }
+  .match-label { font-weight: bold; color: #e65100; min-width: 20px; }
+  .match-right-item {
+    padding: 10px 12px;
+    border: 2px solid #b3e5fc;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: #e1f5fe;
+    font-size: 0.95em;
+  }
+  .match-right-label { font-weight: bold; color: #0277bd; }
+
+  /* 提交區域 */
+  .submit-area {
+    text-align: center;
+    margin: 30px 0;
+  }
+  .submit-btn {
+    background: linear-gradient(135deg, #c0392b, #8e0000);
+    color: white;
+    border: none;
+    padding: 16px 48px;
+    font-size: 1.15em;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(192,57,43,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+    letter-spacing: 2px;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(192,57,43,0.4); }
+  .reset-btn {
+    background: #666;
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-left: 14px;
+    font-family: inherit;
+  }
+  /* 結果 */
+  #result-box {
+    display: none;
+    border-radius: 16px;
+    padding: 28px 32px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .result-score { font-size: 3em; font-weight: bold; margin: 10px 0; }
+  .result-msg { font-size: 1.3em; margin-bottom: 20px; }
+  #result-details {
+    text-align: left;
+    margin-top: 16px;
+  }
+
+  /* 答案顯示 */
+  .answer-reveal {
+    display: none;
+    margin-top: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: bold;
+  }
+  .answer-correct { background: #e8f5e9; color: #2e7d32; }
+  .answer-wrong { background: #ffebee; color: #c62828; }
+
+  .tf-btn.correct-ans { box-shadow: 0 0 0 3px #27ae60; }
+  .tf-btn.wrong-ans { box-shadow: 0 0 0 3px #e74c3c; }
+  .mc-opt.correct-ans { border-color: #27ae60; background: #e8f5e9 !important; color: #2e7d32 !important; }
+  .mc-opt.wrong-ans { border-color: #e74c3c; background: #ffebee !important; color: #c62828 !important; }
+
+  .section-score {
+    text-align: right;
+    font-size: 0.9em;
+    color: #888;
+    font-style: italic;
+  }
+  .point-tag {
+    font-size: 0.8em;
+    background: #eee;
+    color: #555;
+    border-radius: 10px;
+    padding: 2px 8px;
+    margin-left: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .mc-opts { grid-template-columns: 1fr; }
+    .match-area { grid-template-columns: 1fr; }
+    .exam-title h1 { font-size: 1.3em; }
+    .tf-btns { margin-top: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="exam-title">
+  <h1>📝 六下社會期中考-單元一小考卷重新出題</h1>
+  <p>共30題 ✦ 滿分100分 ✦ 作答完畢後按「批改交卷」查看成績</p>
+</div>
+
+<div class="info-bar">
+  <span>班級：六年<input type="text" placeholder="　　" maxlength="4">班</span>
+  <span>座號：<input type="text" placeholder="　　" maxlength="3"></span>
+  <span>姓名：<input type="text" placeholder="　　　　" maxlength="10"></span>
+  <span>分數：<strong id="live-score" style="color:#c0392b; font-size:1.1em;">—</strong></span>
+</div>
+
+<!-- ========== 一、是非題 ========== -->
+<div class="section-block sec-tf">
+  <div class="section-title">
+    ⭕ 一、是非題
+    <span class="point-tag">每題2分，共20分</span>
+  </div>
+  <p style="color:#888; font-size:0.9em; margin-bottom:16px;">請根據題意判斷正確（○）或錯誤（×）</p>
+
+  <!-- TF 1 -->
+  <div class="tf-item" id="tf1">
+    <div class="tf-num">(1)</div>
+    <div class="tf-text">人工智慧（AI）是讓電腦具有像人類一樣思考、學習和判斷能力的技術。</div>
+    <div class="tf-btns">
+      <button class="tf-btn o" onclick="selectTF(1,'O')">○</button>
+      <button class="tf-btn x" onclick="selectTF(1,'X')">✕</button>
+    </div>
+  </div>
+
+  <!-- TF 2 -->
+  <div class="tf-item" id="tf2">
+    <div class="tf-num">(2)</div>
+    <div class="tf-text">太陽能是一種「非再生能源」，用完之後就不能再使用了。</div>
+    <div class="tf-btns">
+      <button class="tf-btn o" onclick="selectTF(2,'O')">○</button>
+      <button class="tf-btn x" onclick="selectTF(2,'X')">✕</button>
+    </div>
+  </div>
+
+  <!-- TF 3 -->
+  <div class="tf-item" id="tf3">
+    <div class="tf-num">(3)</div>
+    <div class="tf-text">核能屬於「再生能源」，因為它在發電時不會產生二氧化碳。</div>
+    <div class="tf-btns">
+      <button class="tf-btn o" onclick="selectTF(3,'O')">○</button>
+      <button class="tf-btn x" onclick="selectTF(3,'X')">✕</button>
+    </div>
+  </div>
+
+  <!-- TF 4 -->
+  <div class="tf-item" id="tf4">
+    <div class="tf-num">(4)</div>
+    <div class="tf-text">少子化是指出生率持續下降、兒童人口不斷減少的社會現象。</div>
+    <div class="tf-btns">
+      <button class="tf-btn o" onclick="selectTF(4,'O')">○</button>
+      <button class="tf-btn x" onclick="selectTF(4,'X')">✕</button>
+    </div>
+  </div>
+
+  <!-- TF 5 -->
+  <div class="tf-item" id="tf5">
+    <div class="tf-num">(5)</div>
+    <div class="tf-text">台灣四大族群為：閩南、客家、外省、原住民族，其中閩南族群人口比例最高，約占全台70%。</div>
+    <div class="tf-btns">
+      <button class="tf-btn o" onclick="selectTF(5,'O')">○</button>
+      <button class="tf-btn x" onclick="selectTF(5,'X')">✕</button>
+    </div>
+  </div>
+
+  <!-- TF 6 -->
+  <div class="tf-item" id="tf6">
+    <div class="tf-num">(6)</div>
+    <div class="tf-text">台灣實施民主政治，人民可以透過直接選舉的方式，選出總統和立法委員。</div>
+    <div class="tf-btns">
+      <button class="tf-btn o" onclick="selectTF(6,'O')">○</button>
+      <button class="tf-btn x" onclick="selectTF(6,'X')">✕</button>
+    </div>
+  </div>
+
+  <!-- TF 7 -->
+  <div class="tf-item" id="tf7">
+    <div class="tf-num">(7)</div>
+    <div class="tf-text">全球化只會對各國的文化造成影響，對經濟和科技完全沒有影響。</div>
+    <div class="tf-btns">
+      <button class="tf-btn o" onclick="selectTF(7,'O')">○</button>
+      <button class="tf-btn x" onclick="selectTF(7,'X')">✕</button>
+    </div>
+  </div>
+
+  <!-- TF 8 -->
+  <div class="tf-item" id="tf8">
+    <div class="tf-num">(8)</div>
+    <div class="tf-text">台灣原住民族的語言屬於「南島語系」，與東南亞及太平洋島嶼的語言有親緣關係。</div>
+    <div class="tf-btns">
+      <button class="tf-btn o" onclick="selectTF(8,'O')">○</button>
+      <button class="tf-btn x" onclick="selectTF(8,'X')">✕</button>
+    </div>
+  </div>
+
+  <!-- TF 9 -->
+  <div class="tf-item" id="tf9">
+    <div class="tf-num">(9)</div>
+    <div class="tf-text">「高齡化社會」指的是社會中老年人口（65歲以上）所占比例不斷上升的現象。</div>
+    <div class="tf-btns">
+      <button class="tf-btn o" onclick="selectTF(9,'O')">○</button>
+      <button class="tf-btn x" onclick="selectTF(9,'X')">✕</button>
+    </div>
+  </div>
+
+  <!-- TF 10 -->
+  <div class="tf-item" id="tf10">
+    <div class="tf-num">(10)</div>
+    <div class="tf-text">石油、煤炭和天然氣屬於「再生能源」，可以永續使用、永遠不會耗盡。</div>
+    <div class="tf-btns">
+      <button class="tf-btn o" onclick="selectTF(10,'O')">○</button>
+      <button class="tf-btn x" onclick="selectTF(10,'X')">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 二、選擇題 ========== -->
+<div class="section-block sec-mc">
+  <div class="section-title">
+    🔵 二、選擇題
+    <span class="point-tag">每題4分，共60分</span>
+  </div>
+  <p style="color:#888; font-size:0.9em; margin-bottom:16px;">每題只有一個最正確的答案，請點選作答</p>
+
+  <!-- MC 11 -->
+  <div class="mc-item" id="mc11">
+    <div class="mc-q">
+      <div class="mc-num">(11)</div>
+      <div class="mc-text">下列哪一項是屬於「再生能源」？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(11,1)">①石油</button>
+      <button class="mc-opt" onclick="selectMC(11,2)">②煤炭</button>
+      <button class="mc-opt" onclick="selectMC(11,3)">③太陽能</button>
+      <button class="mc-opt" onclick="selectMC(11,4)">④天然氣</button>
+    </div>
+  </div>
+
+  <!-- MC 12 -->
+  <div class="mc-item" id="mc12">
+    <div class="mc-q">
+      <div class="mc-num">(12)</div>
+      <div class="mc-text">台灣官方認定的原住民族共有幾族？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(12,1)">①6族</button>
+      <button class="mc-opt" onclick="selectMC(12,2)">②10族</button>
+      <button class="mc-opt" onclick="selectMC(12,3)">③16族</button>
+      <button class="mc-opt" onclick="selectMC(12,4)">④20族</button>
+    </div>
+  </div>
+
+  <!-- MC 13 -->
+  <div class="mc-item" id="mc13">
+    <div class="mc-q">
+      <div class="mc-num">(13)</div>
+      <div class="mc-text">「全球化」最主要的意義是什麼？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(13,1)">①各國完全封閉，互不往來</button>
+      <button class="mc-opt" onclick="selectMC(13,2)">②人、物品、資金、資訊跨越國界自由流通</button>
+      <button class="mc-opt" onclick="selectMC(13,3)">③只有富裕國家可以從中獲益</button>
+      <button class="mc-opt" onclick="selectMC(13,4)">④世界各地的文化完全變成一樣</button>
+    </div>
+  </div>
+
+  <!-- MC 14 -->
+  <div class="mc-item" id="mc14">
+    <div class="mc-q">
+      <div class="mc-num">(14)</div>
+      <div class="mc-text">人工智慧（AI）目前被廣泛應用在哪些領域？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(14,1)">①只有軍事與國防</button>
+      <button class="mc-opt" onclick="selectMC(14,2)">②只有娛樂和遊戲</button>
+      <button class="mc-opt" onclick="selectMC(14,3)">③醫療、農業、教育、交通等多個領域</button>
+      <button class="mc-opt" onclick="selectMC(14,4)">④只有工廠生產線</button>
+    </div>
+  </div>
+
+  <!-- MC 15 -->
+  <div class="mc-item" id="mc15">
+    <div class="mc-q">
+      <div class="mc-num">(15)</div>
+      <div class="mc-text">台灣的客家族群主要集中分布在哪些地區？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(15,1)">①台北、台南</button>
+      <button class="mc-opt" onclick="selectMC(15,2)">②桃園、新竹、苗栗（桃竹苗）</button>
+      <button class="mc-opt" onclick="selectMC(15,3)">③花蓮、台東（花東縱谷）</button>
+      <button class="mc-opt" onclick="selectMC(15,4)">④雲林、嘉義、台南（雲嘉南）</button>
+    </div>
+  </div>
+
+  <!-- MC 16 -->
+  <div class="mc-item" id="mc16">
+    <div class="mc-q">
+      <div class="mc-num">(16)</div>
+      <div class="mc-text">台灣同時面臨「少子化」與「高齡化」，主要會造成什麼問題？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(16,1)">①勞動人口大幅增加</button>
+      <button class="mc-opt" onclick="selectMC(16,2)">②政府稅收大量增加</button>
+      <button class="mc-opt" onclick="selectMC(16,3)">③青壯年的社會扶養負擔加重</button>
+      <button class="mc-opt" onclick="selectMC(16,4)">④社會更有活力，沒有任何問題</button>
+    </div>
+  </div>
+
+  <!-- MC 17 -->
+  <div class="mc-item" id="mc17">
+    <div class="mc-q">
+      <div class="mc-num">(17)</div>
+      <div class="mc-text">「數位落差」是指什麼現象？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(17,1)">①網路訊號不穩定，網速很慢</button>
+      <button class="mc-opt" onclick="selectMC(17,2)">②不同族群或地區在使用科技資源上的不平等差異</button>
+      <button class="mc-opt" onclick="selectMC(17,3)">③電費越來越貴，用不起電</button>
+      <button class="mc-opt" onclick="selectMC(17,4)">④手機容量不足，照片無法儲存</button>
+    </div>
+  </div>
+
+  <!-- MC 18 -->
+  <div class="mc-item" id="mc18">
+    <div class="mc-q">
+      <div class="mc-num">(18)</div>
+      <div class="mc-text">下列哪一項是台灣公民參與政治的合法方式？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(18,1)">①用暴力推翻政府</button>
+      <button class="mc-opt" onclick="selectMC(18,2)">②故意不繳稅、拒繳罰款</button>
+      <button class="mc-opt" onclick="selectMC(18,3)">③參加公民連署、投票選舉</button>
+      <button class="mc-opt" onclick="selectMC(18,4)">④在網路上散播假訊息</button>
+    </div>
+  </div>
+
+  <!-- MC 19 -->
+  <div class="mc-item" id="mc19">
+    <div class="mc-q">
+      <div class="mc-num">(19)</div>
+      <div class="mc-text">社群媒體上的「同溫層效應」是指什麼？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(19,1)">①網路平台的伺服器過熱問題</button>
+      <button class="mc-opt" onclick="selectMC(19,2)">②演算法只推播相同立場訊息，使人只接觸到相同觀點</button>
+      <button class="mc-opt" onclick="selectMC(19,3)">③社群媒體中沒有廣告的清靜環境</button>
+      <button class="mc-opt" onclick="selectMC(19,4)">④平台禁止不同意見發表的政策</button>
+    </div>
+  </div>
+
+  <!-- MC 20 -->
+  <div class="mc-item" id="mc20">
+    <div class="mc-q">
+      <div class="mc-num">(20)</div>
+      <div class="mc-text">台灣推動「非核家園」政策的主要目的是什麼？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(20,1)">①完全停止使用所有電力</button>
+      <button class="mc-opt" onclick="selectMC(20,2)">②引進更多外國核能電廠</button>
+      <button class="mc-opt" onclick="selectMC(20,3)">③逐步停用核電，大力發展再生能源</button>
+      <button class="mc-opt" onclick="selectMC(20,4)">④將核電廠改造成遊樂園</button>
+    </div>
+  </div>
+
+  <!-- MC 21 -->
+  <div class="mc-item" id="mc21">
+    <div class="mc-q">
+      <div class="mc-num">(21)</div>
+      <div class="mc-text">台灣的外省族群主要在什麼時期移居台灣？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(21,1)">①明朝末年（17世紀）</button>
+      <button class="mc-opt" onclick="selectMC(21,2)">②日治時期（1895~1945年）</button>
+      <button class="mc-opt" onclick="selectMC(21,3)">③國共內戰結束後（1945~1949年）</button>
+      <button class="mc-opt" onclick="selectMC(21,4)">④台灣加入世界貿易組織後（2002年）</button>
+    </div>
+  </div>
+
+  <!-- MC 22 -->
+  <div class="mc-item" id="mc22">
+    <div class="mc-q">
+      <div class="mc-num">(22)</div>
+      <div class="mc-text">下列哪一項說法，正確描述了「跨國企業」的特色？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(22,1)">①只在本國設立工廠，不在外國投資</button>
+      <button class="mc-opt" onclick="selectMC(22,2)">②在多個國家設立分公司或工廠的大型企業</button>
+      <button class="mc-opt" onclick="selectMC(22,3)">③專門銷售農產品的小型公司</button>
+      <button class="mc-opt" onclick="selectMC(22,4)">④只雇用本國員工的傳統企業</button>
+    </div>
+  </div>
+
+  <!-- MC 23 -->
+  <div class="mc-item" id="mc23">
+    <div class="mc-q">
+      <div class="mc-num">(23)</div>
+      <div class="mc-text">遇到不確定是否為假訊息的內容時，最正確的做法是？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(23,1)">①覺得有趣就立刻分享給親友</button>
+      <button class="mc-opt" onclick="selectMC(23,2)">②只要是長輩傳來的就一定是真的</button>
+      <button class="mc-opt" onclick="selectMC(23,3)">③查閱多個可靠來源，或使用事實查核網站驗證</button>
+      <button class="mc-opt" onclick="selectMC(23,4)">④不管真假，越快分享越好</button>
+    </div>
+  </div>
+
+  <!-- MC 24 -->
+  <div class="mc-item" id="mc24">
+    <div class="mc-q">
+      <div class="mc-num">(24)</div>
+      <div class="mc-text">關於台灣多元文化，下列哪一項說法是正確的？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(24,1)">①台灣各族群文化相同，沒有什麼差異</button>
+      <button class="mc-opt" onclick="selectMC(24,2)">②只有原住民族才有自己的傳統文化</button>
+      <button class="mc-opt" onclick="selectMC(24,3)">③各族群的語言、飲食、節慶習俗各具特色，應相互尊重</button>
+      <button class="mc-opt" onclick="selectMC(24,4)">④台灣的文化來源只有中國大陸</button>
+    </div>
+  </div>
+
+  <!-- MC 25 -->
+  <div class="mc-item" id="mc25">
+    <div class="mc-q">
+      <div class="mc-num">(25)</div>
+      <div class="mc-text">下列哪個選項最能說明「再生能源」與「非再生能源」的差別？</div>
+    </div>
+    <div class="mc-opts">
+      <button class="mc-opt" onclick="selectMC(25,1)">①再生能源比較貴，非再生能源比較便宜</button>
+      <button class="mc-opt" onclick="selectMC(25,2)">②再生能源可以不斷補充，非再生能源使用後會耗盡</button>
+      <button class="mc-opt" onclick="selectMC(25,3)">③再生能源都是液體，非再生能源都是氣體</button>
+      <button class="mc-opt" onclick="selectMC(25,4)">①再生能源需要機器，非再生能源不需要</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 三、配合題 ========== -->
+<div class="section-block sec-match">
+  <div class="section-title">
+    🟠 三、配合題
+    <span class="point-tag">每題4分，共20分</span>
+  </div>
+  <p style="color:#888; font-size:0.9em; margin-bottom:14px;">請從右欄（甲～戊）中，為左欄各族群選出最符合的描述，每個答案只能使用一次</p>
+
+  <div class="match-area">
+    <div class="match-col">
+      <h4>【族群/名稱】</h4>
+
+      <div class="match-item">
+        <div class="match-label">(26)</div>
+        <div style="flex:1">閩南族群（福佬）</div>
+        <select id="match26" onchange="updateMatchState()">
+          <option value="">──請選──</option>
+          <option value="A">甲</option>
+          <option value="B">乙</option>
+          <option value="C">丙</option>
+          <option value="D">丁</option>
+          <option value="E">戊</option>
+        </select>
+      </div>
+
+      <div class="match-item">
+        <div class="match-label">(27)</div>
+        <div style="flex:1">客家族群</div>
+        <select id="match27" onchange="updateMatchState()">
+          <option value="">──請選──</option>
+          <option value="A">甲</option>
+          <option value="B">乙</option>
+          <option value="C">丙</option>
+          <option value="D">丁</option>
+          <option value="E">戊</option>
+        </select>
+      </div>
+
+      <div class="match-item">
+        <div class="match-label">(28)</div>
+        <div style="flex:1">外省族群</div>
+        <select id="match28" onchange="updateMatchState()">
+          <option value="">──請選──</option>
+          <option value="A">甲</option>
+          <option value="B">乙</option>
+          <option value="C">丙</option>
+          <option value="D">丁</option>
+          <option value="E">戊</option>
+        </select>
+      </div>
+
+      <div class="match-item">
+        <div class="match-label">(29)</div>
+        <div style="flex:1">原住民族</div>
+        <select id="match29" onchange="updateMatchState()">
+          <option value="">──請選──</option>
+          <option value="A">甲</option>
+          <option value="B">乙</option>
+          <option value="C">丙</option>
+          <option value="D">丁</option>
+          <option value="E">戊</option>
+        </select>
+      </div>
+
+      <div class="match-item">
+        <div class="match-label">(30)</div>
+        <div style="flex:1">新住民</div>
+        <select id="match30" onchange="updateMatchState()">
+          <option value="">──請選──</option>
+          <option value="A">甲</option>
+          <option value="B">乙</option>
+          <option value="C">丙</option>
+          <option value="D">丁</option>
+          <option value="E">戊</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="match-col">
+      <h4>【特色描述】</h4>
+      <div class="match-right-item"><span class="match-right-label">甲、</span>說台語為主，明清時期從福建移入，占全台人口約70%</div>
+      <div class="match-right-item"><span class="match-right-label">乙、</span>以硬頸精神著稱，說客語，主要分布於桃竹苗地區</div>
+      <div class="match-right-item"><span class="match-right-label">丙、</span>1945~1949年國共內戰後隨政府遷台，帶來各省飲食文化</div>
+      <div class="match-right-item"><span class="match-right-label">丁、</span>語言屬南島語系，是台灣最早的住民，官方認定16族</div>
+      <div class="match-right-item"><span class="match-right-label">戊、</span>來自越南、印尼等東南亞國家，為台灣帶來多元文化</div>
+    </div>
+  </div>
+</div>
+
+<!-- 交卷按鈕 -->
+<div class="submit-area">
+  <button class="submit-btn" onclick="gradeExam()">✏️ 批改交卷</button>
+  <button class="reset-btn" onclick="resetExam()">↺ 重新作答</button>
+</div>
+
+<!-- 成績結果 -->
+<div id="result-box">
+  <div class="result-score" id="result-score-text"></div>
+  <div class="result-msg" id="result-msg"></div>
+  <div id="result-details"></div>
+</div>
+
+<script>
+// ──────── 答案資料 ────────
+const TF_ANS = {
+  1:'O', 2:'X', 3:'X', 4:'O', 5:'O',
+  6:'O', 7:'X', 8:'O', 9:'O', 10:'X'
+};
+const TF_EXPLAIN = {
+  1:'人工智慧（AI）讓電腦具備思考、學習、判斷能力，這是正確的定義。',
+  2:'太陽能是「再生能源」，來自太陽，取之不盡、用之不竭。',
+  3:'核能屬於「非再生能源」，核燃料（鈾）終將耗盡，雖無CO₂但有核廢料問題。',
+  4:'少子化指出生率下降，兒童人口減少，此題正確。',
+  5:'閩南族群約70%，客家約15%，外省約13%，原住民約2%，此題正確。',
+  6:'台灣1996年起實施總統直選，立委也是直接選舉，此題正確。',
+  7:'全球化對文化、經濟、科技都有影響，並非只有文化。',
+  8:'台灣原住民族語言屬南島語系，此題正確。',
+  9:'高齡化社會指65歲以上老年人口比例持續上升，此題正確。',
+  10:'石油、煤炭、天然氣是「非再生能源」（化石燃料），會被耗盡。'
+};
+
+const MC_ANS = {
+  11:3, 12:3, 13:2, 14:3, 15:2,
+  16:3, 17:2, 18:3, 19:2, 20:3,
+  21:3, 22:2, 23:3, 24:3, 25:2
+};
+const MC_EXPLAIN = {
+  11:'太陽能屬再生能源，石油、煤炭、天然氣都是非再生能源。',
+  12:'台灣官方認定原住民族共16族。',
+  13:'全球化指人、物品、資金、資訊跨越國界自由流通。',
+  14:'AI已廣泛應用於醫療、農業、教育、交通等多個領域。',
+  15:'客家族群主要分布在桃竹苗（桃園、新竹、苗栗）地區。',
+  16:'少子化+高齡化導致青壯年須扶養更多老人，負擔加重。',
+  17:'數位落差指不同族群或地區使用科技資源的不平等差異。',
+  18:'參加公民連署、投票選舉是合法的政治參與方式。',
+  19:'同溫層效應：演算法只推播相同立場的訊息，使視野受限。',
+  20:'非核家園政策目標是逐步停用核電，大力發展再生能源。',
+  21:'外省族群主要在1945~1949年國共內戰後，隨中華民國政府遷台。',
+  22:'跨國企業在多個國家設有分公司或工廠，如麥當勞、台積電。',
+  23:'遇到可疑訊息應查閱多個可靠來源，或使用事實查核網站驗證，再決定是否分享。',
+  24:'台灣各族群語言、飲食、節慶各具特色，應相互尊重，欣賞多元文化。',
+  25:'再生能源可不斷補充，非再生能源（如化石燃料）使用後會耗盡。'
+};
+
+const MATCH_ANS = { 26:'A', 27:'B', 28:'C', 29:'D', 30:'E' };
+const MATCH_EXPLAIN = {
+  26:'閩南族群：甲（說台語，明清從福建移入，約70%）',
+  27:'客家族群：乙（硬頸精神，說客語，主要在桃竹苗）',
+  28:'外省族群：丙（1945~1949年隨政府遷台）',
+  29:'原住民族：丁（南島語系，台灣最早住民，官認16族）',
+  30:'新住民：戊（來自越南、印尼等東南亞國家）'
+};
+
+// ──────── 狀態 ────────
+const tfState = {};
+const mcState = {};
+
+function selectTF(num, val) {
+  tfState[num] = val;
+  const item = document.getElementById('tf' + num);
+  const btns = item.querySelectorAll('.tf-btn');
+  btns[0].className = 'tf-btn o' + (val === 'O' ? ' selected-o' : '');
+  btns[1].className = 'tf-btn x' + (val === 'X' ? ' selected-x' : '');
+}
+
+function selectMC(num, val) {
+  mcState[num] = val;
+  const item = document.getElementById('mc' + num);
+  const btns = item.querySelectorAll('.mc-opt');
+  btns.forEach((btn, i) => {
+    btn.className = 'mc-opt' + (i + 1 === val ? ' selected' : '');
+  });
+}
+
+function updateMatchState() {} // trigger on change
+
+// ──────── 批改 ────────
+function gradeExam() {
+  let score = 0;
+  let totalAnswered = 0;
+  let wrongItems = [];
+
+  // TF批改
+  for (let i = 1; i <= 10; i++) {
+    const item = document.getElementById('tf' + i);
+    const btns = item.querySelectorAll('.tf-btn');
+    if (tfState[i]) {
+      totalAnswered++;
+      if (tfState[i] === TF_ANS[i]) {
+        score += 2;
+        btns[0].className = 'tf-btn o' + (tfState[i]==='O' ? ' selected-o' : '');
+        btns[1].className = 'tf-btn x' + (tfState[i]==='X' ? ' selected-x' : '');
+      } else {
+        // 標記錯誤
+        const correctIdx = TF_ANS[i] === 'O' ? 0 : 1;
+        btns[correctIdx].classList.add('correct-ans');
+        const wrongIdx = tfState[i] === 'O' ? 0 : 1;
+        btns[wrongIdx].classList.add('wrong-ans');
+        wrongItems.push(`(${i}) ${TF_EXPLAIN[i]}`);
+      }
+    }
+  }
+
+  // MC批改
+  for (let i = 11; i <= 25; i++) {
+    const item = document.getElementById('mc' + i);
+    const btns = item.querySelectorAll('.mc-opt');
+    if (mcState[i]) {
+      totalAnswered++;
+      if (mcState[i] === MC_ANS[i]) {
+        score += 4;
+      } else {
+        btns.forEach((btn, idx) => {
+          if (idx + 1 === MC_ANS[i]) btn.classList.add('correct-ans');
+          if (idx + 1 === mcState[i]) btn.classList.add('wrong-ans');
+        });
+        wrongItems.push(`(${i}) 正確答案是第${MC_ANS[i]}項。${MC_EXPLAIN[i]}`);
+      }
+    }
+  }
+
+  // Match批改
+  for (let i = 26; i <= 30; i++) {
+    const sel = document.getElementById('match' + i);
+    if (sel.value) {
+      totalAnswered++;
+      if (sel.value === MATCH_ANS[i]) {
+        score += 4;
+        sel.style.border = '2px solid #27ae60';
+        sel.style.background = '#e8f5e9';
+      } else {
+        sel.style.border = '2px solid #e74c3c';
+        sel.style.background = '#ffebee';
+        wrongItems.push(`(${i}) ${MATCH_EXPLAIN[i]}`);
+      }
+    }
+  }
+
+  // 顯示結果
+  const resultBox = document.getElementById('result-box');
+  resultBox.style.display = 'block';
+
+  let grade, color, bg, emoji;
+  const pct = score;
+  if (pct >= 90) { grade='超厲害！'; color='#1b5e20'; bg='#e8f5e9'; emoji='🏆'; }
+  else if (pct >= 80) { grade='很不錯！'; color='#2e7d32'; bg='#f1f8e9'; emoji='🌟'; }
+  else if (pct >= 70) { grade='還可以，加油！'; color='#e65100'; bg='#fff3e0'; emoji='💪'; }
+  else if (pct >= 60) { grade='需要多複習！'; color='#c62828'; bg='#fff8e1'; emoji='📚'; }
+  else { grade='要更努力哦！'; color='#b71c1c'; bg='#ffebee'; emoji='🔥'; }
+
+  resultBox.style.background = bg;
+  resultBox.style.border = `3px solid ${color}`;
+  document.getElementById('result-score-text').textContent = `${emoji} ${score} 分`;
+  document.getElementById('result-score-text').style.color = color;
+  document.getElementById('result-msg').textContent = grade;
+  document.getElementById('result-msg').style.color = color;
+
+  let detailHTML = '';
+  if (wrongItems.length > 0) {
+    detailHTML += `<div style="background:white; border-radius:10px; padding:16px 20px; margin-top:12px;">
+      <h3 style="color:#c62828; margin-bottom:12px;">❌ 答錯的題目（共${wrongItems.length}題），請重點複習：</h3>`;
+    wrongItems.forEach(item => {
+      detailHTML += `<div style="padding:8px 0; border-bottom:1px solid #eee; font-size:0.95em; color:#333;">📌 ${item}</div>`;
+    });
+    detailHTML += '</div>';
+  } else if (totalAnswered === 30) {
+    detailHTML = '<div style="background:white; border-radius:10px; padding:16px 20px; margin-top:12px; color:#2e7d32; font-size:1.1em; text-align:center;">🎉 全部答對！你真的很棒！</div>';
+  }
+
+  document.getElementById('result-details').innerHTML = detailHTML;
+  resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('live-score').textContent = score + '分';
+}
+
+function resetExam() {
+  // 重置是非題
+  for (let i = 1; i <= 10; i++) {
+    delete tfState[i];
+    const item = document.getElementById('tf' + i);
+    const btns = item.querySelectorAll('.tf-btn');
+    btns[0].className = 'tf-btn o';
+    btns[1].className = 'tf-btn x';
+  }
+  // 重置選擇題
+  for (let i = 11; i <= 25; i++) {
+    delete mcState[i];
+    const item = document.getElementById('mc' + i);
+    item.querySelectorAll('.mc-opt').forEach(btn => {
+      btn.className = 'mc-opt';
+    });
+  }
+  // 重置配合題
+  for (let i = 26; i <= 30; i++) {
+    const sel = document.getElementById('match' + i);
+    sel.value = '';
+    sel.style.border = '';
+    sel.style.background = '';
+  }
+  // 隱藏結果
+  const rb = document.getElementById('result-box');
+  rb.style.display = 'none';
+  document.getElementById('live-score').textContent = '—';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
