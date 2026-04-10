@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英語複習 - Body Parts & Illness</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #e0f4ff;
+    --blue: #3b82f6;
+    --blue-dark: #1d4ed8;
+    --green: #22c55e;
+    --green-light: #dcfce7;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --purple: #a855f7;
+    --purple-light: #f3e8ff;
+    --red: #ef4444;
+    --red-light: #fee2e2;
+    --yellow: #eab308;
+    --yellow-light: #fefce8;
+    --card-radius: 18px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #dbeafe 0%, #ede9fe 50%, #dcfce7 100%);
+    min-height: 100vh;
+    padding: 24px 16px 48px;
+  }
+
+  h1.title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    color: #1e3a8a;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #6366f1;
+    font-size: 1rem;
+    margin-bottom: 32px;
+    font-weight: 600;
+  }
+
+  .section {
+    background: white;
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow);
+    padding: 28px 24px;
+    margin-bottom: 28px;
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .section-badge {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 999px;
+    letter-spacing: 1px;
+  }
+  .badge-a { background: var(--blue); color: white; }
+  .badge-b { background: var(--orange); color: white; }
+  .badge-c { background: var(--purple); color: white; }
+
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+  .title-a { color: var(--blue-dark); }
+  .title-b { color: #c2410c; }
+  .title-c { color: #7e22ce; }
+
+  /* Vocab grid */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 14px;
+  }
+
+  .vocab-card {
+    border-radius: 14px;
+    padding: 14px 10px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+  .vocab-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.13); }
+  .vocab-card:active { transform: scale(0.96); }
+
+  .card-a { background: var(--sky); border: 2px solid #bfdbfe; }
+  .card-b { background: var(--orange-light); border: 2px solid #fed7aa; }
+
+  .vocab-emoji { font-size: 2.2rem; line-height: 1; }
+  .vocab-word {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: #1e293b;
+    text-align: center;
+  }
+  .vocab-phonetic {
+    font-size: 0.78rem;
+    color: #64748b;
+    font-style: italic;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .vocab-zh {
+    font-size: 0.78rem;
+    color: #475569;
+    font-weight: 700;
+  }
+
+  .sound-btn {
+    margin-top: 4px;
+    background: white;
+    border: none;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+    transition: background 0.15s;
+  }
+  .sound-btn:hover { background: #f0f9ff; }
+  .sound-btn-a { color: var(--blue); }
+  .sound-btn-b { color: var(--orange); }
+  .sound-btn-icon { font-size: 1rem; }
+
+  /* Part C */
+  .dialog-block {
+    background: #f8f7ff;
+    border-left: 5px solid var(--purple);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+  }
+  .dialog-block p {
+    font-size: 0.95rem;
+    color: #312e81;
+    line-height: 1.9;
+  }
+  .dialog-block p strong { color: var(--purple); }
+  .dialog-block .hl { background: #ede9fe; border-radius: 4px; padding: 1px 5px; }
+
+  .grammar-box {
+    background: linear-gradient(135deg, #f3e8ff, #ede9fe);
+    border-radius: 14px;
+    padding: 20px 20px;
+    margin-top: 6px;
+  }
+  .grammar-box h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    color: #6d28d9;
+    margin-bottom: 12px;
+    font-weight: 800;
+  }
+
+  .rule-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: white;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(109,40,217,0.07);
+  }
+  .rule-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .rule-text { font-size: 0.9rem; color: #3730a3; line-height: 1.7; }
+  .rule-text strong { color: #7c3aed; }
+  .rule-example {
+    background: #ede9fe;
+    border-radius: 7px;
+    padding: 4px 10px;
+    margin-top: 4px;
+    display: inline-block;
+    font-size: 0.85rem;
+    color: #4c1d95;
+    font-style: italic;
+  }
+
+  /* hurt vs hurts */
+  .table-wrap { overflow-x: auto; margin-top: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th { background: var(--purple); color: white; padding: 8px 12px; font-weight: 800; text-align: left; border-radius: 0; }
+  th:first-child { border-radius: 8px 0 0 0; }
+  th:last-child { border-radius: 0 8px 0 0; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e9d5ff; color: #3b0764; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #faf5ff; }
+
+  .dialog-qa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 600px) {
+    .dialog-qa { grid-template-columns: 1fr; }
+    .vocab-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .dialog-bubble {
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #1e1b4b;
+  }
+  .bubble-q { background: #dbeafe; border: 1.5px solid #93c5fd; }
+  .bubble-a { background: #dcfce7; border: 1.5px solid #86efac; }
+  .bubble-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    opacity: 0.7;
+  }
+
+  /* playing animation */
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(59,130,246,0.5); }
+    70% { box-shadow: 0 0 0 8px rgba(59,130,246,0); }
+    100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+  }
+  .sound-btn.playing { animation: pulse-ring 0.6s ease; background: #bfdbfe; }
+
+  .tip-note {
+    background: #fffbeb;
+    border: 1.5px dashed #fbbf24;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: #78350f;
+    margin-top: 14px;
+    font-weight: 600;
+  }
+
+  /* Part A plural explanation */
+  .plural-box {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-top: 20px;
+  }
+  .plural-box h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.05rem;
+    color: #1d4ed8;
+    margin-bottom: 12px;
+    font-weight: 800;
+  }
+  .plural-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: white;
+    border-radius: 10px;
+    padding: 11px 14px;
+    margin-bottom: 9px;
+    box-shadow: 0 2px 8px rgba(59,130,246,0.07);
+    font-size: 0.88rem;
+    color: #1e3a8a;
+    line-height: 1.7;
+  }
+  .plural-row strong { color: #1d4ed8; }
+  .plural-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .tag-single { background: #bfdbfe; color: #1d4ed8; }
+  .tag-plural { background: #bbf7d0; color: #166534; }
+  .tag-special { background: #fde68a; color: #92400e; }
+
+  /* Dialog sentence row with audio */
+  .dialog-sent-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px dashed #c4b5fd;
+  }
+  .dialog-sent-row:last-child { border-bottom: none; }
+  .dialog-sent-text {
+    font-size: 0.88rem;
+    color: #1e1b4b;
+    line-height: 1.6;
+    flex: 1;
+  }
+  .sent-btn {
+    background: #ede9fe;
+    border: none;
+    border-radius: 999px;
+    padding: 4px 11px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #7c3aed;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .sent-btn:hover { background: #ddd6fe; }
+  .sent-btn.playing { background: #a78bfa; color: white; animation: pulse-ring 0.6s ease; }
+
+  .dialog-pair {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    border: 1.5px solid #e0e7ff;
+  }
+  .dialog-pair-q {
+    background: #dbeafe;
+    padding: 10px 14px;
+  }
+  .dialog-pair-a {
+    background: #dcfce7;
+    padding: 10px 14px;
+  }
+  .pair-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    opacity: 0.6;
+    margin-bottom: 3px;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="title">五年級下學期英文期中考</h1>
+<p class="subtitle">📖 複習課文 ・ Body Parts・Illness・Sentence Practice</p>
+
+<!-- PART A -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-a">Part A</span>
+    <span class="section-title title-a">Body Parts 身體部位</span>
+  </div>
+  <div class="vocab-grid" id="partA"></div>
+
+  <!-- Plural/Singular explanation -->
+  <div class="plural-box">
+    <h3>🔢 為什麼有些是複數，有些是單數？</h3>
+
+    <div class="plural-row">
+      <span style="font-size:1.4rem;flex-shrink:0">👁️👁️</span>
+      <div>
+        <strong>eyes、ears、hands、arms、legs</strong>
+        <span class="plural-tag tag-plural">複數</span><br>
+        這些身體部位我們天生就有<strong>兩個</strong>，所以英文直接用複數形（字尾加 <strong>-s</strong>）。<br>
+        例：I have two <u>eyes</u>. → 平常直接說 <u>eyes</u>（不說 eye）。
+      </div>
+    </div>
+
+    <div class="plural-row">
+      <span style="font-size:1.4rem;flex-shrink:0">👃</span>
+      <div>
+        <strong>nose、mouth</strong>
+        <span class="plural-tag tag-single">單數</span><br>
+        這些部位身上只有<strong>一個</strong>，所以用單數形（不加 -s）。<br>
+        例：My <u>nose</u> hurts. / Open your <u>mouth</u>.
+      </div>
+    </div>
+
+    <div class="plural-row">
+      <span style="font-size:1.4rem;flex-shrink:0">🦶</span>
+      <div>
+        <strong>foot（單數）→ feet（複數）</strong>
+        <span class="plural-tag tag-special">不規則變化</span><br>
+        foot 不是直接加 -s，而是整個字改變成 <strong>feet</strong>，這叫「不規則複數」！<br>
+        例：My left <u>foot</u> hurts.（一隻腳）　/ My <u>feet</u> are cold.（兩隻腳）
+      </div>
+    </div>
+
+    <div class="tip-note" style="margin-top:10px;">
+      💡 記憶口訣：<strong>兩個一起長的 → 複數（-s）</strong>，<strong>只有一個的 → 單數</strong>，<strong>foot→feet 是例外要背起來！</strong>
+    </div>
+  </div>
+</div>
+
+<!-- PART B -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-b">Part B</span>
+    <span class="section-title title-b">Illness 病症</span>
+  </div>
+  <div class="vocab-grid" id="partB"></div>
+</div>
+
+<!-- PART C -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-c">Part C</span>
+    <span class="section-title title-c">情境對話 &amp; 文法說明</span>
+  </div>
+
+  <p style="font-size:0.9rem;color:#6d28d9;font-weight:700;margin-bottom:14px;">📖 先看看這些對話，點 🔊 可以聽整句發音：</p>
+
+  <!-- Dialog 1 -->
+  <div class="dialog-pair">
+    <div class="dialog-pair-q">
+      <div class="pair-label">問 Q</div>
+      <div class="dialog-sent-row">
+        <span class="dialog-sent-text">What's wrong?</span>
+        <button class="sent-btn" onclick="playSent(this, &quot;What's wrong?&quot;)">🔊 唸句子</button>
+      </div>
+    </div>
+    <div class="dialog-pair-a">
+      <div class="pair-label">答 A</div>
+      <div class="dialog-sent-row">
+        <span class="dialog-sent-text">My <u>foot</u> <strong>hurts</strong>.</span>
+        <button class="sent-btn" onclick="playSent(this, 'My foot hurts.')">🔊 唸句子</button>
+      </div>
+      <div class="dialog-sent-row">
+        <span class="dialog-sent-text">His / Her <u>ears</u> <strong>hurt</strong>.</span>
+        <button class="sent-btn" onclick="playSent(this, 'His ears hurt.')">🔊 唸句子</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog 2 -->
+  <div class="dialog-pair">
+    <div class="dialog-pair-q">
+      <div class="pair-label">問 Q</div>
+      <div class="dialog-sent-row">
+        <span class="dialog-sent-text">Do you have a <u>fever</u>?</span>
+        <button class="sent-btn" onclick="playSent(this, 'Do you have a fever?')">🔊 唸句子</button>
+      </div>
+    </div>
+    <div class="dialog-pair-a">
+      <div class="pair-label">答 A</div>
+      <div class="dialog-sent-row">
+        <span class="dialog-sent-text">Yes, I do.</span>
+        <button class="sent-btn" onclick="playSent(this, 'Yes, I do.')">🔊 唸句子</button>
+      </div>
+      <div class="dialog-sent-row">
+        <span class="dialog-sent-text">No, I don't. I have a <u>runny nose</u>.</span>
+        <button class="sent-btn" onclick="playSent(this, &quot;No, I don't. I have a runny nose.&quot;)">🔊 唸句子</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog 3 -->
+  <div class="dialog-pair">
+    <div class="dialog-pair-q">
+      <div class="pair-label">問 Q</div>
+      <div class="dialog-sent-row">
+        <span class="dialog-sent-text">Does he / she have a <u>headache</u>?</span>
+        <button class="sent-btn" onclick="playSent(this, 'Does he have a headache?')">🔊 唸句子</button>
+      </div>
+    </div>
+    <div class="dialog-pair-a">
+      <div class="pair-label">答 A</div>
+      <div class="dialog-sent-row">
+        <span class="dialog-sent-text">Yes, he / she does.</span>
+        <button class="sent-btn" onclick="playSent(this, 'Yes, he does.')">🔊 唸句子</button>
+      </div>
+      <div class="dialog-sent-row">
+        <span class="dialog-sent-text">No, he / she doesn't.</span>
+        <button class="sent-btn" onclick="playSent(this, &quot;No, he doesn't.&quot;)">🔊 唸句子</button>
+      </div>
+      <div class="dialog-sent-row">
+        <span class="dialog-sent-text">He / She has a <u>stomachache</u>.</span>
+        <button class="sent-btn" onclick="playSent(this, 'He has a stomachache.')">🔊 唸句子</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grammar Explanation -->
+  <div class="grammar-box">
+    <h3>📚 文法解說 Grammar Notes</h3>
+
+    <!-- hurt vs hurts -->
+    <div class="rule-row">
+      <div class="rule-icon">⚡</div>
+      <div class="rule-text">
+        <strong>hurt vs. hurts</strong> — 動詞要跟主詞「人數」配合！<br>
+        <span class="rule-example">My foot <strong>hurts</strong>. （一隻腳 → 單數 → 加 s）</span><br>
+        <span class="rule-example">My ears <strong>hurt</strong>. （兩隻耳朵 → 複數 → 不加 s）</span>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table>
+            <tr><th>主詞</th><th>動詞</th><th>例句</th></tr>
+            <tr><td>單數（foot, nose…）</td><td><strong>hurts</strong></td><td>My foot hurts.</td></tr>
+            <tr><td>複數（ears, hands…）</td><td><strong>hurt</strong></td><td>Her hands hurt.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Do you have -->
+    <div class="rule-row">
+      <div class="rule-icon">🙋</div>
+      <div class="rule-text">
+        <strong>Do you have a ___?</strong> — 問「你（I/You）」用 <strong>Do</strong><br>
+        <span class="rule-example">Do you have a fever? → Yes, I <strong>do</strong>. / No, I <strong>don't</strong>.</span><br>
+        ✔ 回答時：肯定用 <strong>do</strong>，否定用 <strong>don't</strong>（= do not）
+      </div>
+    </div>
+
+    <!-- Does he/she have -->
+    <div class="rule-row">
+      <div class="rule-icon">👧</div>
+      <div class="rule-text">
+        <strong>Does he / she have a ___?</strong> — 問「他/她（he/she）」用 <strong>Does</strong><br>
+        <span class="rule-example">Does she have a headache? → Yes, she <strong>does</strong>. / No, she <strong>doesn't</strong>.</span><br>
+        ✔ 回答時：肯定用 <strong>does</strong>，否定用 <strong>doesn't</strong>（= does not）
+      </div>
+    </div>
+
+    <!-- has -->
+    <div class="rule-row">
+      <div class="rule-icon">💡</div>
+      <div class="rule-text">
+        <strong>have vs. has</strong> — 主詞是「他/她/它（he/she/it）」時，<strong>have → has</strong><br>
+        <span class="rule-example">I / You <strong>have</strong> a cold.</span><br>
+        <span class="rule-example">He / She <strong>has</strong> a stomachache.</span>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table>
+            <tr><th>主詞</th><th>用法</th><th>例句</th></tr>
+            <tr><td>I / You / We / They</td><td><strong>have</strong></td><td>I have a fever.</td></tr>
+            <tr><td>He / She / It</td><td><strong>has</strong></td><td>She has a toothache.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-note">
+      💡 記憶小訣竅：只要主詞是 <strong>he / she / it</strong>，動詞幾乎都要加 <strong>s</strong> 或換成特殊型（have→has, do→does）！
+    </div>
+  </div>
+</div>
+
+<script>
+const partAWords = [
+  { word: 'eyes',  zh: '眼睛', emoji: '👀', phonetic: '/aɪz/' },
+  { word: 'ears',  zh: '耳朵', emoji: '👂', phonetic: '/ɪrz/' },
+  { word: 'nose',  zh: '鼻子', emoji: '👃', phonetic: '/noʊz/' },
+  { word: 'mouth', zh: '嘴巴', emoji: '👄', phonetic: '/maʊθ/' },
+  { word: 'hands', zh: '手', emoji: '🤲', phonetic: '/hændz/' },
+  { word: 'arms',  zh: '手臂', emoji: '💪', phonetic: '/ɑrmz/' },
+  { word: 'legs',  zh: '腿', emoji: '🦵', phonetic: '/lɛɡz/' },
+  { word: 'foot',  zh: '腳（單數）', emoji: '🦶', phonetic: '/fʊt/' },
+  { word: 'feet',  zh: '腳（複數）', emoji: '🦵🦵', phonetic: '/fiːt/' },
+];
+
+const partBWords = [
+  { word: 'cold',        zh: '感冒', emoji: '🤧', phonetic: '/koʊld/' },
+  { word: 'fever',       zh: '發燒', emoji: '🤒', phonetic: '/ˈfiːvər/' },
+  { word: 'runny nose',  zh: '流鼻水', emoji: '😤', phonetic: '/ˈrʌni noʊz/' },
+  { word: 'sore throat', zh: '喉嚨痛', emoji: '😣', phonetic: '/sɔːr θroʊt/' },
+  { word: 'headache',    zh: '頭痛', emoji: '🤕', phonetic: '/ˈhɛdeɪk/' },
+  { word: 'toothache',   zh: '牙痛', emoji: '🦷', phonetic: '/ˈtuːθeɪk/' },
+  { word: 'stomachache', zh: '肚子痛', emoji: '🤢', phonetic: '/ˈstʌməkeɪk/' },
+];
+
+function speak(word) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(word);
+    utter.lang = 'en-US';
+    utter.rate = 0.85;
+    window.speechSynthesis.speak(utter);
+  }
+}
+
+function buildGrid(words, containerId, type) {
+  const grid = document.getElementById(containerId);
+  words.forEach(w => {
+    const card = document.createElement('div');
+    card.className = `vocab-card card-${type}`;
+    card.innerHTML = `
+      <div class="vocab-emoji">${w.emoji}</div>
+      <div class="vocab-word">${w.word}</div>
+      <div class="vocab-phonetic">${w.phonetic}</div>
+      <div class="vocab-zh">${w.zh}</div>
+      <button class="sound-btn sound-btn-${type}" onclick="event.stopPropagation(); playSound(this, '${w.word}')">
+        <span class="sound-btn-icon">🔊</span> 發音
+      </button>
+    `;
+    card.addEventListener('click', () => speak(w.word));
+    grid.appendChild(card);
+  });
+}
+
+function playSound(btn, word) {
+  speak(word);
+  btn.classList.add('playing');
+  setTimeout(() => btn.classList.remove('playing'), 700);
+}
+
+function playSent(btn, sentence) {
+  speak(sentence);
+  btn.classList.add('playing');
+  // estimate duration roughly
+  const dur = Math.max(900, sentence.split(' ').length * 380);
+  setTimeout(() => btn.classList.remove('playing'), dur);
+}
+
+buildGrid(partAWords, 'partA', 'a');
+buildGrid(partBWords, 'partB', 'b');
+</script>
+</body>
+</html>
