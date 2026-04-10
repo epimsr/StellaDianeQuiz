@@ -576,7 +576,7 @@ const partAWords = [
   { word: 'arms',  zh: '手臂', emoji: '💪', phonetic: '/ɑrmz/' },
   { word: 'legs',  zh: '腿', emoji: '🦵', phonetic: '/lɛɡz/' },
   { word: 'foot',  zh: '腳（單數）', emoji: '🦶', phonetic: '/fʊt/' },
-  { word: 'feet',  zh: '腳（複數）', emoji: '🦵🦵', phonetic: '/fiːt/' },
+  { word: 'feet',  zh: '腳（複數）', emoji: '🦶🦶', phonetic: '/fiːt/' },
 ];
 
 const partBWords = [
@@ -589,14 +589,27 @@ const partBWords = [
   { word: 'stomachache', zh: '肚子痛', emoji: '🤢', phonetic: '/ˈstʌməkeɪk/' },
 ];
 
-function speak(word) {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(word);
-    utter.lang = 'en-US';
-    utter.rate = 0.85;
-    window.speechSynthesis.speak(utter);
+// 使用 Google TTS（音質自然清晰）
+let currentAudio = null;
+
+function speak(text) {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
   }
+  const encoded = encodeURIComponent(text);
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encoded}`;
+  currentAudio = new Audio(url);
+  currentAudio.volume = 1.0;
+  currentAudio.play().catch(() => {
+    // 若 Google TTS 被擋，退回瀏覽器 TTS
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 0.82;
+    utter.volume = 1;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+  });
 }
 
 function buildGrid(words, containerId, type) {
@@ -621,14 +634,13 @@ function buildGrid(words, containerId, type) {
 function playSound(btn, word) {
   speak(word);
   btn.classList.add('playing');
-  setTimeout(() => btn.classList.remove('playing'), 700);
+  setTimeout(() => btn.classList.remove('playing'), 900);
 }
 
 function playSent(btn, sentence) {
   speak(sentence);
   btn.classList.add('playing');
-  // estimate duration roughly
-  const dur = Math.max(900, sentence.split(' ').length * 380);
+  const dur = Math.max(1200, sentence.split(' ').length * 420);
   setTimeout(() => btn.classList.remove('playing'), dur);
 }
 
